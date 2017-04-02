@@ -7,7 +7,7 @@ let basePath = __dirname;
 module.exports = {
   context: path.join(basePath, 'src'),
   resolve: {
-    extensions: ['.js', '.ts', '.tsx', '.scss']
+    extensions: ['.ts', '.tsx', '.js', '.jsx', '.scss']
   },
   entry: {
     bundle: ['./main.tsx', './main.scss'],

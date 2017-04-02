@@ -30,7 +30,7 @@ module.exports = function () {
                 loader: 'css-loader',
                 options: {
                   modules: true,
-                  localIdentName: '[name]__[local]___[hash:base64:5]',
+                  localIdentName: '[local]--[hash:base64:5]',
                   camelCase: true
                 }
               },
