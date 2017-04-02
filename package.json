@@ -1,0 +1,51 @@
+{
+  "name": "halftone",
+  "version": "1.0.0",
+  "description": "Halftone print pattern emulator made with D3.js, React + Typescript and Webpack 2 bundling features",
+  "main": "dist/main.js",
+  "scripts": {
+    "start": "webpack-dev-server --config=dev.webpack.config.js",
+    "build:dev": "rimraf dist && webpack --config=dev.webpack.config.js",
+    "build:prod": "rimraf dist && webpack -p --config=prod.webpack.config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fjcalzado/DemoSeries-D3JS-Halftone.git"
+  },
+  "keywords": [
+    "d3",
+    "js",
+    "ts",
+    "javascript",
+    "modules",
+    "react",
+    "halftone"
+  ],
+  "author": "Javier Calzado",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fjcalzado/DemoSeries-D3JS-Halftone/issues"
+  },
+  "homepage": "https://github.com/fjcalzado/DemoSeries-D3JS-Halftone#readme",
+  "devDependencies": {
+    "@types/react": "~15.0.20",
+    "@types/react-dom": "~0.14.18",
+    "awesome-typescript-loader": "^3.1.2",
+    "css-loader": "^0.26.2",
+    "extract-text-webpack-plugin": "^2.0.0",
+    "file-loader": "^0.10.1",
+    "html-webpack-plugin": "^2.28.0",
+    "node-sass": "^4.5.1",
+    "rimraf": "^2.6.1",
+    "sass-loader": "^6.0.3",
+    "style-loader": "^0.13.2",
+    "typescript": "^2.2.2",
+    "url-loader": "^0.5.8",
+    "webpack": "^2.2.1",
+    "webpack-dev-server": "^2.4.1",
+    "webpack-merge": "^4.0.0"
+  },
+  "dependencies": {
+    "d3": "^4.7.4"
+  }
+}
