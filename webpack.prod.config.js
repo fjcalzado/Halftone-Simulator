@@ -1,6 +1,6 @@
 let path = require('path');
 let webpackMerge = require('webpack-merge');
-let commonConfig = require('./base.webpack.config.js');
+let commonConfig = require('./webpack.base.config.js');
 let ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 let basePath = __dirname;
@@ -17,7 +17,8 @@ module.exports = function () {
 
     module: {
       rules: [
-        // Loading pipe for Styles except the main page style.
+        // Loading pipe for stylesheets as modules. The only exception will be the main
+        // page style which is intended to be global and not a module.
         // ExtractTextPlugin used to extract all bundled CSS into a separate file.
         // NOTE: If this CSS doesn't weight too much, better leave it injected (disable plugin).
         {
@@ -30,7 +31,7 @@ module.exports = function () {
                 loader: 'css-loader',
                 options: {
                   modules: true,
-                  localIdentName: '[local]--[hash:base64:5]',
+                  localIdentName: '[name]_[local]--[hash:base64:5]',
                   camelCase: true
                 }
               },
@@ -38,8 +39,8 @@ module.exports = function () {
             ]
           })
         },
-        // Loading pipe for the main page style. We do not want hashed rule names for this stylesheet
-        // so we can directly anotate style class names in the markup.
+        // Loading pipe for the main page style. We do not want hashed rule names for this
+        // stylesheet to be able to anotate style class names in the markup.
         // ExtractTextPlugin used to extract all bundled CSS into a separate file.
         // NOTE: If this CSS doesn't weight too much, better leave it injected (disable plugin).
         {

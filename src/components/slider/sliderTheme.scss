@@ -1,0 +1,113 @@
+@import "../componentTheme.scss";
+
+$slider-to-label-separation: $base-unit / 2;
+$slider-thumb-height: $base-unit * 0.8;
+$slider-thumb-width: $base-unit * 0.8;
+$slider-thumb-radius: min($slider-thumb-width, $slider-thumb-height) * $base-radius;
+$slider-thumb-color: $color-primary;
+$slider-thumb-border: transparent;
+$slider-thumb-shadow: transparent;
+$slider-track-height: $base-unit / 5;
+$slider-track-radius: $slider-track-height * $base-radius;
+$slider-track-color: $color-grey-tone;
+$slider-track-border: transparent;
+$slider-track-shadow: transparent;
+
+
+.container {
+  display: flex;
+
+  .slider {}
+
+  .label {
+    padding-left: $slider-to-label-separation;
+  }
+
+  /* Common vendor settings */
+  @mixin slider-thumb-common {
+    height: $slider-thumb-height;
+    width: $slider-thumb-width;
+    border-radius: $slider-thumb-radius;
+    background: $slider-thumb-color;
+    box-shadow: $slider-thumb-shadow;
+    border: $slider-thumb-border;
+    cursor: pointer;
+  }
+
+  @mixin slider-track-common-1 {
+    height: $slider-track-height;
+    cursor: pointer;
+  }
+
+  @mixin slider-track-common-2 {
+    background: $slider-track-color;
+    border: $slider-track-border;
+    border-radius: $slider-track-radius;
+    box-shadow: $slider-track-shadow;
+  }
+
+  input[type=range] {
+    -webkit-appearance: none;
+    margin: 5px 0;
+
+    &:focus {
+      outline: none;
+    }
+
+    /* Webkit settings */
+    &::-webkit-slider-runnable-track {
+      @include slider-track-common-1;
+      @include slider-track-common-2;
+    }
+
+    &::-webkit-slider-thumb {
+      @include slider-thumb-common;
+
+      -webkit-appearance: none;
+      margin-top: -5px;
+    }
+
+    &:focus::-webkit-slider-runnable-track {
+      background: $slider-track-color;
+    }
+
+    /* Mozilla settings */
+    &::-moz-range-track {
+      @include slider-track-common-1;
+      @include slider-track-common-2;
+    }
+
+    &::-moz-range-thumb {
+      @include slider-thumb-common;
+    }
+
+    /* Microsoft settings */
+    &::-ms-track {
+      @include slider-track-common-1;
+
+      background: transparent;
+      border-color: transparent;
+      color: transparent;
+    }
+
+    &::-ms-fill-lower {
+      @include slider-track-common-2;
+    }
+
+    &::-ms-fill-upper {
+      @include slider-track-common-2;
+    }
+
+    &::-ms-thumb {
+      @include slider-thumb-common;
+    }
+
+    &:focus::-ms-fill-lower {
+      background: $slider-track-color;
+    }
+
+    &:focus::-ms-fill-upper {
+      background: $slider-track-color;
+    }
+  }
+}

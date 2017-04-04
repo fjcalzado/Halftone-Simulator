@@ -4,9 +4,9 @@
   "description": "Halftone print pattern emulator made with D3.js, React + Typescript and Webpack 2 bundling features",
   "main": "dist/main.js",
   "scripts": {
-    "start": "webpack-dev-server --config=dev.webpack.config.js",
-    "build:dev": "rimraf dist && webpack --config=dev.webpack.config.js",
-    "build:prod": "rimraf dist && webpack -p --config=prod.webpack.config.js"
+    "start": "webpack-dev-server --config=webpack.dev.config.js",
+    "build:dev": "rimraf dist && webpack --config=webpack.dev.config.js",
+    "build:prod": "rimraf dist && webpack -p --config=webpack.prod.config.js"
   },
   "repository": {
     "type": "git",

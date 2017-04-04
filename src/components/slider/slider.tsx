@@ -1,5 +1,5 @@
 import * as React from "react";
-const styles = require("./slider.scss");
+const styles = require("./sliderTheme.scss");
 
 interface IProps {
   initialValue: number;
@@ -22,15 +22,16 @@ export class SliderComponent extends React.Component<IProps, IState> {
 
   public render() {
     return(
-      <div className={styles.slider}>
-      <input type="range"
+      <div className={styles.container}>
+      <input className={styles.slider}
+             type="range"
              min={this.props.range.min}
              max={this.props.range.max}
              step={this.props.range.step}
              value={this.state.value}
              onChange={this.valueChanged}
       />
-      <span className={styles.sliderMarker}>{this.state.value}</span>
+      <span className={styles.label}>{this.state.value}</span>
     </div>
     );
   }
