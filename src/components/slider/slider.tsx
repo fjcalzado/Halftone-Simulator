@@ -23,16 +23,16 @@ export class SliderComponent extends React.Component<IProps, IState> {
   public render() {
     return(
       <div className={styles.container}>
-      <input className={styles.slider}
-             type="range"
-             min={this.props.range.min}
-             max={this.props.range.max}
-             step={this.props.range.step}
-             value={this.state.value}
-             onChange={this.valueChanged}
-      />
-      <span className={styles.label}>{this.state.value}</span>
-    </div>
+        <input className={styles.slider}
+              type="range"
+              min={this.props.range.min}
+              max={this.props.range.max}
+              step={this.props.range.step}
+              value={this.state.value}
+              onChange={this.valueChanged}
+        />
+        <span className={styles.label}>{this.state.value}</span>
+      </div>
     );
   }
 
