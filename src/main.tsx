@@ -18,8 +18,8 @@ ReactDOM.render(
                       onValueChanged={() => true}
     />
     <HalftoneComponent image={img}
-                       width={"800px"}
-                       height={"400px"}
+                       width={"80vw"}
+                       height={"60vh"}
     />
   </div>
   , document.getElementsByClassName("app-container")[0]);

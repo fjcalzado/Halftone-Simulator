@@ -33,8 +33,8 @@ let heightAbs = null;
  */
 
 function calculateAbsoluteSize() {
-  widthAbs = parseInt(widthRel /*svg.style("width")*/, 10);
-  heightAbs = parseInt(heightRel /*svg.style("height")*/, 10);
+  widthAbs = parseInt(svg.style("width"), 10);
+  heightAbs = parseInt(svg.style("height"), 10);
 }
 
 
@@ -51,7 +51,7 @@ export function initialize(elementId, imgPattern, width = widthRel, height = hei
 }
 
 export function initializeChart() {
-  svg = d3.select(`#${htmlId}`)
+  svg = d3.select(`.${htmlId}`)
     .append("svg")
       .attr("width", widthRel)
       .attr("height", heightRel);
