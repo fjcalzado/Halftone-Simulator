@@ -92,14 +92,23 @@ export function initializeScales() {
 }
 
 export function initializeSelection() {
-  dotSelection = svgCanvas.selectAll("g")   // Row representation.
+  initializeRows();
+}
+
+function initializeRows() {
+  svgCanvas.selectAll("g")   // Row representation.
       .data(pattern)
     .enter().append("g")
-      .selectAll("circle")
-      .data((d, i) => d)      // d is a pattern[i], a row.
+      .attr("row", (d, i) => i)
+      .each(initializeDots);
+}
+
+function initializeDots(row, rowIndex) {
+  d3.select(this).selectAll("circle")
+      .data(row)                    // d is a pattern[i], a row.
     .enter().append("circle")
       .attr("cx", (d, i) => xScale(i))
-      .attr("cy", (d, i) => yScale(i))
+      .attr("cy", yScale(rowIndex))
       .attr("r", (d) => dotScale(d))
       .attr("class", styles.dot);
 }
