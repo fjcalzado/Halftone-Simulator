@@ -78,5 +78,6 @@ export class HalftoneComponent extends React.Component < IProps, {} > {
     hCore.initializeScales();
     hCore.initializeSelection();
   }
+
 };
 

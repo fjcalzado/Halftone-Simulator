@@ -3,10 +3,10 @@ import * as ReactDOM from "react-dom";
 import {HalftoneComponent} from "./components/halftone/halftone";
 import {SliderComponent} from "./components/slider/slider";
 
-const img = [[0.5, 0.5, 0.5, 0.5, 0.5, 0.5],
+const img = [[1, 1, 0.5, 0.5, 0.5, 1],
+             [1, 1, 0.5, 0.5, 0.5, 0.5],
              [0.5, 0.5, 0.5, 0.5, 0.5, 0.5],
-             [0.5, 0.5, 0.5, 0.5, 0.5, 0.5],
-             [0.5, 0.5, 0.5, 0.5, 0.5, 0.5] ];
+             [1, 0.5, 0.5, 0.5, 0.5, 1] ];
 
 ReactDOM.render(
   <div>
