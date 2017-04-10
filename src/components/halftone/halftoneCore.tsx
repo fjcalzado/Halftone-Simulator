@@ -6,17 +6,24 @@ const styles = require("./halftoneTheme.scss")
  * @private
  */
 
+// Input pattern elements.
+let pattern = null;
+let xRes = null;
+let yRes = null;
+
 // Chart main elements.
 let htmlId = null;
-let pattern = null;
 let svg = null;
 let svgCanvas = null;
-let dotSelection = null;
 
 // Chart scales.
 let xScale = null;
 let yScale = null;
 let dotScale = null;
+
+// Maximum dot radius will be binsize half diagonal.
+  // Applying Pitagoras we can calculate the radius factor related to binsize.
+  const dotRadiusFactor = (Math.sqrt(2) / 2);
 
 // Width and Height in relative units.
 // Fit the container by default unless a specific relative
@@ -26,6 +33,9 @@ let heightRel = "100%";
 // Width and Height in absolute units.
 let widthAbs = null;
 let heightAbs = null;
+// Width and Height adjusted by aspect ratio in absolute units.
+let widthAdj = null;
+let heightAdj = null;
 
 /**
  * Helper Functions
@@ -37,6 +47,27 @@ function calculateAbsoluteSize() {
   heightAbs = parseInt(svg.style("height"), 10);
 }
 
+function adjustToFitAspectRatio() {
+  // Pattern aspect ratio.
+  xRes = pattern[0].length;
+  yRes = pattern.length;
+  const radiusExcess = dotRadiusFactor - 0.5; // Dot radiuss overpass in a bin.
+  const patternAR = (xRes + (radiusExcess * 2)) / (yRes + (radiusExcess * 2));
+
+  // SVG aspect ratio.
+  const svgAR = widthAbs / heightAbs;
+
+  // Adjust SVG size to fit pattern aspect ratio.
+  if (patternAR >= svgAR) {
+    // Adjust height.
+    heightAdj = widthAbs / patternAR;
+    widthAdj = widthAbs;
+  } else {
+    // Adjust width.
+    widthAdj = heightAbs * patternAR;
+    heightAdj = heightAbs;
+  }
+}
 
 /**
  * Initialization Functions
@@ -56,39 +87,36 @@ export function initializeChart() {
       .attr("width", widthRel)
       .attr("height", heightRel);
   calculateAbsoluteSize();
+  adjustToFitAspectRatio();
   svgCanvas = svg
-    .append("g");
+    .append("g")
+      .attr("class", "aspect-ratio-container")
+      .attr("transform", `translate(${(widthAbs - widthAdj) / 2},
+            ${(heightAbs - heightAdj) / 2})`);
 }
 
 export function initializeScales() {
-  const xRes = pattern[0].length;
-  const yRes = pattern.length;
-
- // x Scale - x position of the dot. Columns.
+  // x Scale - x position of the dot. Columns.
   xScale = d3.scalePoint()
-    .domain(d3.range(0, xRes - 1, 1))
-    .range([0, widthAbs - 1]);
+    .domain(d3.range(0, xRes, 1))
+    .range([0, widthAdj - 1])
+    .padding(dotRadiusFactor); // Padding**
 
   // y Scale - y position of the dot. Rows.
   yScale = d3.scalePoint()
-    .domain(d3.range(0, yRes - 1, 1))
-    .range([0, heightAbs - 1]);
+    .domain(d3.range(0, yRes, 1))
+    .range([0, heightAdj - 1])
+    .padding(dotRadiusFactor); // Padding**
 
-  // Adjust padding to either X or Y scale to keep aspect ratio (squared bins).
-  const aRatioDiff = xScale.step() - yScale.step();
-  if (aRatioDiff < 0) {
-    // Y bin size is bigger than X. Add padding to Y.
-    yScale = yScale.padding((-1 * aRatioDiff * (yRes - 1)) / heightAbs);
-  } else {
-    // X bin size is bigger than Y. Add padding to X.
-    xScale = xScale.padding((aRatioDiff * (xRes - 1)) / widthAbs);
-  }
+  // **Add an extra padding equal to maximum dot radius.
+  // Remember that padding is expressed normalized ([0..1]) representing the
+  // percentage of step to be left blank for padding.
 
-  // dotScale - dot radius lenght.
+  // dotScale to determine dot radius length.
   const dotBinSizeAbs = Math.min(xScale.step(), yScale.step());
   dotScale = d3.scaleLinear()
     .domain([0, 1])  // Normalized luminance.
-    .rangeRound([0, Math.sqrt(2) * dotBinSizeAbs / 2]);
+    .rangeRound([0, dotRadiusFactor * dotBinSizeAbs]);
 }
 
 export function initializeSelection() {

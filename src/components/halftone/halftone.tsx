@@ -60,14 +60,23 @@ export class HalftoneComponent extends React.Component < IProps, {} > {
     );
   }
 
+  // Lifecycle: Initialization.
+  private componentDidMount() {
+    this.drawChart();
+  }
+
+  // Lifecycle: Props changes.
+  private componentWillReceiveProps(nextProps) {
+    // Control props changes once the component has been mounted.
+      
+  }
+
   private shouldComponentUpdate() {
     // This prevents future re-renders of this component.
     return false;
   }
 
-  private componentDidMount() {
-    this.drawChart();
-  }
+  
 
   private drawChart() {
     // TODO: Exported variables from core as component state.
@@ -78,5 +87,6 @@ export class HalftoneComponent extends React.Component < IProps, {} > {
     hCore.initializeScales();
     hCore.initializeSelection();
   }
+
 };
 
