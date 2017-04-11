@@ -1,5 +1,5 @@
 const d3 = require("d3");
-const styles = require("./halftoneTheme.scss")
+const styles = require("../halftoneTheme.scss")
 
 /**
  * Module local variables.

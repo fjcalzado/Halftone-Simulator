@@ -1,5 +1,6 @@
 import * as React from "react";
-import * as hCore from "./halftoneCore";
+import * as dotChart from "./api/dotChart";
+import {HalftoneImageConverter} from "./halftoneImageConverter";
 const styles = require("./halftoneTheme.scss");
 
 /**
@@ -48,6 +49,10 @@ interface IProps {
   height?: string;
 }
 
+interface IState {
+
+}
+
 export class HalftoneComponent extends React.Component < IProps, {} > {
   constructor(props) {
     super(props);
@@ -81,11 +86,11 @@ export class HalftoneComponent extends React.Component < IProps, {} > {
   private drawChart() {
     // TODO: Exported variables from core as component state.
     // TODO: halftoneCore only export methods.
-    hCore.initialize(styles.container, this.props.image,
+    dotChart.initialize(styles.container, this.props.image,
       this.props.width, this.props.height);
-    hCore.initializeChart();
-    hCore.initializeScales();
-    hCore.initializeSelection();
+    dotChart.initializeChart();
+    dotChart.initializeScales();
+    dotChart.initializeSelection();
   }
 
 };
