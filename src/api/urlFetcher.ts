@@ -2,7 +2,7 @@
  * URLFetcher Interface export.
  */
 export interface URLFetcher {
-  getLocalUrl: (url: string) => Promise<string>;
+  readonly getLocalUrl: (url: string) => Promise<string>;
 }
 
 /**

@@ -22,12 +22,12 @@ function adjustSizeFromResolution(originalSize: {x: number, y: number}, res: num
 
 /**
  * Function to extract image data (pixel data) for a given image url and
- * a resolution. It resamples image automatically. URL must be in the same
- * domain, pay attention to CORS issues.
+ * a target resolution. It resamples image automatically. URL must be in 
+ * the same domain, pay attention to CORS issues.
  * @public
  * @function extractImageData
  * @param  {string} url: string {Image URL. Same domain.}
- * @param  {number} res: number {Resolution in number of pixels. Resampling done automatically.}
+ * @param  {number} res: number {Target resolution in number of pixels. Resampling done automatically.}
  * @return {ImageData} {Image Data (pixels) extracted from image URL.}
  */
 export function extractImageData(url: string, res: number): Promise < ImageData > {
