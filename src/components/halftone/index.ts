@@ -1,4 +1,4 @@
-import {HalftoneComponent} from "./halftone"
+import {HalftoneComponent} from "./halftone";
 
 export{
   HalftoneComponent

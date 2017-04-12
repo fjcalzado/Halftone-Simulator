@@ -1,5 +1,6 @@
 import * as React from "react";
 import * as dotChart from "./api/dotChart";
+import {luminanceMatrix} from "./api/imageChannelMatrix";
 const styles = require("./halftoneTheme.scss");
 
 /**
@@ -41,7 +42,7 @@ const styles = require("./halftoneTheme.scss");
  */
 
 interface IProps {
-  image: number[][];
+  imageUrl: string;
   resolution?: number;
   // Optional Size. Fit the container by default.
   width?: string;
@@ -52,9 +53,22 @@ interface IState {
 
 }
 
+/**
+ * Halftone Simulator React Component.
+ * Draw a picture using traditional halftone technique.
+ * @public
+ */
 export class HalftoneComponent extends React.Component < IProps, {} > {
   constructor(props) {
     super(props);
+    // Default initial state.
+    const defaultState: IProps = {
+      imageUrl: "",
+      resolution: 1000,
+      width: "100%",
+      height: "100%",
+    };
+    this.state = defaultState;
   }
 
   public render() {
@@ -64,32 +78,30 @@ export class HalftoneComponent extends React.Component < IProps, {} > {
     );
   }
 
-  // Lifecycle: Initialization.
+  // Lifecycle: Initialization Phase. After Mounting.
+  // (Once the component is created and inserted into the DOM).
   private componentDidMount() {
     this.drawChart();
   }
 
-  // Lifecycle: Props changes.
+  // Lifecycle: Props changes. Before receiving a prop change.
+  // (Only called on re-rendering, not on initial render).
   private componentWillReceiveProps(nextProps) {
     // Control props changes once the component has been mounted.
-      
   }
 
+  // Lifecycle: State Changes. Before render method.
+  // (Used to determine if a re-render is needed or can be skipped). 
   private shouldComponentUpdate() {
     // This prevents future re-renders of this component.
     return false;
   }
 
-  
-
   private drawChart() {
-    // TODO: Exported variables from core as component state.
-    // TODO: halftoneCore only export methods.
-    dotChart.initialize(styles.container, this.props.image,
-      this.props.width, this.props.height);
-    dotChart.initializeChart();
-    dotChart.initializeScales();
-    dotChart.initializeSelection();
+    luminanceMatrix.getMatrix(this.props.imageUrl, this.props.resolution)
+      .then((chMatrix) => dotChart.initialize(styles.container, chMatrix,
+      this.props.width, this.props.height))
+      .catch((reason) => console.error(`ERROR: Halftone Simulator. ${reason}`));
   }
 
 };

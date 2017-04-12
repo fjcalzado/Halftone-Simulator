@@ -74,14 +74,7 @@ function adjustToFitAspectRatio() {
  * @private
  */
 
-export function initialize(elementId, imgPattern, width = widthRel, height = heightRel) {
-  htmlId = elementId;
-  pattern = imgPattern;
-  if (width) { widthRel = width; }
-  if (height) { heightRel = height; }
-}
-
-export function initializeChart() {
+function initializeChart() {
   svg = d3.select(`.${htmlId}`)
     .append("svg")
       .attr("width", widthRel)
@@ -95,7 +88,7 @@ export function initializeChart() {
             ${(heightAbs - heightAdj) / 2})`);
 }
 
-export function initializeScales() {
+function initializeScales() {
   // x Scale - x position of the dot. Columns.
   xScale = d3.scalePoint()
     .domain(d3.range(0, xRes, 1))
@@ -119,7 +112,7 @@ export function initializeScales() {
     .rangeRound([0, dotRadiusFactor * dotBinSizeAbs]);
 }
 
-export function initializeSelection() {
+function initializeSelection() {
   initializeRows();
 }
 
@@ -139,4 +132,20 @@ function initializeDots(row, rowIndex) {
       .attr("cy", yScale(rowIndex))
       .attr("r", (d) => dotScale(d))
       .attr("class", styles.dot);
+}
+
+/**
+ * Initialization Public API.
+ * @public
+ */
+
+export function initialize(elementId, imgPattern, width = widthRel, height = heightRel) {
+  htmlId = elementId;
+  pattern = imgPattern;
+  if (width) { widthRel = width; }
+  if (height) { heightRel = height; }
+
+  initializeChart();
+  initializeScales();
+  initializeSelection();
 }

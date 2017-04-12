@@ -3,10 +3,10 @@ import * as ReactDOM from "react-dom";
 import {HalftoneComponent} from "./components/halftone";
 import {SliderComponent} from "./components/slider";
 
-const img = [[1, 1, 0.5, 0.5, 0.5, 1],
-             [1, 1, 0.5, 0.5, 0.5, 0.5],
-             [0.5, 0.5, 0.5, 0.5, 0.5, 0.5],
-             [1, 0.5, 0.5, 0.5, 0.5, 1] ];
+// const img = [[1, 1, 0.5, 0.5, 0.5, 1],
+//              [1, 1, 0.5, 0.5, 0.5, 0.5],
+//              [0.5, 0.5, 0.5, 0.5, 0.5, 0.5],
+//              [1, 0.5, 0.5, 0.5, 0.5, 1] ];
 
 ReactDOM.render(
   <div>
@@ -17,7 +17,8 @@ ReactDOM.render(
                              step: 0.01}}
                      onValueChanged={(value: number) => true}
     />
-    <HalftoneComponent image={img}
+    <HalftoneComponent imageUrl={"../img/test.jpg"}
+                       resolution={10000}
                        width={"80vw"}
                        height={"60vh"}
     />    

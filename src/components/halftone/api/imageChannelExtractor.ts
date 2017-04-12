@@ -26,7 +26,7 @@ function getNormalizedChannelValue(r: number, g: number, b: number, ch: Channel)
     case Channel.Red:       return r / 255;
     case Channel.Green:     return g / 255;
     case Channel.Blue:      return b / 255;
-    case Channel.Luminance: return (1 / chroma(r, g, b).luminance());
+    case Channel.Luminance: return (1 - chroma(r, g, b).luminance());
     default:                return 0;
   }
 }
@@ -44,7 +44,7 @@ export function extractImageChannel(imgData: ImageData, ch: Channel): Promise<nu
   return new Promise<number[][]> (
     (resolve, reject) => {
       try {
-        const chMatrix: number[][] = null;
+        const chMatrix: number[][] = [];
         const px = imgData.data;
         for (let i = 0; i < px.length; i += 4) {
           // Calculate Matrix coordinates.
