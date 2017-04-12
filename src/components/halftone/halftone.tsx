@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as dotChart from "./api/dotChart";
-import {luminanceMatrix} from "./api/imageChannelMatrix";
+import {lightnessMatrix} from "./api/imageChannelMatrix";
 const styles = require("./halftoneTheme.scss");
 
 /**
@@ -98,7 +98,10 @@ export class HalftoneComponent extends React.Component < IProps, {} > {
   }
 
   private drawChart() {
-    luminanceMatrix.getMatrix(this.props.imageUrl, this.props.resolution)
+    // Halftone pattern can be made of circular, elliptical or square shapes.
+    // When using circular dots, these should meet (overlap) at a tonal value of 70%.
+    // The proper channel to determine the dots size is HSL lightness.
+    lightnessMatrix.getMatrix(this.props.imageUrl, this.props.resolution)
       .then((chMatrix) => dotChart.initialize(styles.container, chMatrix,
       this.props.width, this.props.height))
       .catch((reason) => console.error(`ERROR: Halftone Simulator. ${reason}`));

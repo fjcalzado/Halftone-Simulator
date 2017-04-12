@@ -3,11 +3,6 @@ import * as ReactDOM from "react-dom";
 import {HalftoneComponent} from "./components/halftone";
 import {SliderComponent} from "./components/slider";
 
-// const img = [[1, 1, 0.5, 0.5, 0.5, 1],
-//              [1, 1, 0.5, 0.5, 0.5, 0.5],
-//              [0.5, 0.5, 0.5, 0.5, 0.5, 0.5],
-//              [1, 0.5, 0.5, 0.5, 0.5, 1] ];
-
 ReactDOM.render(
   <div>
     <p>This is React component injecting HTML</p>
@@ -17,10 +12,10 @@ ReactDOM.render(
                              step: 0.01}}
                      onValueChanged={(value: number) => true}
     />
-    <HalftoneComponent imageUrl={"../img/test.jpg"}
-                       resolution={10000}
-                       width={"80vw"}
-                       height={"60vh"}
+    <HalftoneComponent imageUrl={"../img/marilyn.jpg"}
+                       resolution={30000}
+                       width={"90vw"}
+                       height={"75vh"}
     />    
   </div>
   , document.getElementsByClassName("app-container")[0]);

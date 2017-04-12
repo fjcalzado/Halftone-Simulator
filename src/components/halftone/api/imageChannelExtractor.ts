@@ -6,6 +6,7 @@ import chroma from "chroma-js";
  */
 export enum Channel {
     Luminance = 1,
+    Lightness,
     Red,
     Green,
     Blue,
@@ -23,11 +24,12 @@ export enum Channel {
  */
 function getNormalizedChannelValue(r: number, g: number, b: number, ch: Channel): number {
   switch (ch) {
-    case Channel.Red:       return r / 255;
-    case Channel.Green:     return g / 255;
-    case Channel.Blue:      return b / 255;
-    case Channel.Luminance: return (1 - chroma(r, g, b).luminance());
-    default:                return 0;
+    case Channel.Red:         return r / 255;
+    case Channel.Green:       return g / 255;
+    case Channel.Blue:        return b / 255;
+    case Channel.Luminance:   return (1 - chroma(r, g, b).luminance());
+    case Channel.Lightness:   return (1 - chroma(r, g, b).hsl()[2]);
+    default:                  return 0;
   }
 }
 

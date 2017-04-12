@@ -47,7 +47,7 @@ function calculateAbsoluteSize() {
   heightAbs = parseInt(svg.style("height"), 10);
 }
 
-function adjustToFitAspectRatio() {
+function adjustSizeToFitAspectRatio() {
   // Pattern aspect ratio.
   xRes = pattern[0].length;
   yRes = pattern.length;
@@ -77,13 +77,14 @@ function adjustToFitAspectRatio() {
 function initializeChart() {
   svg = d3.select(`.${htmlId}`)
     .append("svg")
+      .attr("class", "svg-area")
       .attr("width", widthRel)
       .attr("height", heightRel);
   calculateAbsoluteSize();
-  adjustToFitAspectRatio();
+  adjustSizeToFitAspectRatio();
   svgCanvas = svg
     .append("g")
-      .attr("class", "aspect-ratio-container")
+      .attr("class", "image-area")
       .attr("transform", `translate(${(widthAbs - widthAdj) / 2},
             ${(heightAbs - heightAdj) / 2})`);
 }
@@ -105,11 +106,14 @@ function initializeScales() {
   // Remember that padding is expressed normalized ([0..1]) representing the
   // percentage of step to be left blank for padding.
 
-  // dotScale to determine dot radius length.
+  // dotScale to determine dot area in terms of radius. We could think
+  // in making use of a sqrt scale due to the area vs radius relationship.
+  // However, pattern values will already come gamma-corrected or with 
+  // a custom curve applied to them.
   const dotBinSizeAbs = Math.min(xScale.step(), yScale.step());
   dotScale = d3.scaleLinear()
     .domain([0, 1])  // Normalized luminance.
-    .rangeRound([0, dotRadiusFactor * dotBinSizeAbs]);
+    .range([0, dotRadiusFactor * dotBinSizeAbs]);
 }
 
 function initializeSelection() {
