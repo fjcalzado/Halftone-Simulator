@@ -13,7 +13,7 @@ let yRes = null;
 
 // Chart main elements.
 let htmlId = null;
-let svg = null;
+let svgViewport = null;
 let svgCanvas = null;
 
 // Chart scales.
@@ -43,8 +43,8 @@ let heightAdj = null;
  */
 
 function calculateAbsoluteSize() {
-  widthAbs = parseInt(svg.style("width"), 10);
-  heightAbs = parseInt(svg.style("height"), 10);
+  widthAbs = parseInt(svgViewport.style("width"), 10);
+  heightAbs = parseInt(svgViewport.style("height"), 10);
 }
 
 function adjustSizeToFitAspectRatio() {
@@ -75,16 +75,24 @@ function adjustSizeToFitAspectRatio() {
  */
 
 function initializeChart() {
-  svg = d3.select(`.${htmlId}`)
+  svgViewport = d3.select(`.${htmlId}`)
     .append("svg")
-      .attr("class", "svg-area")
+      .attr("class", "svg-viewport")
       .attr("width", widthRel)
       .attr("height", heightRel);
   calculateAbsoluteSize();
   adjustSizeToFitAspectRatio();
-  svgCanvas = svg
+
+  // TODO: Test if viewBox is a better option to keep aspect ratio
+  // instead of doing it manually with scales. Check viewBox behaves
+  // ok with resizing and different screen sizes.
+  svgViewport
+  .attr("viewBox", `0, 0, ${2*widthAdj}, ${2*heightAdj}`)
+  .attr("preserveAspectRatio", "xMidYMid");
+
+  svgCanvas = svgViewport
     .append("g")
-      .attr("class", "image-area")
+      .attr("class", "image-container")
       .attr("transform", `translate(${(widthAbs - widthAdj) / 2},
             ${(heightAbs - heightAdj) / 2})`);
 }
