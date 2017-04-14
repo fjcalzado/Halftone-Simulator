@@ -1,3 +1,4 @@
+import {CreateGridTopology, GridParameters, GridPatternTypes} from "./gridTopology";
 const d3 = require("d3");
 const styles = require("../halftoneTheme.scss");
 
@@ -83,13 +84,6 @@ function initializeChart() {
   calculateAbsoluteSize();
   adjustSizeToFitAspectRatio();
 
-  // TODO: Test if viewBox is a better option to keep aspect ratio
-  // instead of doing it manually with scales. Check viewBox behaves
-  // ok with resizing and different screen sizes.
-  svgViewport
-  .attr("viewBox", `0, 0, ${2*widthAdj}, ${2*heightAdj}`)
-  .attr("preserveAspectRatio", "xMidYMid");
-
   svgCanvas = svgViewport
     .append("g")
       .attr("class", "image-container")
@@ -158,6 +152,35 @@ export function initialize(elementId, imgPattern, width = widthRel, height = hei
   if (height) { heightRel = height; }
 
   initializeChart();
-  initializeScales();
-  initializeSelection();
+  //initializeScales();
+  //initializeSelection();
+  initializeGrid();
+}
+
+
+
+
+function initializeGrid() {
+
+  const gridParams: GridParameters = {
+    width: 6,
+    height: 5,
+    resolutionFactor: 100,
+    rotationAngle: 0,
+    pattern: GridPatternTypes.Square,
+  };
+
+  const gridContainer = svgViewport
+      .attr("viewBox", `-1 -1 ${gridParams.width + 1} ${gridParams.height + 1}`)
+      .attr("preserveAspectRatio", "xMidYMid meet")
+    .append("g")
+      .attr("class", "grid");
+
+  
+
+  const grid = gridContainer.selectAll("circle")
+      .data(CreateGridTopology(gridParams))
+    .enter().append("circle")
+      .attr("transform", (d) => `translate(${d.x}, ${d.y})`)
+      .attr("r", 0.1);
 }
