@@ -1,4 +1,9 @@
-export enum GridPatternTypes {
+/**
+ * Interface Export.
+ * @public
+ */
+
+export enum GridPatternType {
   Square = 1,
   Brick,
   Triangle,
@@ -6,38 +11,43 @@ export enum GridPatternTypes {
 }
 
 export interface GridPattern {
-    initialLine: number;
-    initialPosition: number;
+    readonly initialLine: number;
+    readonly initialPosition: number;
     readonly deltaLine: (li: number) => any;
     readonly deltaPosition: (pi: number) => number;
     readonly varianceLine: (li: number, pi: number) => number;
     readonly variancePosition: (li: number, pi: number) => number;
-    readonly linesPerPxFactor: (height: number) => number;
-    readonly positionsPerPxFactor: (width: number) => number;
+    readonly linesPerUnit: number;
+    readonly positionsPerUnit: number;
 }
 
+/**
+ * Grid pattern definition objects.
+ * @private
+ */
+
 // REGULAR SQUARE PATTERN.
-const squarePattern = {
+const squarePattern: GridPattern = {
   initialLine: 0,
   initialPosition: 0,
   deltaLine: (li) => squarePattern.initialLine + li,
   deltaPosition: (pi) => squarePattern.initialPosition + pi,
   varianceLine: (li, pi) => 0,
   variancePosition: (li, pi) => 0,
-  linesPerPxFactor: (height) => 1,
-  positionsPerPxFactor: (width) => 1,
+  linesPerUnit: 1,
+  positionsPerUnit: 1,
 };
 
 // BRICK PATTERN.
-const brickPattern = {
+const brickPattern: GridPattern = {
   initialLine: 0,
   initialPosition: 0,
   deltaLine: (li) => brickPattern.initialLine + li,
   deltaPosition: (pi) => brickPattern.initialPosition + pi,
   varianceLine: (li, pi) => 0,
-  variancePosition: (li, pi) => -(li % 2) / 2,
-  linesPerPxFactor: (height) => 1,
-  positionsPerPxFactor: (width) => 1,
+  variancePosition: (li, pi) => (li % 2) / 2,
+  linesPerUnit: 1,
+  positionsPerUnit: 1,
 };
 
 // TIRANGLE PATTERN.
@@ -45,15 +55,15 @@ const brickPattern = {
 const triangleSide = 1;
 const triangleHeight = triangleSide * Math.sqrt(3) / 2;
 
-const trianglePattern = {
+const trianglePattern: GridPattern = {
   initialLine: 0,
   initialPosition: 0,
   deltaLine: (li) => trianglePattern.initialLine + (li * triangleHeight),
   deltaPosition: (pi) => trianglePattern.initialPosition + pi,
   varianceLine: (li, pi) => 0,
   variancePosition: (li, pi) => -(li % 2) / 2,
-  linesPerPxFactor: (height) => 1 / (triangleHeight),
-  positionsPerPxFactor: (width) => 1,
+  linesPerUnit: 1 / (triangleHeight),
+  positionsPerUnit: 1,
 };
 
 // HEXAGONAL PATTERN.
@@ -65,26 +75,32 @@ const hexHeight = 1;
 const hexHalfHeight = hexHeight / 2;
 const hexSide = hexHeight / Math.sqrt(3);
 const hexHalfSide = hexSide / 2;
-const circTriangleHeight = triangleHeight * hexHeight;
-const oddLineHeight = 2 * hexSide - circTriangleHeight;
+const circTriangleHeight = (3 / 2) * hexSide;    // Height of the equilateral circumscribed triangle.
+const oddLineHeight = hexSide / 2;
 
-const hexPattern = {
-  initialLine: -0.5,
+const hexPattern: GridPattern = {
+  initialLine: 0,
   initialPosition: 0,
   deltaLine: (li) => hexPattern.initialLine + (Math.trunc(li / 2) * circTriangleHeight) + ((li % 2) * oddLineHeight),
   deltaPosition: (pi) => hexPattern.initialPosition + (pi * hexHeight),
   varianceLine: (li, pi) => 0,
-  variancePosition: (li, pi) => ((li + 1) % 4) >= 2 ? -hexHalfHeight : 0,
-  linesPerPxFactor: (height) => 6 / 1.5*hexSide,
-  positionsPerPxFactor: (width) => 1,
+  variancePosition: (li, pi) => ((li + 1) % 4) >= 2 ? 0 : hexHalfHeight,
+  linesPerUnit: 2 / circTriangleHeight,
+  positionsPerUnit: 1,
 };
 
-export function getGridPattern(type: GridPatternTypes): GridPattern {
+/**
+ * Grid Pattern factory. It returns a grid pattern definition object.
+ * @function CreateGridPattern
+ * @param  {GridPatternType} type: GridPatternType {Type of grid pattern/latice}
+ * @return {GridPattern} {GridPattern definition object}
+ */
+export function CreateGridPattern(type: GridPatternType): GridPattern {
   switch (type) {
-    case GridPatternTypes.Square:       return squarePattern;
-    case GridPatternTypes.Brick:        return brickPattern;
-    case GridPatternTypes.Triangle:     return trianglePattern;
-    case GridPatternTypes.Hex:          return hexPattern;
-    default:                            return squarePattern;
+    case GridPatternType.Square:       return squarePattern;
+    case GridPatternType.Brick:        return brickPattern;
+    case GridPatternType.Triangle:     return trianglePattern;
+    case GridPatternType.Hex:          return hexPattern;
+    default:                           return squarePattern;
   }
 }

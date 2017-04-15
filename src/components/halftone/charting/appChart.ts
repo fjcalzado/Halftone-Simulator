@@ -1,5 +1,5 @@
-import {CreateGridTopology, GridParameters, GridPatternTypes} from "./gridTopology";
-import {appendPixelPatternChecker} from "./gridTopology"; // Only for testing.
+import {CreateGridTopology, GridParameters, GridPatternType} from "./gridTopology";
+import {appendPixelPatternChecker} from "./gridTest"; // Only for testing.
 const d3 = require("d3");
 const styles = require("../halftoneTheme.scss");
 
@@ -168,22 +168,23 @@ function initializeGrid() {
   const gridParams: GridParameters = {
     targetWidth: 20,
     targetHeight: 10,
-    densityFactor: 100,
+    scaleFactor: 1,
     rotationAngle: 0,
-    pattern: GridPatternTypes.Hex,
+    pattern: GridPatternType.Hex,
   };
 
+
   const gridContainer = svgViewport
-      .attr("viewBox", `-2 -2 ${gridParams.targetWidth + 4} ${gridParams.targetHeight + 4}`)
+      .attr("viewBox", `-5 -5 ${gridParams.targetWidth + 10} ${gridParams.targetHeight + 10}`)
       .attr("preserveAspectRatio", "xMidYMid meet")
     .append("g")
       .attr("class", "grid-container");
 
   const pixelLayerTest = appendPixelPatternChecker(gridParams.targetWidth, gridParams.targetHeight, gridContainer);
 
-  const gridLayer = gridContainer
+  const gridPattern = gridContainer
     .append("g")
-      .attr("class", "grid-layer")
+      .attr("class", "grid-pattern")
     .selectAll("circle")
       .data(CreateGridTopology(gridParams))
     .enter().append("circle")

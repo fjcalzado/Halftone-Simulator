@@ -1,75 +1,96 @@
-import {GridPattern, GridPatternTypes, getGridPattern} from "./gridPatterns";
+import { CreateAffineTransformer } from "./affineTransform";
+import { CreateGridPattern, GridPattern, GridPatternType } from "./gridPatterns";
+
 const d3 = require("d3");
 
-export {GridPatternTypes};
+/**
+ * Interface Export.
+ * @public
+ */
+export {GridPatternType};
 
 export interface GridParameters {
-  pattern: GridPatternTypes;
+  pattern: GridPatternType;
   targetWidth: number;
   targetHeight: number;
-  rotationAngle?: number;
-  densityFactor?: number;
+  rotationAngle: number;
+  scaleFactor: number;
   /**
-   * Density factor emulates grid resolution. However, it is smarter to
-   * modify input picture resolution instead of grid density given that
+   * Scale factor emulates grid resolution. However, it is smarter to
+   * modify input picture resolution instead of grid scale given that
    * picture rescaling will use a proper resampling algorithm.
    */
 }
 
+/**
+ * Grid Topology factory. It creates a new grid topology: an array
+ * of nodes (in format x,y) that follows a certain lattice or pattern.
+ * @public
+ * @function CreateGridTopology
+ * @param  {GridParameters} gridParameters: GridParameters {description}
+ * @return {number[]} {array of nodes}
+ */
 export function CreateGridTopology(gridParameters: GridParameters): number[] {
 
-  const gridPattern = getGridPattern(gridParameters.pattern);
-  const densF = gridParameters.densityFactor / 100;
+  // STEP 1: First of all, lets calculate our pre-requisites. This is just
+  // done for performance efficiency.
+
+  // Target space precalculus (pixels space).
   const widthPx = gridParameters.targetWidth;
   const heightPx = gridParameters.targetHeight;
+  const centerPoint = {x: (widthPx / 2) - 0.5, y: (heightPx / 2) - 0.5};
 
-  const linesCount = widthPx * densF * gridPattern.linesPerPxFactor(heightPx);
-  const positionCount = heightPx * densF * gridPattern.positionsPerPxFactor(widthPx);
+  // Affine transformer in pixel space
+  const aft = CreateAffineTransformer()
+    .setupScale(gridParameters.scaleFactor, centerPoint)
+    .setupRotate(gridParameters.rotationAngle, centerPoint);
 
+  // Grid space precalculus (lines and positions space).
+  const gridPattern = CreateGridPattern(gridParameters.pattern);
+  // const startLine = 0;
+  // const startPosition = 0;
+  // const linesCount = heightPx * gridPattern.linesPerUnit / gridParameters.scaleFactor;
+  // const positionCount = widthPx * gridPattern.positionsPerUnit / gridParameters.scaleFactor;
+
+
+  const leftTop = aft.transform({x: 0, y: 0});
+  const rightTop = aft.transform({x: widthPx, y: 0});
+  const leftBottom = aft.transform({x: 0, y: heightPx});
+  const rightBottom = aft.transform({x: widthPx, y: heightPx});
+
+  const minX = Math.min(leftTop.x, rightTop.x, leftBottom.x, rightBottom.x);
+  const maxX = Math.max(leftTop.x, rightTop.x, leftBottom.x, rightBottom.x);
+  const minY = Math.min(leftTop.y, rightTop.y, leftBottom.y, rightBottom.y);
+  const maxY = Math.max(leftTop.y, rightTop.y, leftBottom.y, rightBottom.y);
+
+  const spanX = maxX - minX;
+  const spanY = maxY - minY;
+
+  const linesCount = Math.ceil(spanY * gridPattern.linesPerUnit);
+  const positionCount = Math.ceil(spanX * gridPattern.positionsPerUnit);
+  const startLine = Math.floor(gridPattern.initialLine + minY * gridPattern.linesPerUnit);
+  const startPosition = Math.floor(gridPattern.initialPosition + minX * gridPattern.positionsPerUnit);
+
+  // STEP 2: Now run grid pattern generation.
   const grid = [];
 
   d3.range(0, linesCount, 1).forEach((lineIndex) => {
     const dl = gridPattern.deltaLine(lineIndex);
     d3.range(0, positionCount, 1).forEach((positionIndex) => {
       const dp = gridPattern.deltaPosition(positionIndex);
-      let x = dp + gridPattern.variancePosition(lineIndex, positionIndex);
-      let y = dl + gridPattern.varianceLine(lineIndex, positionIndex);
-      if (densF !== 1) {
-        x /= densF;
-        y /= densF;
-      }
-      grid.push({x, y});
+
+      const x = dp + gridPattern.variancePosition(lineIndex, positionIndex);
+      const y = dl + gridPattern.varianceLine(lineIndex, positionIndex);
+
+      //if ((0 <= x && x <= widthPx) && (0 <= y && y <= heightPx)) {
+        grid.push( aft.transform({x, y}) );
+      //}
     });
   });
 
   return grid;
 }
 
-// Only for testing purposes.
-export function appendPixelPatternChecker(width: number, height: number, selection): void {
-  const gridParams: GridParameters = {
-    targetWidth: width,
-    targetHeight: height,
-    densityFactor: 100,
-    rotationAngle: 0,
-    pattern: GridPatternTypes.Square,
-  };
+function calculateGridExtent() {
 
-  const pixelLayer = selection.append("g")
-      .attr("class", "pixel-layer")
-      .attr("transform", `translate(-0.5, -0.5)`)
-      .attr("fill", "none")
-      .attr("stroke", "black")
-      .attr("stroke-width", "0.025px");
-
-  pixelLayer
-  .selectAll("polyline")
-    .data(CreateGridTopology(gridParams))
-  .enter().append("polyline")
-    .attr("points", (d) => `${d.x} ${d.y + 1}, ${d.x} ${d.y}, ${d.x + 1} ${d.y}`);
-
-  pixelLayer.append("polyline")
-    .attr("points", `0 ${height}, ${width} ${height}, ${width} 0`);
-
-  return pixelLayer;
 }
