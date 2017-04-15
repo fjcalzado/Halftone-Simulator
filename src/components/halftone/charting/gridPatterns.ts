@@ -11,8 +11,6 @@ export enum GridPatternType {
 }
 
 export interface GridPattern {
-    readonly initialLine: number;
-    readonly initialPosition: number;
     readonly deltaLine: (li: number) => any;
     readonly deltaPosition: (pi: number) => number;
     readonly varianceLine: (li: number, pi: number) => number;
@@ -28,10 +26,8 @@ export interface GridPattern {
 
 // REGULAR SQUARE PATTERN.
 const squarePattern: GridPattern = {
-  initialLine: 0,
-  initialPosition: 0,
-  deltaLine: (li) => squarePattern.initialLine + li,
-  deltaPosition: (pi) => squarePattern.initialPosition + pi,
+  deltaLine: (li) => li,
+  deltaPosition: (pi) => pi,
   varianceLine: (li, pi) => 0,
   variancePosition: (li, pi) => 0,
   linesPerUnit: 1,
@@ -40,10 +36,8 @@ const squarePattern: GridPattern = {
 
 // BRICK PATTERN.
 const brickPattern: GridPattern = {
-  initialLine: 0,
-  initialPosition: 0,
-  deltaLine: (li) => brickPattern.initialLine + li,
-  deltaPosition: (pi) => brickPattern.initialPosition + pi,
+  deltaLine: (li) => li,
+  deltaPosition: (pi) => pi,
   varianceLine: (li, pi) => 0,
   variancePosition: (li, pi) => (li % 2) / 2,
   linesPerUnit: 1,
@@ -56,10 +50,8 @@ const triangleSide = 1;
 const triangleHeight = triangleSide * Math.sqrt(3) / 2;
 
 const trianglePattern: GridPattern = {
-  initialLine: 0,
-  initialPosition: 0,
-  deltaLine: (li) => trianglePattern.initialLine + (li * triangleHeight),
-  deltaPosition: (pi) => trianglePattern.initialPosition + pi,
+  deltaLine: (li) => li * triangleHeight,
+  deltaPosition: (pi) => pi,
   varianceLine: (li, pi) => 0,
   variancePosition: (li, pi) => -(li % 2) / 2,
   linesPerUnit: 1 / (triangleHeight),
@@ -79,10 +71,8 @@ const circTriangleHeight = (3 / 2) * hexSide;    // Height of the equilateral ci
 const oddLineHeight = hexSide / 2;
 
 const hexPattern: GridPattern = {
-  initialLine: 0,
-  initialPosition: 0,
-  deltaLine: (li) => hexPattern.initialLine + (Math.trunc(li / 2) * circTriangleHeight) + ((li % 2) * oddLineHeight),
-  deltaPosition: (pi) => hexPattern.initialPosition + (pi * hexHeight),
+  deltaLine: (li) => (Math.trunc(li / 2) * circTriangleHeight) + ((li % 2) * oddLineHeight),
+  deltaPosition: (pi) => pi * hexHeight,
   varianceLine: (li, pi) => 0,
   variancePosition: (li, pi) => ((li + 1) % 4) >= 2 ? 0 : hexHalfHeight,
   linesPerUnit: 2 / circTriangleHeight,

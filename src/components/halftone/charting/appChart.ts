@@ -168,8 +168,8 @@ function initializeGrid() {
   const gridParams: GridParameters = {
     targetWidth: 20,
     targetHeight: 10,
-    scaleFactor: 1,
-    rotationAngle: 0,
+    scaleFactor: 2,
+    rotationAngle: -10,
     pattern: GridPatternType.Hex,
   };
 

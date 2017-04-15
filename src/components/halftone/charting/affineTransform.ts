@@ -4,22 +4,12 @@
  */
 
 export interface AffineTransformer {
-  setupTranslate: (translateX: number, translateY: number) => AffineTransformer;
-    setupScale: (scaleFactor: number, scalingPoint: {
-        x: number;
-        y: number;
-    }) => AffineTransformer;
-    setupRotate: (rotateAngle: number, rotationPoint: {
-        x: number;
-        y: number;
-    }) => AffineTransformer;
-    transform: (point: {
-        x: number;
-        y: number;
-    }) => {
-        x: number;
-        y: number;
-    };
+  readonly setupTranslate: (translateX: number, translateY: number) => AffineTransformer;
+  readonly setupScale: (scaleFactor: number) => AffineTransformer;
+  readonly setupRotate: (rotateAngle: number) => AffineTransformer;
+  readonly setupAnchorPoint: (point: {x: number, y: number}) => AffineTransformer;
+  readonly transform: (point: {x: number, y: number}) => {x: number, y: number};
+  readonly inverseTransform: (point: {x: number, y: number}) => {x: number, y: number};
 }
 
 
@@ -34,49 +24,60 @@ export function CreateAffineTransformer(): AffineTransformer {
   const aft = {
     tx: 0,
     ty: 0,
-
     scale: 1,
-    stx: 0,
-    sty: 0,
-
     teta: 0,
     sinTeta: 0,
     cosTeta: 1,
-    rtx: 0,
-    rty: 0,
+    anchorPoint: {x: 0, y: 0},
+    aptx: 0,
+    apty: 0,
 
     setupTranslate: (translateX: number, translateY: number) => {
       aft.tx = translateX;
       aft.ty = translateY;
+      aft.updateAnchorPoint();
       return aft;
     },
 
-    setupScale: (scaleFactor: number, scalingPoint: {x: number, y: number}) => {
+    setupScale: (scaleFactor: number) => {
       aft.scale = scaleFactor;
-
-      // In order to scale around a scaling point, lets translate by that scaling
-      // point already scaled.
-      aft.stx = scalingPoint.x * (1 - scaleFactor);
-      aft.sty = scalingPoint.y * (1 - scaleFactor);
+      aft.updateAnchorPoint();
       return aft;
     },
 
-    setupRotate: (rotateAngle: number, rotationPoint: {x: number, y: number}) => {
+    setupRotate: (rotateAngle: number) => {
       aft.teta = -1 * (Math.PI / 180) * rotateAngle;
       aft.sinTeta = Math.sin(aft.teta);
       aft.cosTeta = Math.cos(aft.teta);
-
-      // In order to rotate around the center point, lets translate by the difference
-      // between the center point and the rotated center point.
-      aft.rtx = rotationPoint.x - ((rotationPoint.x * aft.cosTeta) - (rotationPoint.y * aft.sinTeta));
-      aft.rty = rotationPoint.y - ((rotationPoint.x * aft.sinTeta) + (rotationPoint.y * aft.cosTeta));
+      aft.updateAnchorPoint();
       return aft;
+    },
+
+    setupAnchorPoint: (point: {x: number, y: number}) => {
+      aft.anchorPoint = point;
+      aft.updateAnchorPoint();
+      return aft;
+    },
+
+    updateAnchorPoint: () => {
+      const anchorPointTransformed = aft.transform(aft.anchorPoint);
+      aft.aptx = aft.anchorPoint.x - anchorPointTransformed.x;
+      aft.apty = aft.anchorPoint.y - anchorPointTransformed.y;
     },
 
     transform: (point: {x: number, y: number}): {x: number, y: number} => {
       return {
-        x: ((point.x * aft.cosTeta) - (point.y * aft.sinTeta)) * aft.scale + (aft.tx + aft.stx + aft.rtx),
-        y: ((point.x * aft.sinTeta) + (point.y * aft.cosTeta)) * aft.scale + (aft.ty + aft.sty + aft.rty),
+        x: ((point.x * aft.cosTeta) - (point.y * aft.sinTeta)) * aft.scale + aft.tx + aft.aptx,
+        y: ((point.x * aft.sinTeta) + (point.y * aft.cosTeta)) * aft.scale + aft.ty + aft.apty,
+      };
+    },
+
+    inverseTransform: (point: {x: number, y: number}): {x: number, y: number} => {
+      // For inverse transform, use inverted translation factors for scale and rotation and also
+      // apply inverted teta (change sin sign) for rotation and negated translation.
+      return {
+        x: ((point.x * aft.cosTeta) + (point.y * aft.sinTeta)) / aft.scale - aft.tx - aft.aptx,
+        y: (-(point.x * aft.sinTeta) + (point.y * aft.cosTeta)) / aft.scale - aft.ty - aft.apty,
       };
     },
   } as AffineTransformer;

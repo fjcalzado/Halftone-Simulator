@@ -1,12 +1,12 @@
 import { CreateAffineTransformer } from "./affineTransform";
 import { CreateGridPattern, GridPattern, GridPatternType } from "./gridPatterns";
-
 const d3 = require("d3");
 
 /**
  * Interface Export.
  * @public
  */
+
 export {GridPatternType};
 
 export interface GridParameters {
@@ -38,12 +38,12 @@ export function CreateGridTopology(gridParameters: GridParameters): number[] {
   // Target space precalculus (pixels space).
   const widthPx = gridParameters.targetWidth;
   const heightPx = gridParameters.targetHeight;
-  const centerPoint = {x: (widthPx / 2) - 0.5, y: (heightPx / 2) - 0.5};
+  const anchorPoint = {x: (widthPx / 2) - 0.5, y: (heightPx / 2) - 0.5};
 
   // Affine transformer in pixel space
   const aft = CreateAffineTransformer()
-    .setupScale(gridParameters.scaleFactor, centerPoint)
-    .setupRotate(gridParameters.rotationAngle, centerPoint);
+    .setupScale(gridParameters.scaleFactor)
+    .setupRotate(gridParameters.rotationAngle);
 
   // Grid space precalculus (lines and positions space).
   const gridPattern = CreateGridPattern(gridParameters.pattern);
@@ -53,30 +53,45 @@ export function CreateGridTopology(gridParameters: GridParameters): number[] {
   // const positionCount = widthPx * gridPattern.positionsPerUnit / gridParameters.scaleFactor;
 
 
-  const leftTop = aft.transform({x: 0, y: 0});
-  const rightTop = aft.transform({x: widthPx, y: 0});
-  const leftBottom = aft.transform({x: 0, y: heightPx});
-  const rightBottom = aft.transform({x: widthPx, y: heightPx});
+  // Apply inverse transformation to the 4 corners in pixel coordinates in order to find
+  // the extent and then convert it to grid space (lines and positions).
+  const leftTop = aft.inverseTransform({x: 0, y: 0});
+  const rightTop = aft.inverseTransform({x: widthPx, y: 0});
+  const leftBottom = aft.inverseTransform({x: 0, y: heightPx});
+  const rightBottom = aft.inverseTransform({x: widthPx, y: heightPx});
 
   const minX = Math.min(leftTop.x, rightTop.x, leftBottom.x, rightBottom.x);
   const maxX = Math.max(leftTop.x, rightTop.x, leftBottom.x, rightBottom.x);
   const minY = Math.min(leftTop.y, rightTop.y, leftBottom.y, rightBottom.y);
   const maxY = Math.max(leftTop.y, rightTop.y, leftBottom.y, rightBottom.y);
 
-  const spanX = maxX - minX;
-  const spanY = maxY - minY;
+  const startLine = Math.floor(minY * gridPattern.linesPerUnit);
+  const startPosition = Math.floor(minX * gridPattern.positionsPerUnit);
+  const stopLine = Math.ceil(maxY * gridPattern.linesPerUnit);
+  const stopPosition = Math.ceil(maxX * gridPattern.positionsPerUnit);
+  
 
-  const linesCount = Math.ceil(spanY * gridPattern.linesPerUnit);
-  const positionCount = Math.ceil(spanX * gridPattern.positionsPerUnit);
-  const startLine = Math.floor(gridPattern.initialLine + minY * gridPattern.linesPerUnit);
-  const startPosition = Math.floor(gridPattern.initialPosition + minX * gridPattern.positionsPerUnit);
+  const iaft = CreateAffineTransformer()
+    .setupScale(1/gridParameters.scaleFactor)
+    .setupRotate(-gridParameters.rotationAngle);
+
+  const p = {x:1, y:1 };
+  console.log(aft.transform(p));
+  console.log(aft.inverseTransform(p));
+  console.log(aft.transform(aft.inverseTransform(p)));
+  console.log(iaft.transform(aft.transform(p)));
+
+  console.log([startPosition, stopPosition - 1]);
+  console.log([startLine, stopLine - 1]);
+
+
 
   // STEP 2: Now run grid pattern generation.
   const grid = [];
 
-  d3.range(0, linesCount, 1).forEach((lineIndex) => {
+  d3.range(startLine, stopLine, 1).forEach((lineIndex) => {
     const dl = gridPattern.deltaLine(lineIndex);
-    d3.range(0, positionCount, 1).forEach((positionIndex) => {
+    d3.range(startPosition, stopPosition, 1).forEach((positionIndex) => {
       const dp = gridPattern.deltaPosition(positionIndex);
 
       const x = dp + gridPattern.variancePosition(lineIndex, positionIndex);
