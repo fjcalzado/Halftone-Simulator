@@ -68,13 +68,18 @@ const hexHalfHeight = hexHeight / 2;
 const hexSide = hexHeight / Math.sqrt(3);
 const hexHalfSide = hexSide / 2;
 const circTriangleHeight = (3 / 2) * hexSide;    // Height of the equilateral circumscribed triangle.
-const oddLineHeight = hexSide / 2;
 
 const hexPattern: GridPattern = {
-  deltaLine: (li) => (Math.trunc(li / 2) * circTriangleHeight) + ((li % 2) * oddLineHeight),
+  deltaLine: (li) => {
+    const oddDelta = (li >= 0) ? hexHalfSide : hexSide;
+    return Math.trunc(li / 2) * circTriangleHeight + ((li % 2) * oddDelta);
+  },
   deltaPosition: (pi) => pi * hexHeight,
   varianceLine: (li, pi) => 0,
-  variancePosition: (li, pi) => ((li + 1) % 4) >= 2 ? 0 : hexHalfHeight,
+  variancePosition: (li, pi) => {
+    const modIndex = (li >= 0) ? (li + 1) : Math.abs(li);
+    return (modIndex % 4) >= 2 ? 0 : hexHalfHeight;
+  },
   linesPerUnit: 2 / circTriangleHeight,
   positionsPerUnit: 1,
 };
