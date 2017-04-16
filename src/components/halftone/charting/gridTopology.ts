@@ -1,4 +1,4 @@
-import { CreateAffineTransformer } from "./affineTransform";
+import { AffineTransformer, CreateAffineTransformer } from "./affineTransform";
 import { CreateGridPattern, GridPattern, GridPatternType } from "./gridPatterns";
 const d3 = require("d3");
 
@@ -47,44 +47,15 @@ export function CreateGridTopology(gridParameters: GridParameters): number[] {
 
   // Grid space precalculus (lines and positions space).
   const gridPattern = CreateGridPattern(gridParameters.pattern);
-  // const startLine = 0;
-  // const startPosition = 0;
-  // const linesCount = heightPx * gridPattern.linesPerUnit / gridParameters.scaleFactor;
-  // const positionCount = widthPx * gridPattern.positionsPerUnit / gridParameters.scaleFactor;
+  const extent = calculateGridExtent(widthPx, heightPx, aft);
+  const startLine = Math.floor(extent.minY * gridPattern.linesPerUnit);
+  const startPosition = Math.floor(extent.minX * gridPattern.positionsPerUnit);
+  const stopLine = Math.ceil(extent.maxY * gridPattern.linesPerUnit);
+  const stopPosition = Math.ceil(extent.maxX * gridPattern.positionsPerUnit);
 
-
-  // Apply inverse transformation to the 4 corners in pixel coordinates in order to find
-  // the extent and then convert it to grid space (lines and positions).
-  const leftTop = aft.inverseTransform({x: 0, y: 0});
-  const rightTop = aft.inverseTransform({x: widthPx, y: 0});
-  const leftBottom = aft.inverseTransform({x: 0, y: heightPx});
-  const rightBottom = aft.inverseTransform({x: widthPx, y: heightPx});
-
-  const minX = Math.min(leftTop.x, rightTop.x, leftBottom.x, rightBottom.x);
-  const maxX = Math.max(leftTop.x, rightTop.x, leftBottom.x, rightBottom.x);
-  const minY = Math.min(leftTop.y, rightTop.y, leftBottom.y, rightBottom.y);
-  const maxY = Math.max(leftTop.y, rightTop.y, leftBottom.y, rightBottom.y);
-
-  const startLine = Math.floor(minY * gridPattern.linesPerUnit);
-  const startPosition = Math.floor(minX * gridPattern.positionsPerUnit);
-  const stopLine = Math.ceil(maxY * gridPattern.linesPerUnit);
-  const stopPosition = Math.ceil(maxX * gridPattern.positionsPerUnit);
-  
-
-  const iaft = CreateAffineTransformer()
-    .setupScale(1/gridParameters.scaleFactor)
-    .setupRotate(-gridParameters.rotationAngle);
-
-  const p = {x:1, y:1 };
-  console.log(aft.transform(p));
-  console.log(aft.inverseTransform(p));
-  console.log(aft.transform(aft.inverseTransform(p)));
-  console.log(iaft.transform(aft.transform(p)));
-
-  console.log([startPosition, stopPosition - 1]);
-  console.log([startLine, stopLine - 1]);
-
-
+  // Filtering function to discard final points that do not overlap
+  // with target area. Lets add a bit more widen margin.
+  const inside = (p) => ((-0.1 <= p.x && p.x <= widthPx) && (-0.1 <= p.y && p.y <= heightPx));
 
   // STEP 2: Now run grid pattern generation.
   const grid = [];
@@ -94,18 +65,32 @@ export function CreateGridTopology(gridParameters: GridParameters): number[] {
     d3.range(startPosition, stopPosition, 1).forEach((positionIndex) => {
       const dp = gridPattern.deltaPosition(positionIndex);
 
-      const x = dp + gridPattern.variancePosition(lineIndex, positionIndex);
-      const y = dl + gridPattern.varianceLine(lineIndex, positionIndex);
+      // Calculate point and its transformed equivalent.
+      const p = {
+        x: dp + gridPattern.variancePosition(lineIndex, positionIndex),
+        y: dl + gridPattern.varianceLine(lineIndex, positionIndex),
+      };
+      const tp = aft.transform(p);
 
-      //if ((0 <= x && x <= widthPx) && (0 <= y && y <= heightPx)) {
-        grid.push( aft.transform({x, y}) );
-      //}
+      // Filter and add point to topology.
+      if (inside(tp)) { grid.push(tp); }
     });
   });
 
   return grid;
 }
 
-function calculateGridExtent() {
+function calculateGridExtent(width: number, height: number, aft: AffineTransformer) {
+  // Apply inverse transformation to the 4 corners and keep the widen extent.
+  const leftTop = aft.inverseTransform({x: 0, y: 0});
+  const rightTop = aft.inverseTransform({x: width, y: 0});
+  const leftBottom = aft.inverseTransform({x: 0, y: height});
+  const rightBottom = aft.inverseTransform({x: width, y: height});
 
+  return {
+    minX: Math.min(leftTop.x, rightTop.x, leftBottom.x, rightBottom.x),
+    maxX: Math.max(leftTop.x, rightTop.x, leftBottom.x, rightBottom.x),
+    minY: Math.min(leftTop.y, rightTop.y, leftBottom.y, rightBottom.y),
+    maxY: Math.max(leftTop.y, rightTop.y, leftBottom.y, rightBottom.y),
+  };
 }

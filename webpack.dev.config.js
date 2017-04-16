@@ -1,3 +1,4 @@
+let webpack = require('webpack');
 let path = require('path');
 let webpackMerge = require('webpack-merge');
 let commonConfig = require('./webpack.base.config.js');
@@ -43,6 +44,14 @@ module.exports = function () {
         }
       ]
     },
+
+    plugins: [
+      new webpack.DefinePlugin({
+        "process.env": {
+          DEBUG_TRACES: true
+        }
+      })
+    ],
 
     devServer: {
       port: 8080

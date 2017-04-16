@@ -73,8 +73,8 @@ export function CreateAffineTransformer(): AffineTransformer {
     },
 
     inverseTransform: (point: {x: number, y: number}): {x: number, y: number} => {
-      // For inverse transform, use inverted translation factors for scale and rotation and also
-      // apply inverted teta (change sin sign) for rotation and negated translation.
+      // For inverse transform, use inverted translation factors and also
+      // apply inverted teta (change sin sign) and inverted scale.
       return {
         x: ((point.x * aft.cosTeta) + (point.y * aft.sinTeta)) / aft.scale - aft.tx - aft.aptx,
         y: (-(point.x * aft.sinTeta) + (point.y * aft.cosTeta)) / aft.scale - aft.ty - aft.apty,

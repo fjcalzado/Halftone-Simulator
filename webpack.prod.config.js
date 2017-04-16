@@ -1,3 +1,4 @@
+let webpack = require('webpack');
 let path = require('path');
 let webpackMerge = require('webpack-merge');
 let commonConfig = require('./webpack.base.config.js');
@@ -61,6 +62,11 @@ module.exports = function () {
         filename: '[chunkhash].[name].css',
         disable: false,
         allChunks: true
+      }),
+      new webpack.DefinePlugin({
+        "process.env": {
+          DEBUG_TRACES: false
+        }
       })
     ]
   });
