@@ -12,7 +12,7 @@ ReactDOM.render(
                              step: 0.01}}
                      onValueChanged={(value: number) => true}
     />*/}
-    <HalftoneComponent imageUrl={"marilynColor.jpg"}
+    <HalftoneComponent imageUrl={"../img/marilynColor.jpg"}
                        resolution={50000}
                        width={"90vw"}
                        height={"75vh"}

@@ -1,7 +1,7 @@
 {
   "name": "halftone",
   "version": "1.0.0",
-  "description": "Halftone print pattern emulator made with D3.js, React + Typescript and Webpack 2 bundling features",
+  "description": "Halftone print pattern simulator made with D3.js, React, Typescript and Webpack 2 bundling features",
   "main": "dist/main.js",
   "scripts": {
     "start": "webpack-dev-server --config=webpack.dev.config.js",
