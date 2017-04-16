@@ -3,8 +3,7 @@ import * as timer from "../../../api/timerLog";
 import * as imgInterpolator from "../api/imageInterpolator";
 import {CreateGridTopology, GridParameters, GridPatternType,
         GridTopologyDataFiller} from "./gridTopology";
-import {CreatePixelTopologyLayer} from "./pixelTopology"; // Only for testing.        
-
+import {CreatePixelTopologyLayer} from "./pixelTopology"; // Only for testing.
 const d3 = require("d3");
 const styles = require("../halftoneTheme.scss");
 
