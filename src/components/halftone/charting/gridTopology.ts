@@ -23,16 +23,22 @@ export interface GridParameters {
    */
 }
 
+export type GridTopologyDataFiller = (point: {x: number, y: number}) => any;
+
 /**
  * Grid Topology factory. It creates a new grid topology: an array
- * of nodes (in format x,y) that follows a certain lattice or pattern.
+ * of nodes (in coordinate format x,y) that follows a certain lattice or pattern.
+ * Optionally, each node can be assigned certain custom data based on
+ * its coordinates through the handler dataFiller.
  * @public
  * @function CreateGridTopology
- * @param  {GridParameters} gridParameters: GridParameters {Set of grid configuration parameters}
+ * @param {GridParameters} gridParameters: GridParameters {Set of grid configuration parameters}
+ * @param {GridTopologyDataFiller} dataFiller {Optional function to fill each node with custom data.}
  * @return {Promise<number[]>} {Promise that returns an array of nodes when resolved.}
  */
-export function CreateGridTopology(gridParameters: GridParameters): Promise<number[]> {
-  return new Promise<number[]>((resolve, reject) => {
+export function CreateGridTopology(gridParameters: GridParameters,
+                                   dataFiller?: GridTopologyDataFiller): Promise<any[]> {
+  return new Promise<any[]>((resolve, reject) => {
     try {
       timer.reset();
 
@@ -58,8 +64,11 @@ export function CreateGridTopology(gridParameters: GridParameters): Promise<numb
       const stopPosition = Math.ceil(extent.maxX * gridPattern.positionsPerUnit);
 
       // Filtering function to discard final points that do not overlap
-      // with target area. Lets add a bit more widen margin.
-      const inside = (p) => ((-0.1 <= p.x && p.x <= widthPx) && (-0.1 <= p.y && p.y <= heightPx));
+      // with target area.
+      // THIS IS VERY IMPORTANT TO AVOID SERIOUS PROBLEMS OF UNDEFINED ACCESS.
+      const marginPx = 0.5;
+      const inside = (p) => (((marginPx <= p.x) && (p.x <= widthPx - marginPx) &&
+                             ((marginPx <= p.y) && (p.y <= heightPx - marginPx))));
 
       // STEP 2: Now run grid pattern generation.
       const grid = [];
@@ -74,17 +83,25 @@ export function CreateGridTopology(gridParameters: GridParameters): Promise<numb
             x: dp + gridPattern.variancePosition(lineIndex, positionIndex),
             y: dl + gridPattern.varianceLine(lineIndex, positionIndex),
           };
-          const tp = aft.transform(p);
+          let tp = aft.transform(p);
 
-          // Filter and add point to topology.
-          if (inside(tp)) { grid.push(tp); }
+          // Filter points outside the target pixel-space area.
+          if (inside(tp)) {
+            // Finally fill with custom data if handler is available.
+            if (dataFiller) {
+              const data = dataFiller(tp);
+              if (data) { tp = {...tp, data}; }
+              else { return; }
+            }
+            grid.push(tp);
+          }
         });
       });
 
       timer.logElapsed("[CreateGridTopology]");
       resolve(grid);
-    } catch (e) {
-      reject(e.message);
+    } catch (error) {
+      reject(error.message);
     }
   });
 }

@@ -5,15 +5,15 @@ import {SliderComponent} from "./components/slider";
 
 ReactDOM.render(
   <div>
-    <p>This is React component injecting HTML</p>
+    {/*<p>This is React component injecting HTML</p>
     <SliderComponent initialValue={43}
                      range={{min: 0,
                              max: 100,
                              step: 0.01}}
                      onValueChanged={(value: number) => true}
-    />
-    <HalftoneComponent imageUrl={"../img/marilyn.jpg"}
-                       resolution={30000}
+    />*/}
+    <HalftoneComponent imageUrl={"../img/marilynColor.jpg"}
+                       resolution={50000}
                        width={"90vw"}
                        height={"75vh"}
     />    
