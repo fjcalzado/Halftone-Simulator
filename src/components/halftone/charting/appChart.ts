@@ -1,5 +1,6 @@
+import * as timer from "../../../api/timerLog";
 import {CreateGridTopology, GridParameters, GridPatternType} from "./gridTopology";
-import {appendPixelPatternChecker} from "./gridTest"; // Only for testing.
+import {CreatePixelTopologyLayer} from "./pixelTopology"; // Only for testing.
 const d3 = require("d3");
 const styles = require("../halftoneTheme.scss");
 
@@ -166,11 +167,11 @@ function initializeGrid() {
 // TODO: Implement time cost operations with Promises.
 
   const gridParams: GridParameters = {
+    pattern: GridPatternType.Square,
     targetWidth: 20,
     targetHeight: 10,
     scaleFactor: 1,
     rotationAngle: -45,
-    pattern: GridPatternType.Square,
   };
 
 
@@ -180,14 +181,23 @@ function initializeGrid() {
     .append("g")
       .attr("class", "grid-container");
 
-  const pixelLayerTest = appendPixelPatternChecker(gridParams.targetWidth, gridParams.targetHeight, gridContainer);
+  CreatePixelTopologyLayer(gridParams.targetWidth, gridParams.targetHeight, gridContainer)
+    .then((layer) => {})
+    .catch((error) => { throw error; });
 
-  const gridPattern = gridContainer
-    .append("g")
-      .attr("class", "grid-pattern")
-    .selectAll("circle")
-      .data(CreateGridTopology(gridParams))
-    .enter().append("circle")
-      .attr("transform", (d) => `translate(${d.x}, ${d.y})`)
-      .attr("r", 0.1);
+  CreateGridTopology(gridParams)
+    .then((gridTopology) => {
+      timer.reset();
+      const gridPattern = gridContainer
+        .append("g")
+          .attr("class", "grid-topology-layer")
+        .selectAll("circle")
+          .data(gridTopology)
+        .enter().append("circle")
+          .attr("transform", (d) => `translate(${d.x}, ${d.y})`)
+          .attr("r", 0.1);
+      timer.logElapsed("[DrawGridTopology]");
+    })
+    .catch((error) => { throw error; });
+  
 }
