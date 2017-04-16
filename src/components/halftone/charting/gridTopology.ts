@@ -16,6 +16,9 @@ export interface GridParameters {
   targetHeight: number;
   rotationAngle: number;
   scaleFactor: number;
+  translateX?: number;
+  translateY?: number;
+  specificParams?: any;
   /**
    * Scale factor emulates grid resolution. However, it is smarter to
    * modify input picture resolution instead of grid scale given that
@@ -48,15 +51,17 @@ export function CreateGridTopology(gridParameters: GridParameters,
       // Target space precalculus (pixels space).
       const widthPx = gridParameters.targetWidth;
       const heightPx = gridParameters.targetHeight;
-      const anchorPoint = {x: (widthPx / 2) - 0.5, y: (heightPx / 2) - 0.5};
+      // const anchorPoint = {x: (widthPx / 2) - 0.5, y: (heightPx / 2) - 0.5};
 
       // Affine transformer in pixel space
       const aft = CreateAffineTransformer()
         .setupScale(gridParameters.scaleFactor)
-        .setupRotate(gridParameters.rotationAngle);
+        .setupRotate(gridParameters.rotationAngle)
+        .setupTranslate(gridParameters.translateX ? gridParameters.translateX : 0,
+                        gridParameters.translateY ? gridParameters.translateY : 0);
 
       // Grid space precalculus (lines and positions space).
-      const gridPattern = CreateGridPattern(gridParameters.pattern);
+      const gridPattern = CreateGridPattern(gridParameters.pattern, gridParameters.specificParams);
       const extent = calculateGridExtent(widthPx, heightPx, aft);
       const startLine = Math.floor(extent.minY * gridPattern.linesPerUnit);
       const startPosition = Math.floor(extent.minX * gridPattern.positionsPerUnit);

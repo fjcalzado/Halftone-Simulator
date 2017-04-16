@@ -71,11 +71,12 @@ function initializeScales() {
 
 function initializeGrid() {
   const gridParams: GridParameters = {
-    pattern: GridPatternType.Square,
+    pattern: GridPatternType.Wave,
     targetWidth: imgMatrix[0].length,
     targetHeight: imgMatrix.length,
     scaleFactor: 1,
     rotationAngle: 0,
+    specificParams: {wavelengt: 10, amplitude: 1}
   };
 
   const gridContainer = svgViewport
@@ -101,7 +102,8 @@ function initializeGrid() {
           .data(gridTopology)
         .enter().append("circle")
           .attr("transform", (d) => `translate(${d.x}, ${d.y})`)
-          .attr("r", (d) => dotScale(1 - d.data[2]))
+          //.attr("r", (d) => dotScale(1 - d.data[2]))
+          .attr("r", dotScale(0.4))
           .attr("fill", (d) => chroma(...d.data, "hsl").css("hsl"));
       timer.logElapsed("[DrawGridTopology]");
     })

@@ -8,6 +8,8 @@ export enum GridPatternType {
   Brick,
   Triangle,
   Hex,
+  Random,
+  Wave,
 }
 
 export interface GridPattern {
@@ -84,18 +86,66 @@ const hexPattern: GridPattern = {
   positionsPerUnit: 1,
 };
 
+// RANDOM PATTERN.
+// Optional {limit: number} as params accepted.
+// Limit: randomness limit in number of dots.
+const randomPattern = (params?: any): GridPattern => {
+  let limit = 1;
+  if (params && params.limit) { limit = params.limit; };
+  function randomize(): number {
+    return (2 * Math.random() - 1) * limit;
+  }
+
+  return {
+    deltaLine: (li) => li,
+    deltaPosition: (pi) => pi,
+    varianceLine: (li, pi) => randomize(),
+    variancePosition: (li, pi) => randomize(),
+    linesPerUnit: 1,
+    positionsPerUnit: 1,
+  };
+};
+
+// Wave PATTERN.
+// Optional {wavelength: number, amplitude: number} as params accepted.
+// Wavelength: Length of a complete wave in number of dots.
+// Amplitude: Amplitude size [0..1]. Limited to 1.
+const wavePattern = (params?: any): GridPattern => {
+  let wavelenght = 10;
+  if (params && params.wavelenght != null) { wavelenght = params.wavelenght; };
+  const wavelenghtFactor = (2 * Math.PI) / wavelenght;
+  let amplitude = 1;
+  if (params && params.amplitude != null) { amplitude = (params.amplitude > 1) ? 1 : params.amplitude; };
+  // Amplitude limited to 1 to avoid artifacts.
+
+  return {
+    deltaLine: (li) => li,
+    deltaPosition: (pi) => pi,
+    varianceLine: (li, pi) => amplitude * Math.sin(wavelenghtFactor * pi),
+    variancePosition: (li, pi) => 0,
+    linesPerUnit: 1,
+    positionsPerUnit: 1,
+  };
+};
+
+// TODO: Implement radial or spiral pattern.
+
 /**
  * Grid Pattern factory. It returns a grid pattern definition object.
+ * Optionally, setup parameters can be passed to certain grid patterns.
  * @function CreateGridPattern
- * @param  {GridPatternType} type: GridPatternType {Type of grid pattern/latice}
- * @return {GridPattern} {GridPattern definition object}
+ * @param {GridPatternType} type: GridPatternType {Type of grid pattern/latice.}
+ * @param {any} params: any {Optional setup parameters for a specific grid pattern.}
+ * @return {GridPattern} {GridPattern definition object.}
  */
-export function CreateGridPattern(type: GridPatternType): GridPattern {
+export function CreateGridPattern(type: GridPatternType, params?: any): GridPattern {
   switch (type) {
     case GridPatternType.Square:       return squarePattern;
     case GridPatternType.Brick:        return brickPattern;
     case GridPatternType.Triangle:     return trianglePattern;
     case GridPatternType.Hex:          return hexPattern;
+    case GridPatternType.Random:       return randomPattern(params);
+    case GridPatternType.Wave:         return wavePattern(params);
     default:                           return squarePattern;
   }
 }
