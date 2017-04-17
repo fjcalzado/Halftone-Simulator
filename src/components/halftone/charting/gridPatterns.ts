@@ -10,6 +10,7 @@ export enum GridPatternType {
   Hex,
   Random,
   Wave,
+  Chevron,
 }
 
 export interface GridPattern {
@@ -19,6 +20,8 @@ export interface GridPattern {
     readonly variancePosition: (li: number, pi: number) => number;
     readonly linesPerUnit: number;
     readonly positionsPerUnit: number;
+    readonly extraLines: (heightPx: number ) => number;
+    readonly extraPositions: (widthPx: number ) => number;
 }
 
 /**
@@ -34,6 +37,8 @@ const squarePattern: GridPattern = {
   variancePosition: (li, pi) => 0,
   linesPerUnit: 1,
   positionsPerUnit: 1,
+  extraLines: (heightPx) => 0,
+  extraPositions: (widthtPx) => 0,
 };
 
 // BRICK PATTERN.
@@ -44,6 +49,8 @@ const brickPattern: GridPattern = {
   variancePosition: (li, pi) => (li % 2) / 2,
   linesPerUnit: 1,
   positionsPerUnit: 1,
+  extraLines: (heightPx) => 0,
+  extraPositions: (widthtPx) => 0,
 };
 
 // TIRANGLE PATTERN.
@@ -58,6 +65,8 @@ const trianglePattern: GridPattern = {
   variancePosition: (li, pi) => -(li % 2) / 2,
   linesPerUnit: 1 / (triangleHeight),
   positionsPerUnit: 1,
+  extraLines: (heightPx) => 0,
+  extraPositions: (widthtPx) => 0,
 };
 
 // HEXAGONAL PATTERN.
@@ -84,13 +93,15 @@ const hexPattern: GridPattern = {
   },
   linesPerUnit: 2 / circTriangleHeight,
   positionsPerUnit: 1,
+  extraLines: (heightPx) => 0,
+  extraPositions: (widthtPx) => 0,
 };
 
 // RANDOM PATTERN.
 // Optional {limit: number} as params accepted.
 // Limit: randomness limit in number of dots.
 const randomPattern = (params?: any): GridPattern => {
-  let limit = 1;
+  let limit = 1;  // Default value.
   if (params && params.limit) { limit = params.limit; };
   function randomize(): number {
     return (2 * Math.random() - 1) * limit;
@@ -103,31 +114,71 @@ const randomPattern = (params?: any): GridPattern => {
     variancePosition: (li, pi) => randomize(),
     linesPerUnit: 1,
     positionsPerUnit: 1,
+    extraLines: (heightPx) => 0,
+    extraPositions: (widthtPx) => 0,
   };
 };
 
 // Wave PATTERN.
 // Optional {wavelength: number, amplitude: number} as params accepted.
-// Wavelength: Length of a complete wave in number of dots.
-// Amplitude: Amplitude size [0..1]. Limited to 1.
+// Wavelength: Length of a complete wave in number of dots. Minimum 6 recommended.
+// Amplitude: Amplitude size in dots. Recommended limited to 1 max. Sampling artifacts.
 const wavePattern = (params?: any): GridPattern => {
-  let wavelenght = 10;
-  if (params && params.wavelenght != null) { wavelenght = params.wavelenght; };
-  const wavelenghtFactor = (2 * Math.PI) / wavelenght;
-  let amplitude = 1;
-  if (params && params.amplitude != null) { amplitude = (params.amplitude > 1) ? 1 : params.amplitude; };
-  // Amplitude limited to 1 to avoid artifacts.
+  let wavelength = 30;  // Default value.
+  if (params && params.wavelength != null) { wavelength = params.wavelength; };
+  const wavelengthFactor = (2 * Math.PI) / wavelength;
+  let amplitude = 3;  // Default value.
+  if (params && params.amplitude != null) { amplitude = params.amplitude; };
+  // This factor is needed to separate lines a bit. Otherwise the pattern
+  // could no be seen due to sampling effect.
+  const lineHeight = 1.5;
 
   return {
-    deltaLine: (li) => li,
+    deltaLine: (li) => li * lineHeight,
     deltaPosition: (pi) => pi,
-    varianceLine: (li, pi) => amplitude * Math.sin(wavelenghtFactor * pi),
+    varianceLine: (li, pi) => amplitude * Math.sin(wavelengthFactor * pi),
     variancePosition: (li, pi) => 0,
-    linesPerUnit: 1,
+    linesPerUnit: 1 / lineHeight,
     positionsPerUnit: 1,
+    extraLines: (heightPx) => amplitude,
+    extraPositions: (widthtPx) => 0,
   };
 };
 
+// Chevron PATTERN.
+// Length: Length of a half chevron pattern in number of dots. Min 3 Recommended.
+// Amplitude: Amplitude size in dots. Recommended limited to 1 max. Sampling artifacts.
+const chevronPattern = (params?: any): GridPattern => {
+  let lenght = 10;
+  if (params && params.lenght != null) { lenght = params.lenght; };
+  const lengthFactor = lenght - 1;
+  const doubleLengthFactor = 2 * lengthFactor;
+  let amplitude = 5;
+  if (params && params.amplitude != null) { amplitude = params.amplitude; };
+  // This factor is needed to separate lines a bit. Otherwise the pattern
+  // could no be seen due to sampling effect.
+  const lineHeight = 80;
+
+  return {
+    deltaLine: (li) => li * lineHeight,
+    deltaPosition: (pi) => pi,
+    varianceLine: (li, pi) => {
+      const segment = pi % doubleLengthFactor;
+      let variance = 1;
+      if (segment < lengthFactor) { variance = pi % lengthFactor; }
+      else if (segment > lengthFactor) { variance = 1 - (pi % lengthFactor); }
+      return amplitude * variance;
+    },
+    variancePosition: (li, pi) => 0,
+    linesPerUnit: 1 / lineHeight,
+    positionsPerUnit: 1,
+    extraLines: (heightPx) => 0,
+    extraPositions: (widthtPx) => 0,
+  };
+};
+
+// TODO: USE OBJECT ASSIGN OR SPREAD OPERATOR FOR PATTERN OBJECTS TO PROMOTE
+// COMPOSITION AND IMPROVE EXTENDIBILITY.
 // TODO: Implement radial or spiral pattern.
 
 /**
@@ -146,6 +197,7 @@ export function CreateGridPattern(type: GridPatternType, params?: any): GridPatt
     case GridPatternType.Hex:          return hexPattern;
     case GridPatternType.Random:       return randomPattern(params);
     case GridPatternType.Wave:         return wavePattern(params);
+    case GridPatternType.Chevron:      return chevronPattern(params);
     default:                           return squarePattern;
   }
 }

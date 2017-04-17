@@ -76,7 +76,7 @@ function initializeGrid() {
     targetHeight: imgMatrix.length,
     scaleFactor: 1,
     rotationAngle: 0,
-    specificParams: {wavelengt: 10, amplitude: 1}
+    specificParams: {wavelength: 30, amplitude: 3}
   };
 
   const gridContainer = svgViewport
