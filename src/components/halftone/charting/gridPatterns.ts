@@ -11,6 +11,7 @@ export enum GridPatternType {
   Random,
   Wave,
   Chevron,
+  Radial,
 }
 
 export interface GridPattern {
@@ -26,11 +27,10 @@ export interface GridPattern {
 
 /**
  * Grid pattern definition objects.
+ * Promote Composition from a base pattern.
  * @private
  */
-
-// REGULAR SQUARE PATTERN.
-const squarePattern: GridPattern = {
+const basePattern: GridPattern = {
   deltaLine: (li) => li,
   deltaPosition: (pi) => pi,
   varianceLine: (li, pi) => 0,
@@ -41,144 +41,174 @@ const squarePattern: GridPattern = {
   extraPositions: (widthtPx) => 0,
 };
 
-// BRICK PATTERN.
-const brickPattern: GridPattern = {
-  deltaLine: (li) => li,
-  deltaPosition: (pi) => pi,
-  varianceLine: (li, pi) => 0,
-  variancePosition: (li, pi) => (li % 2) / 2,
-  linesPerUnit: 1,
-  positionsPerUnit: 1,
-  extraLines: (heightPx) => 0,
-  extraPositions: (widthtPx) => 0,
+/**
+ * REGULAR SQUARE PATTERN.
+ */
+const squarePattern = {
+  ...basePattern,
 };
 
-// TIRANGLE PATTERN.
-// Isosceles: h = s * sqrt(3) / 2
+/**
+ * BRICK PATTERN.
+ */
+const brickPattern: GridPattern = {
+  ...basePattern,
+  variancePosition: (li, pi) => (li % 2) / 2,
+};
+
+/**
+ * TIRANGLE PATTERN.
+ * Isosceles: h = s * sqrt(3) / 2
+ */
 const triangleSide = 1;
 const triangleHeight = triangleSide * Math.sqrt(3) / 2;
 
 const trianglePattern: GridPattern = {
+  ...basePattern,
   deltaLine: (li) => li * triangleHeight,
-  deltaPosition: (pi) => pi,
-  varianceLine: (li, pi) => 0,
   variancePosition: (li, pi) => -(li % 2) / 2,
   linesPerUnit: 1 / (triangleHeight),
-  positionsPerUnit: 1,
-  extraLines: (heightPx) => 0,
-  extraPositions: (widthtPx) => 0,
 };
 
-// HEXAGONAL PATTERN.
-// s = h/sqrt(3)
-// h = (√3)s
-// d = 2s
-// r = d/2 = s
-const hexHeight = 1;
-const hexHalfHeight = hexHeight / 2;
-const hexSide = hexHeight / Math.sqrt(3);
-const hexHalfSide = hexSide / 2;
-const circTriangleHeight = (3 / 2) * hexSide;    // Height of the equilateral circumscribed triangle.
+/**
+ * HEXAGONAL PATTERN.
+ * Optional {radius: number} as params accepted.
+ * Radius: Hexagon radius in number of dots. [0.5 ..] Min 0.5.
+ * s = h/sqrt(3)
+ * h = (√3)s
+ * d = 2s
+ * r = d/2 = s
+ */
+const hexPattern = (params?: any): GridPattern => {
+  // Default radius value = 0.7. Min 0.5.
+  const hexSide = (params && params.radius != null) ? Math.max(params.radius, 0.5) : 0.7;
+  const hexHalfSide = hexSide / 2;
+  const hexHeight = hexSide * Math.sqrt(3);
+  const hexHalfHeight = hexHeight / 2;
+  const circTriangleHeight = (3 / 2) * hexSide;    // Height of the equilateral circumscribed triangle.
 
-const hexPattern: GridPattern = {
-  deltaLine: (li) => {
-    const oddDelta = (li >= 0) ? hexHalfSide : hexSide;
-    return Math.trunc(li / 2) * circTriangleHeight + ((li % 2) * oddDelta);
-  },
-  deltaPosition: (pi) => pi * hexHeight,
-  varianceLine: (li, pi) => 0,
-  variancePosition: (li, pi) => {
-    const modIndex = (li >= 0) ? (li + 1) : Math.abs(li);
-    return (modIndex % 4) >= 2 ? 0 : hexHalfHeight;
-  },
-  linesPerUnit: 2 / circTriangleHeight,
-  positionsPerUnit: 1,
-  extraLines: (heightPx) => 0,
-  extraPositions: (widthtPx) => 0,
+  return {
+    ...basePattern,
+    deltaLine: (li) => {
+      const oddDelta = (li >= 0) ? hexHalfSide : hexSide;
+      return Math.trunc(li / 2) * circTriangleHeight + ((li % 2) * oddDelta);
+    },
+    deltaPosition: (pi) => pi * hexHeight,
+    variancePosition: (li, pi) => {
+      const modIndex = (li >= 0) ? (li + 1) : Math.abs(li);
+      return (modIndex % 4) >= 2 ? 0 : hexHalfHeight;
+    },
+    linesPerUnit: 2 / circTriangleHeight,
+    positionsPerUnit: 1 / hexHeight,
+  };
 };
 
-// RANDOM PATTERN.
-// Optional {limit: number} as params accepted.
-// Limit: randomness limit in number of dots.
+/**
+ * RANDOM PATTERN.
+ * Optional {limit: number} as params accepted.
+ * Limit: randomness limit in number of dots.
+ */
 const randomPattern = (params?: any): GridPattern => {
-  let limit = 1;  // Default value.
-  if (params && params.limit) { limit = params.limit; };
+  // Default limit value = 1.
+  const limit = (params && params.limit != null) ? params.limit : 1;
   function randomize(): number {
     return (2 * Math.random() - 1) * limit;
   }
 
   return {
-    deltaLine: (li) => li,
-    deltaPosition: (pi) => pi,
+    ...basePattern,
     varianceLine: (li, pi) => randomize(),
     variancePosition: (li, pi) => randomize(),
-    linesPerUnit: 1,
-    positionsPerUnit: 1,
-    extraLines: (heightPx) => 0,
-    extraPositions: (widthtPx) => 0,
   };
 };
 
-// Wave PATTERN.
-// Optional {wavelength: number, amplitude: number} as params accepted.
-// Wavelength: Length of a complete wave in number of dots. Minimum 6 recommended.
-// Amplitude: Amplitude size in dots. Recommended limited to 1 max. Sampling artifacts.
+/**
+ * Wave PATTERN.
+ * Optional {wavelength: number, amplitude: number} as params accepted.
+ * Wavelength: Length of a complete wave in number of dots. [4..] Min 4.
+ * Amplitude: Amplitude size in dots.
+ * It is recommended Wavelenth to be a multiple of Amplitudee, e.g.: 10:1, 20:2, etc.
+ * This pattern may have sampling artifacts for certain wavelenght:amplitudes.
+ */
 const wavePattern = (params?: any): GridPattern => {
-  let wavelength = 30;  // Default value.
-  if (params && params.wavelength != null) { wavelength = params.wavelength; };
+  // This factor may serve to separate lines a bit to avoid certain
+  // sampling effect.
+  const lineHeight = 1.25;
+  // Prerequisites.
+  // Default wavelength value 30. Min 4.
+  // Default amplitude value 3.
+  const wavelength = (params && params.wavelength != null) ? Math.max(params.wavelength, 4) : 30;
   const wavelengthFactor = (2 * Math.PI) / wavelength;
-  let amplitude = 3;  // Default value.
-  if (params && params.amplitude != null) { amplitude = params.amplitude; };
-  // This factor is needed to separate lines a bit. Otherwise the pattern
-  // could no be seen due to sampling effect.
-  const lineHeight = 1.5;
+  const amplitude = ((params && params.amplitude != null) ? params.amplitude : 3) * lineHeight;
 
   return {
+    ...basePattern,
     deltaLine: (li) => li * lineHeight,
-    deltaPosition: (pi) => pi,
     varianceLine: (li, pi) => amplitude * Math.sin(wavelengthFactor * pi),
-    variancePosition: (li, pi) => 0,
     linesPerUnit: 1 / lineHeight,
-    positionsPerUnit: 1,
-    extraLines: (heightPx) => amplitude,
-    extraPositions: (widthtPx) => 0,
+    extraLines: (heightPx) => Math.round(amplitude),
   };
 };
 
-// Chevron PATTERN.
-// Length: Length of a half chevron pattern in number of dots. Min 3 Recommended.
-// Amplitude: Amplitude size in dots. Recommended limited to 1 max. Sampling artifacts.
+/**
+ * Chevron PATTERN.
+ * Optional {length: number, amplitude: number} as params accepted.
+ * Length: Length of a half a chevron pattern in number of dots. [3..] Min 3.
+ * Amplitude: Amplitude size in dots.
+ * It is recommended Lenth to be a multiple of Amplitude, e.g.: 6:3, 10:5, etc.
+ * This pattern may have sampling artifacts for certain lenght:amplitudes.
+ */
 const chevronPattern = (params?: any): GridPattern => {
-  let lenght = 10;
-  if (params && params.lenght != null) { lenght = params.lenght; };
-  const lengthFactor = lenght - 1;
+  // This factor may serve to separate lines a bit to avoid certain
+  // sampling effect.
+  const lineHeight = 1.25;
+  // Prerequisites.
+  // Default length value 10. Min 3.
+  // Default amplitude value 5.
+  const length = (params && params.length != null) ? Math.max(params.length, 3) : 10;
+  const lengthFactor = length - 1;
   const doubleLengthFactor = 2 * lengthFactor;
-  let amplitude = 5;
-  if (params && params.amplitude != null) { amplitude = params.amplitude; };
-  // This factor is needed to separate lines a bit. Otherwise the pattern
-  // could no be seen due to sampling effect.
-  const lineHeight = 80;
+  const amplitude = ((params && params.amplitude != null) ? params.amplitude : 5) * lineHeight;
 
   return {
     deltaLine: (li) => li * lineHeight,
     deltaPosition: (pi) => pi,
     varianceLine: (li, pi) => {
       const segment = pi % doubleLengthFactor;
+      let chevronPosition = (pi / lengthFactor);
+      // Gets just the decimal part.
+      chevronPosition = chevronPosition - Math.trunc(chevronPosition);
       let variance = 1;
-      if (segment < lengthFactor) { variance = pi % lengthFactor; }
-      else if (segment > lengthFactor) { variance = 1 - (pi % lengthFactor); }
+      if (segment < lengthFactor) { variance = chevronPosition; }
+      else if (segment > lengthFactor) { variance = 1 - chevronPosition; }
       return amplitude * variance;
     },
     variancePosition: (li, pi) => 0,
     linesPerUnit: 1 / lineHeight,
     positionsPerUnit: 1,
-    extraLines: (heightPx) => 0,
+    extraLines: (heightPx) => Math.round(amplitude),
     extraPositions: (widthtPx) => 0,
   };
 };
 
-// TODO: USE OBJECT ASSIGN OR SPREAD OPERATOR FOR PATTERN OBJECTS TO PROMOTE
-// COMPOSITION AND IMPROVE EXTENDIBILITY.
+/**
+ * RADIAL PATTERN.
+ * Lines -> radius.
+ * Position -> arc.
+ * teta = arc / r = pi / li
+ */
+const radialPattern = (params?: any): GridPattern => {
+  const twoPi = Math.PI * 2;
+
+  return {
+    ...basePattern,
+    deltaLine: (li) => 0,
+    deltaPosition: (li) => 0,
+    varianceLine: (li, pi) => (pi <= twoPi * li) ? li * Math.sin(pi / li) : null,
+    variancePosition: (li, pi) => (pi <= twoPi * li) ? li * Math.cos(pi / li) : null,
+  };
+};
+
 // TODO: Implement radial or spiral pattern.
 
 /**
@@ -194,10 +224,11 @@ export function CreateGridPattern(type: GridPatternType, params?: any): GridPatt
     case GridPatternType.Square:       return squarePattern;
     case GridPatternType.Brick:        return brickPattern;
     case GridPatternType.Triangle:     return trianglePattern;
-    case GridPatternType.Hex:          return hexPattern;
+    case GridPatternType.Hex:          return hexPattern(params);
     case GridPatternType.Random:       return randomPattern(params);
     case GridPatternType.Wave:         return wavePattern(params);
     case GridPatternType.Chevron:      return chevronPattern(params);
+    case GridPatternType.Radial:       return radialPattern(params);
     default:                           return squarePattern;
   }
 }

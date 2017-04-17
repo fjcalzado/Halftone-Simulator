@@ -71,12 +71,12 @@ function initializeScales() {
 
 function initializeGrid() {
   const gridParams: GridParameters = {
-    pattern: GridPatternType.Wave,
+    pattern: GridPatternType.Radial,
     targetWidth: imgMatrix[0].length,
     targetHeight: imgMatrix.length,
     scaleFactor: 1,
     rotationAngle: 0,
-    specificParams: {wavelength: 30, amplitude: 3}
+    //specificParams: {length: 10, amplitude: 10 },
   };
 
   const gridContainer = svgViewport

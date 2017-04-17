@@ -63,10 +63,14 @@ export function CreateGridTopology(gridParameters: GridParameters,
       // Grid space precalculus (lines and positions space).
       const gridPattern = CreateGridPattern(gridParameters.pattern, gridParameters.specificParams);
       const extent = calculateGridExtent(widthPx, heightPx, aft);
-      const startLine = Math.floor(extent.minY * gridPattern.linesPerUnit - gridPattern.extraLines(heightPx));
-      const startPosition = Math.floor(extent.minX * gridPattern.positionsPerUnit - gridPattern.extraPositions(widthPx));
-      const stopLine = Math.ceil(extent.maxY * gridPattern.linesPerUnit + gridPattern.extraLines(heightPx));
-      const stopPosition = Math.ceil(extent.maxX * gridPattern.positionsPerUnit + gridPattern.extraPositions(widthPx));
+      const startLine =       Math.floor(extent.minY * gridPattern.linesPerUnit
+                                         - gridPattern.extraLines(heightPx));
+      const startPosition =   Math.floor(extent.minX * gridPattern.positionsPerUnit
+                                         - gridPattern.extraPositions(widthPx));
+      const stopLine =        Math.ceil(extent.maxY * gridPattern.linesPerUnit
+                                        + gridPattern.extraLines(heightPx));
+      const stopPosition =    Math.ceil(extent.maxX * gridPattern.positionsPerUnit
+                                        + gridPattern.extraPositions(widthPx));
 
       // Filtering function to discard final points that do not overlap
       // with target area.
@@ -84,9 +88,12 @@ export function CreateGridTopology(gridParameters: GridParameters,
           const dp = gridPattern.deltaPosition(positionIndex);
 
           // Calculate point and its transformed equivalent.
+          const vp = gridPattern.variancePosition(lineIndex, positionIndex);
+          const vl = gridPattern.varianceLine(lineIndex, positionIndex);
+          if (vp === null || vl === null) { return; } // Used in some patterns to skip once reached certain position.
           const p = {
-            x: dp + gridPattern.variancePosition(lineIndex, positionIndex),
-            y: dl + gridPattern.varianceLine(lineIndex, positionIndex),
+            x: dp + vp,
+            y: dl + vl,
           };
           let tp = aft.transform(p);
 
