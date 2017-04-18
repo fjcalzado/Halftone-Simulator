@@ -71,14 +71,14 @@ function initializeScales() {
 
 function initializeGrid() {
   const gridParams: GridParameters = {
-    pattern: GridPatternType.Radial,
+    pattern: GridPatternType.Wave,
     targetWidth: imgMatrix[0].length,
     targetHeight: imgMatrix.length,
     scaleFactor: 1,
-    translateX: imgMatrix[0].length / 2,
-    translateY: imgMatrix.length / 2,
+    //translateX: imgMatrix[0].length / 2,
+    //translateY: imgMatrix.length / 2,
     rotationAngle: 0,
-    specificParams: {length: 30, amplitude: 3 },
+    specificParams: {wavelength: 30, amplitude: 5 },
   };
 
   const gridContainer = svgViewport
@@ -92,7 +92,7 @@ function initializeGrid() {
   //   .then((layer) => { pixelLayer = layer; })
   //   .catch((error) => { console.error(`[ERROR] CreatingPixelTopologyLayer: ${error}`); });
 
-  const dataFiller = imgInterpolator.CreateImageInterpolator(imgMatrix, imgInterpolator.NearestNeighbor);
+  const dataFiller = imgInterpolator.CreateImageInterpolator(imgMatrix, imgInterpolator.Bilinear);
   let gridLayer = null;
   CreateGridTopology(gridParams, dataFiller)
     .then((gridTopology) => {
@@ -104,9 +104,9 @@ function initializeGrid() {
           .data(gridTopology)
         .enter().append("circle")
           .attr("transform", (d) => `translate(${d.x}, ${d.y})`)
-          //.attr("r", (d) => dotScale(1 - d.data[2]))
-          .attr("r", dotScale(0.4))
-          .attr("fill", "black" /*(d) => chroma(...d.data, "hsl").css("hsl")*/);
+          .attr("r", (d) => dotScale(1 - chroma(...d.data, "rgb").hsl()[2]))
+          //.attr("r", dotScale(0.4))
+          .attr("fill", (d) => chroma(...d.data, "rgb").css("hsl"));
       timer.logElapsed("[DrawGridTopology]");
     })
     .catch((error) => { console.error(`[ERROR] CreatingGridTopologyLayer: ${error}`); });
@@ -117,10 +117,10 @@ function initializeGrid() {
  * @public
  */
 
-export function initialize(imgPattern: any[][], elementId: string,
+export function initialize(imageMatrix: any[][], elementId: string,
                            width: string = widthRel, height: string = heightRel) {
   parentHtmlClassName = elementId;
-  imgMatrix = imgPattern;
+  imgMatrix = imageMatrix;
   if (width) { widthRel = width; }
   if (height) { heightRel = height; }
 

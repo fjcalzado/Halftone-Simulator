@@ -7,9 +7,9 @@ import chroma from "chroma-js";
 export enum Channel {
     RGB = 1,
     HSL,
-    Red,
-    Green,
-    Blue,
+    Red_Normalized,
+    Green_Normalized,
+    Blue_Normalized,
     Luminance,
     Lightness,
 }
@@ -17,22 +17,22 @@ export enum Channel {
 /**
  * Get normalized value of a pixel's channel given its RGB components.
  * @private
- * @function getNormalizedChannelValue
+ * @function getChannelValue
  * @param  {number} r: number   {R component.}
  * @param  {number} g: number   {G component.}
  * @param  {number} b: number   {B component.}
  * @param  {Channel} ch: Channel {Target channel type.}
  * @return {number} {Normalized channel value [0..1].}
  */
-function getNormalizedChannelValue(r: number, g: number, b: number, ch: Channel): number {
+function getChannelValue(r: number, g: number, b: number, ch: Channel): number {
   switch (ch) {
-    case Channel.RGB:         return chroma(r, g, b);
+    case Channel.RGB:         return chroma(r, g, b).rgb();
     case Channel.HSL:         return chroma(r, g, b).hsl();
-    case Channel.Red:         return r / 255;
-    case Channel.Green:       return g / 255;
-    case Channel.Blue:        return b / 255;
-    case Channel.Luminance:   return (1 - chroma(r, g, b).luminance());
-    case Channel.Lightness:   return (1 - chroma(r, g, b).hsl()[2]);
+    case Channel.Red_Normalized:         return r / 255;
+    case Channel.Green_Normalized:       return g / 255;
+    case Channel.Blue_Normalized:        return b / 255;
+    case Channel.Luminance:   return chroma(r, g, b).luminance();
+    case Channel.Lightness:   return chroma(r, g, b).hsl()[2];
     default:                  return 0;
   }
 }
@@ -62,7 +62,7 @@ export function extractImageChannel(imgData: ImageData, ch: Channel): Promise<nu
           if (colIndex === 0) {
             chMatrix.push([]);
           }
-          chMatrix[rowIndex][colIndex] = getNormalizedChannelValue(px[i], px[i + 1], px[i + 2], ch);
+          chMatrix[rowIndex][colIndex] = getChannelValue(px[i], px[i + 1], px[i + 2], ch);
         }
         resolve(chMatrix);
       } catch (e) {

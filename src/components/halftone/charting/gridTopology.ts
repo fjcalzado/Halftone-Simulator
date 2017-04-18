@@ -73,7 +73,7 @@ export function CreateGridTopology(gridParameters: GridParameters,
       // Filtering function to discard final points that do not overlap
       // with target area.
       // THIS IS VERY IMPORTANT TO AVOID SERIOUS PROBLEMS OF UNDEFINED ACCESS.
-      const marginPx = 0.5;
+      const marginPx = 1; // Remove 1 row/column of pixels in each side to be safe for interpolators.
       const inside = (p) => (((marginPx <= p.x) && (p.x <= widthPx - marginPx) &&
                              ((marginPx <= p.y) && (p.y <= heightPx - marginPx))));
 
