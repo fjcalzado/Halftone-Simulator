@@ -71,12 +71,12 @@ function initializeScales() {
 
 function initializeGrid() {
   const gridParams: GridParameters = {
-    pattern: GridPatternType.Wave,
+    pattern: GridPatternType.Radial,
     targetWidth: imgMatrix[0].length,
     targetHeight: imgMatrix.length,
     scaleFactor: 1,
-    translateX: 0,
-    translateY: 0,
+    translateX: imgMatrix[0].length / 2,
+    translateY: imgMatrix.length / 2,
     rotationAngle: 0,
     specificParams: {length: 30, amplitude: 3 },
   };

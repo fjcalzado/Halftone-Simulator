@@ -19,8 +19,10 @@ export interface GridPattern {
     readonly deltaPosition: (pi: number) => number;
     readonly varianceLine: (li: number, pi: number) => number;
     readonly variancePosition: (li: number, pi: number) => number;
-    readonly getLineRange: (minY: number, maxY: number) => {minLine: number, maxLine: number};
-    readonly getPositionRange: (minX: number, maxX: number) => {minPos: number, maxPos: number};
+    readonly getExtent: (minY: number, maxY: number, minPos: number, maxPos: number) => {
+      minLine: number, maxLine: number,
+      minPos: number, maxPos: number,
+    };
 }
 
 /**
@@ -32,17 +34,17 @@ const basePattern: GridPattern = {
   deltaLine: (li) => li,
   deltaPosition: (pi) => pi,
   varianceLine: (li, pi) => 0,
-  variancePosition: (li, pi) => 0,  
-  getLineRange: (minY, maxY) => { return { minLine: Math.floor(1 * minY), 
-                                           maxLine: Math.ceil(1 * maxY)}; },
-  getPositionRange: (minX, maxX) => { return { minPos: Math.floor(1 * minX), 
-                                               maxPos: Math.ceil(1 * maxX)}; },
-}                                                                                          
+  variancePosition: (li, pi) => 0,
+  getExtent: (minY, maxY, minX, maxX) => { return { minLine: Math.floor(1 * minY),
+                                                    maxLine: Math.ceil(1 * maxY),
+                                                    minPos: Math.floor(1 * minX),
+                                                    maxPos: Math.ceil(1 * maxX)}; },
+};
 
 /**
  * REGULAR SQUARE PATTERN.
  */
-const SquarePatternFactory = (): GridPattern =>{
+const SquarePatternFactory = (): GridPattern => {
   return {
     ...basePattern,
   };
@@ -71,8 +73,13 @@ const TrianglePatternFactory = (): GridPattern => {
     ...basePattern,
     deltaLine: (li) => li * triangleHeight,
     variancePosition: (li, pi) => -(li % 2) / 2,
-    getLineRange: (minY, maxY) => { return {minLine: Math.floor(linesPerUnit * minY), 
-                                            maxLine: Math.ceil(linesPerUnit * maxY)}; },
+    getExtent: (minY, maxY, minX, maxX) => {
+      return { minLine: Math.floor(linesPerUnit * minY),
+               maxLine: Math.ceil(linesPerUnit * maxY),
+               minPos: Math.floor(1 * minX),
+               maxPos: Math.ceil(1 * maxX),
+      };
+    },
   };
 };
 
@@ -106,10 +113,13 @@ const HexPatternFactory = (params?: any): GridPattern => {
       const modIndex = (li >= 0) ? (li + 1) : Math.abs(li);
       return (modIndex % 4) >= 2 ? 0 : hexHalfHeight;
     },
-    getLineRange: (minY, maxY) => { return { minLine: Math.floor(linesPerUnit * minY), 
-                                             maxLine: Math.ceil(linesPerUnit * maxY)}; },
-    getPositionRange: (minX, maxX) => { return { minPos: Math.floor(positionsPerUnit * minX),
-                                                 maxPos: Math.ceil(positionsPerUnit * maxX)}; },
+    getExtent: (minY, maxY, minX, maxX) => {
+      return { minLine: Math.floor(linesPerUnit * minY),
+               maxLine: Math.ceil(linesPerUnit * maxY),
+               minPos: Math.floor(positionsPerUnit * minX),
+               maxPos: Math.ceil(positionsPerUnit * maxX),
+      };
+    },
   };
 };
 
@@ -156,8 +166,13 @@ const WavePatternFactory = (params?: any): GridPattern => {
     ...basePattern,
     deltaLine: (li) => li * lineHeight,
     varianceLine: (li, pi) => amplitude * Math.sin(wavelengthFactor * pi),
-    getLineRange: (minY, maxY) => { return { minLine: Math.floor(linesPerUnit * (minY - amplitude)), 
-                                             maxLine: Math.ceil(linesPerUnit * (maxY + amplitude))}; },
+    getExtent: (minY, maxY, minX, maxX) => {
+      return { minLine: Math.floor(linesPerUnit * (minY - amplitude)),
+               maxLine: Math.ceil(linesPerUnit * (maxY + amplitude)),
+               minPos: Math.floor(1 * minX),
+               maxPos: Math.ceil(1 * maxX),
+      };
+    },
   };
 };
 
@@ -195,8 +210,13 @@ const ChevronPatternFactory = (params?: any): GridPattern => {
       else if (segment > lengthFactor) { variance = 1 - chevronPosition; }
       return amplitude * variance;
     },
-    getLineRange: (minY, maxY) => { return { minLine: Math.floor(linesPerUnit * (minY - amplitude)), 
-                                             maxLine: Math.ceil(linesPerUnit * (maxY + amplitude))}; },
+    getExtent: (minY, maxY, minX, maxX) => {
+      return { minLine: Math.floor(linesPerUnit * (minY - amplitude)),
+               maxLine: Math.ceil(linesPerUnit * (maxY + amplitude)),
+               minPos: Math.floor(1 * minX),
+               maxPos: Math.ceil(1 * maxX),
+      };
+    },
   };
 };
 
@@ -207,23 +227,52 @@ const ChevronPatternFactory = (params?: any): GridPattern => {
  * teta = arc / r = pi / li
  */
 const RadialPatternFactory = (params?: any): GridPattern => {
-  const lineHeight = 2.5;
+  const lineHeight = 1;
   const linesPerUnit = 1 / lineHeight;
   const twoPi = Math.PI * 2;
 
-
-  return {
-    ...basePattern,
-    deltaLine: (li) => 0,
-    deltaPosition: (li) => 0,
-    varianceLine: (li, pi) => (pi <= twoPi * li) ? li * Math.sin(pi / li) : null,
-    variancePosition: (li, pi) => (pi <= twoPi * li) ? li * Math.cos(pi / li) : null,
-    getLineRange: (minY, maxY) => { return { minLine: Math.floor(linesPerUnit * minY), 
-                                             maxLine: Math.ceil(linesPerUnit * maxY)}; },
+  const radialStore = {
+    positionWidthPerRadius: 1,  // Do not change, temp store used by deltaLine.
   };
-};
 
-// TODO: Implement radial or spiral pattern.
+  const radialPattern = {
+    ...basePattern,
+    deltaLine: (li) => {
+      if (li > 0) {
+        const twoPiRadius = twoPi * li * lineHeight;
+        radialStore.positionWidthPerRadius = twoPiRadius / Math.trunc(twoPiRadius);
+      }
+      return 0;
+    },
+    deltaPosition: (li) => 0,
+    varianceLine: (li, pi) => {
+      if (li > 0) {
+        const radius = li * lineHeight;
+        const posWpR = pi * radialStore.positionWidthPerRadius;
+        return (posWpR < twoPi * radius) ? radius * Math.sin(posWpR / radius) : null;
+      } else { return 0; }
+    },
+    variancePosition: (li, pi) => {
+      if (li > 0 ) {
+        const radius = li * lineHeight;
+        const posWpR = pi * radialStore.positionWidthPerRadius;
+        return (posWpR < twoPi * radius) ? radius * Math.cos(posWpR / radius) : null;
+      } else if (pi === 0) { return 0; }
+      else { return null; }
+    },
+    getExtent: (minY, maxY, minX, maxX) => {
+      const height = maxY - minY;
+      const width = maxX - minX;
+      const diagonal = Math.sqrt(Math.pow(height, 2) + Math.pow(width, 2));
+      return { minLine: 0,
+               maxLine: Math.ceil(linesPerUnit * diagonal),
+               minPos: 0,
+               maxPos: Math.ceil(twoPi * diagonal),
+      };
+    },
+  };
+  return radialPattern;
+};
 
 /**
  * Grid Pattern factory. It returns a grid pattern definition object.

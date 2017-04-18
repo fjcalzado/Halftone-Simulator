@@ -62,13 +62,13 @@ export function CreateGridTopology(gridParameters: GridParameters,
 
       // Grid space precalculus (lines and positions space).
       const gridPattern = CreateGridPattern(gridParameters.pattern, gridParameters.specificParams);
-      const extent = calculateGridExtent(widthPx, heightPx, aft);
-      const lrange = gridPattern.getLineRange(extent.minY, extent.maxY);
-      const prange = gridPattern.getPositionRange(extent.minX, extent.maxX);
-      const startLine = lrange.minLine;
-      const stopLine = lrange.maxLine;
-      const startPosition = prange.minPos;
-      const stopPosition = prange.maxPos;
+      const extentPxSpace = calculateGridExtent(widthPx, heightPx, aft);
+      const extentPatternSpace = gridPattern.getExtent(extentPxSpace.minY, extentPxSpace.maxY,
+                                                       extentPxSpace.minX, extentPxSpace.maxX);
+      const startLine = extentPatternSpace.minLine;
+      const stopLine = extentPatternSpace.maxLine;
+      const startPosition = extentPatternSpace.minPos;
+      const stopPosition = extentPatternSpace.maxPos;
 
       // Filtering function to discard final points that do not overlap
       // with target area.
