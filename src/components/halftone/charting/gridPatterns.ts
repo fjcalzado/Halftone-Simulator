@@ -19,10 +19,8 @@ export interface GridPattern {
     readonly deltaPosition: (pi: number) => number;
     readonly varianceLine: (li: number, pi: number) => number;
     readonly variancePosition: (li: number, pi: number) => number;
-    readonly linesPerUnit: number;
-    readonly positionsPerUnit: number;
-    readonly extraLines: (heightPx: number ) => number;
-    readonly extraPositions: (widthPx: number ) => number;
+    readonly getLineRange: (minY: number, maxY: number) => {minLine: number, maxLine: number};
+    readonly getPositionRange: (minX: number, maxX: number) => {minPos: number, maxPos: number};
 }
 
 /**
@@ -34,40 +32,48 @@ const basePattern: GridPattern = {
   deltaLine: (li) => li,
   deltaPosition: (pi) => pi,
   varianceLine: (li, pi) => 0,
-  variancePosition: (li, pi) => 0,
-  linesPerUnit: 1,
-  positionsPerUnit: 1,
-  extraLines: (heightPx) => 0,
-  extraPositions: (widthtPx) => 0,
-};
+  variancePosition: (li, pi) => 0,  
+  getLineRange: (minY, maxY) => { return { minLine: Math.floor(1 * minY), 
+                                           maxLine: Math.ceil(1 * maxY)}; },
+  getPositionRange: (minX, maxX) => { return { minPos: Math.floor(1 * minX), 
+                                               maxPos: Math.ceil(1 * maxX)}; },
+}                                                                                          
 
 /**
  * REGULAR SQUARE PATTERN.
  */
-const squarePattern = {
-  ...basePattern,
+const SquarePatternFactory = (): GridPattern =>{
+  return {
+    ...basePattern,
+  };
 };
 
 /**
  * BRICK PATTERN.
  */
-const brickPattern: GridPattern = {
-  ...basePattern,
-  variancePosition: (li, pi) => (li % 2) / 2,
+const BrickPatternFactory = (): GridPattern => {
+  return {
+    ...basePattern,
+    variancePosition: (li, pi) => (li % 2) / 2,
+  };
 };
 
 /**
  * TIRANGLE PATTERN.
  * Isosceles: h = s * sqrt(3) / 2
  */
-const triangleSide = 1;
-const triangleHeight = triangleSide * Math.sqrt(3) / 2;
+const TrianglePatternFactory = (): GridPattern => {
+  const triangleSide = 1;
+  const triangleHeight = triangleSide * Math.sqrt(3) / 2;
+  const linesPerUnit = 1 / triangleHeight;
 
-const trianglePattern: GridPattern = {
-  ...basePattern,
-  deltaLine: (li) => li * triangleHeight,
-  variancePosition: (li, pi) => -(li % 2) / 2,
-  linesPerUnit: 1 / (triangleHeight),
+  return {
+    ...basePattern,
+    deltaLine: (li) => li * triangleHeight,
+    variancePosition: (li, pi) => -(li % 2) / 2,
+    getLineRange: (minY, maxY) => { return {minLine: Math.floor(linesPerUnit * minY), 
+                                            maxLine: Math.ceil(linesPerUnit * maxY)}; },
+  };
 };
 
 /**
@@ -79,13 +85,15 @@ const trianglePattern: GridPattern = {
  * d = 2s
  * r = d/2 = s
  */
-const hexPattern = (params?: any): GridPattern => {
+const HexPatternFactory = (params?: any): GridPattern => {
   // Default radius value = 0.7. Min 0.5.
-  const hexSide = (params && params.radius != null) ? Math.max(params.radius, 0.5) : 0.7;
+  const hexSide = (params && params.hasOwnProperty("radius")) ? Math.max(params.radius, 0.5) : 0.7;
   const hexHalfSide = hexSide / 2;
   const hexHeight = hexSide * Math.sqrt(3);
   const hexHalfHeight = hexHeight / 2;
   const circTriangleHeight = (3 / 2) * hexSide;    // Height of the equilateral circumscribed triangle.
+  const linesPerUnit = 2 / circTriangleHeight;
+  const positionsPerUnit = 1 / hexHeight;
 
   return {
     ...basePattern,
@@ -98,8 +106,10 @@ const hexPattern = (params?: any): GridPattern => {
       const modIndex = (li >= 0) ? (li + 1) : Math.abs(li);
       return (modIndex % 4) >= 2 ? 0 : hexHalfHeight;
     },
-    linesPerUnit: 2 / circTriangleHeight,
-    positionsPerUnit: 1 / hexHeight,
+    getLineRange: (minY, maxY) => { return { minLine: Math.floor(linesPerUnit * minY), 
+                                             maxLine: Math.ceil(linesPerUnit * maxY)}; },
+    getPositionRange: (minX, maxX) => { return { minPos: Math.floor(positionsPerUnit * minX),
+                                                 maxPos: Math.ceil(positionsPerUnit * maxX)}; },
   };
 };
 
@@ -108,9 +118,9 @@ const hexPattern = (params?: any): GridPattern => {
  * Optional {limit: number} as params accepted.
  * Limit: randomness limit in number of dots.
  */
-const randomPattern = (params?: any): GridPattern => {
+const RandomPatternFactory = (params?: any): GridPattern => {
   // Default limit value = 1.
-  const limit = (params && params.limit != null) ? params.limit : 1;
+  const limit = (params && params.hasOwnProperty("limit")) ? params.limit : 1;
   function randomize(): number {
     return (2 * Math.random() - 1) * limit;
   }
@@ -130,23 +140,24 @@ const randomPattern = (params?: any): GridPattern => {
  * It is recommended Wavelenth to be a multiple of Amplitudee, e.g.: 10:1, 20:2, etc.
  * This pattern may have sampling artifacts for certain wavelenght:amplitudes.
  */
-const wavePattern = (params?: any): GridPattern => {
+const WavePatternFactory = (params?: any): GridPattern => {
   // This factor may serve to separate lines a bit to avoid certain
   // sampling effect.
   const lineHeight = 1.25;
+  const linesPerUnit = 1 / lineHeight;
   // Prerequisites.
   // Default wavelength value 30. Min 4.
   // Default amplitude value 3.
-  const wavelength = (params && params.wavelength != null) ? Math.max(params.wavelength, 4) : 30;
+  const wavelength = (params && params.hasOwnProperty("wavelength")) ? Math.max(params.wavelength, 4) : 30;
   const wavelengthFactor = (2 * Math.PI) / wavelength;
-  const amplitude = ((params && params.amplitude != null) ? params.amplitude : 3) * lineHeight;
+  const amplitude = ((params && params.hasOwnProperty("amplitude")) ? params.amplitude : 3);
 
   return {
     ...basePattern,
     deltaLine: (li) => li * lineHeight,
     varianceLine: (li, pi) => amplitude * Math.sin(wavelengthFactor * pi),
-    linesPerUnit: 1 / lineHeight,
-    extraLines: (heightPx) => Math.round(amplitude),
+    getLineRange: (minY, maxY) => { return { minLine: Math.floor(linesPerUnit * (minY - amplitude)), 
+                                             maxLine: Math.ceil(linesPerUnit * (maxY + amplitude))}; },
   };
 };
 
@@ -158,21 +169,22 @@ const wavePattern = (params?: any): GridPattern => {
  * It is recommended Lenth to be a multiple of Amplitude, e.g.: 6:3, 10:5, etc.
  * This pattern may have sampling artifacts for certain lenght:amplitudes.
  */
-const chevronPattern = (params?: any): GridPattern => {
+const ChevronPatternFactory = (params?: any): GridPattern => {
   // This factor may serve to separate lines a bit to avoid certain
   // sampling effect.
   const lineHeight = 1.25;
+  const linesPerUnit = 1 / lineHeight;
   // Prerequisites.
   // Default length value 10. Min 3.
   // Default amplitude value 5.
-  const length = (params && params.length != null) ? Math.max(params.length, 3) : 10;
+  const length = (params && params.hasOwnProperty("length")) ? Math.max(params.length, 3) : 10;
   const lengthFactor = length - 1;
   const doubleLengthFactor = 2 * lengthFactor;
-  const amplitude = ((params && params.amplitude != null) ? params.amplitude : 5) * lineHeight;
+  const amplitude = ((params && params.hasOwnProperty("amplitude")) ? params.amplitude : 5) * lineHeight;
 
   return {
+    ...basePattern,
     deltaLine: (li) => li * lineHeight,
-    deltaPosition: (pi) => pi,
     varianceLine: (li, pi) => {
       const segment = pi % doubleLengthFactor;
       let chevronPosition = (pi / lengthFactor);
@@ -183,11 +195,8 @@ const chevronPattern = (params?: any): GridPattern => {
       else if (segment > lengthFactor) { variance = 1 - chevronPosition; }
       return amplitude * variance;
     },
-    variancePosition: (li, pi) => 0,
-    linesPerUnit: 1 / lineHeight,
-    positionsPerUnit: 1,
-    extraLines: (heightPx) => Math.round(amplitude),
-    extraPositions: (widthtPx) => 0,
+    getLineRange: (minY, maxY) => { return { minLine: Math.floor(linesPerUnit * (minY - amplitude)), 
+                                             maxLine: Math.ceil(linesPerUnit * (maxY + amplitude))}; },
   };
 };
 
@@ -197,8 +206,11 @@ const chevronPattern = (params?: any): GridPattern => {
  * Position -> arc.
  * teta = arc / r = pi / li
  */
-const radialPattern = (params?: any): GridPattern => {
+const RadialPatternFactory = (params?: any): GridPattern => {
+  const lineHeight = 2.5;
+  const linesPerUnit = 1 / lineHeight;
   const twoPi = Math.PI * 2;
+
 
   return {
     ...basePattern,
@@ -206,6 +218,8 @@ const radialPattern = (params?: any): GridPattern => {
     deltaPosition: (li) => 0,
     varianceLine: (li, pi) => (pi <= twoPi * li) ? li * Math.sin(pi / li) : null,
     variancePosition: (li, pi) => (pi <= twoPi * li) ? li * Math.cos(pi / li) : null,
+    getLineRange: (minY, maxY) => { return { minLine: Math.floor(linesPerUnit * minY), 
+                                             maxLine: Math.ceil(linesPerUnit * maxY)}; },
   };
 };
 
@@ -221,14 +235,14 @@ const radialPattern = (params?: any): GridPattern => {
  */
 export function CreateGridPattern(type: GridPatternType, params?: any): GridPattern {
   switch (type) {
-    case GridPatternType.Square:       return squarePattern;
-    case GridPatternType.Brick:        return brickPattern;
-    case GridPatternType.Triangle:     return trianglePattern;
-    case GridPatternType.Hex:          return hexPattern(params);
-    case GridPatternType.Random:       return randomPattern(params);
-    case GridPatternType.Wave:         return wavePattern(params);
-    case GridPatternType.Chevron:      return chevronPattern(params);
-    case GridPatternType.Radial:       return radialPattern(params);
-    default:                           return squarePattern;
+    case GridPatternType.Square:       return SquarePatternFactory();
+    case GridPatternType.Brick:        return BrickPatternFactory();
+    case GridPatternType.Triangle:     return TrianglePatternFactory();
+    case GridPatternType.Hex:          return HexPatternFactory(params);
+    case GridPatternType.Random:       return RandomPatternFactory(params);
+    case GridPatternType.Wave:         return WavePatternFactory(params);
+    case GridPatternType.Chevron:      return ChevronPatternFactory(params);
+    case GridPatternType.Radial:       return RadialPatternFactory(params);
+    default:                           return SquarePatternFactory();
   }
 }

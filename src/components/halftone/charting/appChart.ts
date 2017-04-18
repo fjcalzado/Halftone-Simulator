@@ -71,12 +71,14 @@ function initializeScales() {
 
 function initializeGrid() {
   const gridParams: GridParameters = {
-    pattern: GridPatternType.Radial,
+    pattern: GridPatternType.Wave,
     targetWidth: imgMatrix[0].length,
     targetHeight: imgMatrix.length,
-    scaleFactor: 1,
+    scaleFactor: 2,
+    translateX: 50,
+    translateY: 0,
     rotationAngle: 0,
-    //specificParams: {length: 10, amplitude: 10 },
+    specificParams: {length: 30, amplitude: 3 },
   };
 
   const gridContainer = svgViewport
@@ -104,7 +106,7 @@ function initializeGrid() {
           .attr("transform", (d) => `translate(${d.x}, ${d.y})`)
           //.attr("r", (d) => dotScale(1 - d.data[2]))
           .attr("r", dotScale(0.4))
-          .attr("fill", (d) => chroma(...d.data, "hsl").css("hsl"));
+          .attr("fill", "black" /*(d) => chroma(...d.data, "hsl").css("hsl")*/);
       timer.logElapsed("[DrawGridTopology]");
     })
     .catch((error) => { console.error(`[ERROR] CreatingGridTopologyLayer: ${error}`); });

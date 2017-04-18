@@ -14,8 +14,8 @@ export interface GridParameters {
   pattern: GridPatternType;
   targetWidth: number;
   targetHeight: number;
-  rotationAngle: number;
-  scaleFactor: number;
+  rotationAngle?: number;
+  scaleFactor?: number;
   translateX?: number;
   translateY?: number;
   specificParams?: any;
@@ -55,22 +55,20 @@ export function CreateGridTopology(gridParameters: GridParameters,
 
       // Affine transformer in pixel space
       const aft = CreateAffineTransformer()
-        .setupScale(gridParameters.scaleFactor)
-        .setupRotate(gridParameters.rotationAngle)
-        .setupTranslate(gridParameters.translateX ? gridParameters.translateX : 0,
-                        gridParameters.translateY ? gridParameters.translateY : 0);
+        .setupScale(gridParameters.hasOwnProperty("scaleFactor") ? gridParameters.scaleFactor : 1)
+        .setupRotate(gridParameters.hasOwnProperty("rotationAngle") ? gridParameters.rotationAngle : 0)
+        .setupTranslate(gridParameters.hasOwnProperty("translateX") ? gridParameters.translateX : 0,
+                        gridParameters.hasOwnProperty("translateY") ? gridParameters.translateY : 0);
 
       // Grid space precalculus (lines and positions space).
       const gridPattern = CreateGridPattern(gridParameters.pattern, gridParameters.specificParams);
       const extent = calculateGridExtent(widthPx, heightPx, aft);
-      const startLine =       Math.floor(extent.minY * gridPattern.linesPerUnit
-                                         - gridPattern.extraLines(heightPx));
-      const startPosition =   Math.floor(extent.minX * gridPattern.positionsPerUnit
-                                         - gridPattern.extraPositions(widthPx));
-      const stopLine =        Math.ceil(extent.maxY * gridPattern.linesPerUnit
-                                        + gridPattern.extraLines(heightPx));
-      const stopPosition =    Math.ceil(extent.maxX * gridPattern.positionsPerUnit
-                                        + gridPattern.extraPositions(widthPx));
+      const lrange = gridPattern.getLineRange(extent.minY, extent.maxY);
+      const prange = gridPattern.getPositionRange(extent.minX, extent.maxX);
+      const startLine = lrange.minLine;
+      const stopLine = lrange.maxLine;
+      const startPosition = prange.minPos;
+      const stopPosition = prange.maxPos;
 
       // Filtering function to discard final points that do not overlap
       // with target area.
