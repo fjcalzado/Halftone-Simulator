@@ -7,15 +7,17 @@ import chroma from "chroma-js";
 export enum Channel {
     RGB = 1,
     HSL,
-    Red_Normalized,
-    Green_Normalized,
-    Blue_Normalized,
+    Red,
+    Green,
+    Blue,
     Luminance,
+    Hue,
+    Saturation,
     Lightness,
 }
 
 /**
- * Get normalized value of a pixel's channel given its RGB components.
+ * Get value of a pixel's channel given its RGB components.
  * @private
  * @function getChannelValue
  * @param  {number} r: number   {R component.}
@@ -24,16 +26,18 @@ export enum Channel {
  * @param  {Channel} ch: Channel {Target channel type.}
  * @return {number} {Normalized channel value [0..1].}
  */
-function getChannelValue(r: number, g: number, b: number, ch: Channel): number {
+export function getChannelValue(r: number, g: number, b: number, ch: Channel): number {
   switch (ch) {
     case Channel.RGB:         return chroma(r, g, b).rgb();
     case Channel.HSL:         return chroma(r, g, b).hsl();
-    case Channel.Red_Normalized:         return r / 255;
-    case Channel.Green_Normalized:       return g / 255;
-    case Channel.Blue_Normalized:        return b / 255;
+    case Channel.Red:         return r;
+    case Channel.Green:       return g;
+    case Channel.Blue:        return b;
     case Channel.Luminance:   return chroma(r, g, b).luminance();
+    case Channel.Hue:         return chroma(r, g, b).hsl()[0];
+    case Channel.Saturation:  return chroma(r, g, b).hsl()[1];
     case Channel.Lightness:   return chroma(r, g, b).hsl()[2];
-    default:                  return 0;
+    default:                  return chroma(r, g, b).rgb();
   }
 }
 

@@ -1,13 +1,13 @@
+import * as d3 from "d3";
 import * as timer from "../../../api/timerLog";
-import { AffineTransformer, CreateAffineTransformer } from "./affineTransform";
-import { CreateGridPattern, GridPattern, GridPatternType } from "./gridPatterns";
-const d3 = require("d3");
+import * as at from "./affineTransform";
+import * as grdp from "./gridPatterns";
 
 /**
  * Interface Export.
  * @public
  */
-
+import {GridPatternType} from "./gridPatterns";
 export {GridPatternType};
 
 export interface GridParameters {
@@ -27,6 +27,13 @@ export interface GridParameters {
 }
 
 export type GridTopologyDataFiller = (point: {x: number, y: number}) => any;
+export interface GridTopologyNode {
+  x: number;
+  y: number;
+  data?: any;
+}
+export type GridTopology = GridTopologyNode[];
+
 
 /**
  * Grid Topology factory. It creates a new grid topology: an array
@@ -37,11 +44,11 @@ export type GridTopologyDataFiller = (point: {x: number, y: number}) => any;
  * @function CreateGridTopology
  * @param {GridParameters} gridParameters: GridParameters {Set of grid configuration parameters}
  * @param {GridTopologyDataFiller} dataFiller {Optional function to fill each node with custom data.}
- * @return {Promise<number[]>} {Promise that returns an array of nodes when resolved.}
+ * @return {Promise<GridTopology>} {Promise that returns a grid topology (array of nodes) when resolved.}
  */
 export function CreateGridTopology(gridParameters: GridParameters,
-                                   dataFiller?: GridTopologyDataFiller): Promise<any[]> {
-  return new Promise<any[]>((resolve, reject) => {
+                                   dataFiller?: GridTopologyDataFiller): Promise<GridTopology> {
+  return new Promise<GridTopology>((resolve, reject) => {
     try {
       timer.reset();
 
@@ -54,14 +61,14 @@ export function CreateGridTopology(gridParameters: GridParameters,
       // const anchorPoint = {x: (widthPx / 2) - 0.5, y: (heightPx / 2) - 0.5};
 
       // Affine transformer in pixel space
-      const aft = CreateAffineTransformer()
+      const aft = at.CreateAffineTransformer()
         .setupScale(gridParameters.hasOwnProperty("scaleFactor") ? gridParameters.scaleFactor : 1)
         .setupRotate(gridParameters.hasOwnProperty("rotationAngle") ? gridParameters.rotationAngle : 0)
         .setupTranslate(gridParameters.hasOwnProperty("translateX") ? gridParameters.translateX : 0,
                         gridParameters.hasOwnProperty("translateY") ? gridParameters.translateY : 0);
 
       // Grid space precalculus (lines and positions space).
-      const gridPattern = CreateGridPattern(gridParameters.pattern, gridParameters.specificParams);
+      const gridPattern = grdp.CreateGridPattern(gridParameters.pattern, gridParameters.specificParams);
       const extentPxSpace = calculateGridExtent(widthPx, heightPx, aft);
       const extentPatternSpace = gridPattern.getExtent(extentPxSpace.minY, extentPxSpace.maxY,
                                                        extentPxSpace.minX, extentPxSpace.maxX);
@@ -121,7 +128,7 @@ export function CreateGridTopology(gridParameters: GridParameters,
  * @private
  */
 
-function calculateGridExtent(width: number, height: number, aft: AffineTransformer) {
+function calculateGridExtent(width: number, height: number, aft: at.AffineTransformer) {
   // Apply inverse transformation to the 4 corners and keep the widen extent.
   const leftTop = aft.inverseTransform({x: 0, y: 0});
   const rightTop = aft.inverseTransform({x: width, y: 0});

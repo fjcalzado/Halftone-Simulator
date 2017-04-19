@@ -1,10 +1,11 @@
 import chroma from "chroma-js";
+import * as d3 from "d3";
 import * as timer from "../../../api/timerLog";
-import * as imgInterpolator from "../api/imageInterpolator";
-import {CreateGridTopology, GridParameters, GridPatternType,
-        GridTopologyDataFiller} from "./gridTopology";
-import {CreatePixelTopologyLayer} from "./pixelTopology"; // Only for testing.
-const d3 = require("d3");
+import * as imgX from "../api/imageInterpolator";
+import * as imgCh from "../api/imageChannelExtractor";
+import * as dot from "./dotTopology";
+import * as grd from "./gridTopology";
+import * as px from "./pixelTopology"; // Only for testing.
 const styles = require("../halftoneTheme.scss");
 
 /**
@@ -70,8 +71,10 @@ function initializeScales() {
 }
 
 function initializeGrid() {
-  const gridParams: GridParameters = {
-    pattern: GridPatternType.Wave,
+  
+  
+  const gridParams: grd.GridParameters = {
+    pattern: grd.GridPatternType.Square,
     targetWidth: imgMatrix[0].length,
     targetHeight: imgMatrix.length,
     scaleFactor: 1,
@@ -81,20 +84,25 @@ function initializeGrid() {
     specificParams: {wavelength: 30, amplitude: 5 },
   };
 
+  const dotParams: dot.DotParameters = {
+    shape: dot.DotShapeType.Circle,
+    bindSizeTo: imgCh.Channel.Lightness,
+    sizeMinThreshold: 0,
+    sizeMaxThreshold: 1,
+    rotationAngle: 0,
+    colorBinding: dot.DotColorBinding.Original,
+  };
+
   const gridContainer = svgViewport
       .attr("viewBox", `-5 -5 ${gridParams.targetWidth + 10} ${gridParams.targetHeight + 10}`)
       .attr("preserveAspectRatio", "xMidYMid meet")
     .append("g")
       .attr("class", "grid-container");
-
-  let pixelLayer = null;
-  // CreatePixelTopologyLayer(gridParams.targetWidth, gridParams.targetHeight, gridContainer)
-  //   .then((layer) => { pixelLayer = layer; })
-  //   .catch((error) => { console.error(`[ERROR] CreatingPixelTopologyLayer: ${error}`); });
-
-  const dataFiller = imgInterpolator.CreateImageInterpolator(imgMatrix, imgInterpolator.Bilinear);
+  
+  const dotTopology = dot.CreateDotTopology(dotParams);
+  const dataFiller = imgX.CreateImageInterpolator(imgMatrix, imgX.Bilinear);
   let gridLayer = null;
-  CreateGridTopology(gridParams, dataFiller)
+  grd.CreateGridTopology(gridParams, dataFiller)
     .then((gridTopology) => {
       timer.reset();
       gridLayer = gridContainer
@@ -102,11 +110,13 @@ function initializeGrid() {
           .attr("class", "grid-topology-layer")
         .selectAll("circle")
           .data(gridTopology)
-        .enter().append("circle")
-          .attr("transform", (d) => `translate(${d.x}, ${d.y})`)
-          .attr("r", (d) => dotScale(1 - chroma(...d.data, "rgb").hsl()[2]))
-          //.attr("r", dotScale(0.4))
-          .attr("fill", (d) => chroma(...d.data, "rgb").css("hsl"));
+          .enter().append("path")
+            .attr("d", dotTopology.getPath())
+            .attr("transform", (d) => `translate(${d.x}, ${d.y})`);
+        // .enter().append("circle")
+        //   .attr("transform", (d) => `translate(${d.x}, ${d.y})`)
+        //   .attr("r", (d) => dotScale(1 - chroma(...d.data, "rgb").hsl()[2]))
+        //   .attr("fill", (d) => chroma(...d.data, "rgb").css("hsl"));
       timer.logElapsed("[DrawGridTopology]");
     })
     .catch((error) => { console.error(`[ERROR] CreatingGridTopologyLayer: ${error}`); });

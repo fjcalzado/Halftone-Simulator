@@ -27,7 +27,7 @@ export function CreateAffineTransformer(): AffineTransformer {
     teta: 0,
     sinTeta: 0,
     cosTeta: 1,
-    
+
     setupTranslate: (translateX: number, translateY: number) => {
       aft.tx = translateX;
       aft.ty = translateY;

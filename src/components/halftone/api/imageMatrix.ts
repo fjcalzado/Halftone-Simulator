@@ -44,8 +44,9 @@ const CreateImageChannelMatrix = (ch: Channel) => {
  */
 export const rgbMatrix: ImageMatrix = CreateImageChannelMatrix(Channel.RGB);
 export const hslMatrix: ImageMatrix = CreateImageChannelMatrix(Channel.HSL);
-export const redMatrix: ImageMatrix = CreateImageChannelMatrix(Channel.Red_Normalized);
-export const greenMatrix: ImageMatrix = CreateImageChannelMatrix(Channel.Green_Normalized);
-export const blueMatrix: ImageMatrix = CreateImageChannelMatrix(Channel.Blue_Normalized);
-export const luminanceMatrix: ImageMatrix = CreateImageChannelMatrix(Channel.Luminance);
+export const redMatrix: ImageMatrix = CreateImageChannelMatrix(Channel.Red);
+export const greenMatrix: ImageMatrix = CreateImageChannelMatrix(Channel.Green);
+export const blueMatrix: ImageMatrix = CreateImageChannelMatrix(Channel.Blue);
+export const hueMatrix: ImageMatrix = CreateImageChannelMatrix(Channel.Hue);
+export const saturationMatrix: ImageMatrix = CreateImageChannelMatrix(Channel.Saturation);
 export const lightnessMatrix: ImageMatrix = CreateImageChannelMatrix(Channel.Lightness);

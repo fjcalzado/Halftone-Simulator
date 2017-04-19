@@ -1,7 +1,7 @@
+import * as d3 from "d3";
 import * as timer from "../../../api/timerLog";
 import { GridPatternType } from "./gridPatterns";
 import { CreateGridTopology, GridParameters } from "./gridTopology";
-const d3 = require("d3");
 
 /**
  * Only for testing purposes. It appends a pixel topology: a grid that simulates

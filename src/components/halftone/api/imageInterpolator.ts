@@ -62,6 +62,6 @@ export const Bilinear: InterpolationMethod = (point) => {
   ];
 };
 
-// TODO: Does bicubic worth implementation? We do not need so much 
+// TODO: Does bicubic worth implementation? We do not need that much
 // precision and performance may be reduced significantly.
 
