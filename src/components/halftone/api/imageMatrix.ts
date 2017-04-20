@@ -43,10 +43,14 @@ const CreateImageChannelMatrix = (ch: Channel) => {
  * @return {ImageChannelMatrix} {ImageChannelMatrix Singleton object}
  */
 export const rgbMatrix: ImageMatrix = CreateImageChannelMatrix(Channel.RGB);
-export const hslMatrix: ImageMatrix = CreateImageChannelMatrix(Channel.HSL);
-export const redMatrix: ImageMatrix = CreateImageChannelMatrix(Channel.Red);
-export const greenMatrix: ImageMatrix = CreateImageChannelMatrix(Channel.Green);
-export const blueMatrix: ImageMatrix = CreateImageChannelMatrix(Channel.Blue);
-export const hueMatrix: ImageMatrix = CreateImageChannelMatrix(Channel.Hue);
-export const saturationMatrix: ImageMatrix = CreateImageChannelMatrix(Channel.Saturation);
-export const lightnessMatrix: ImageMatrix = CreateImageChannelMatrix(Channel.Lightness);
+
+// This is just for future usage, we dont really need all the specializations
+// for this example.
+// export const redMatrix: ImageMatrix = CreateImageChannelMatrix(Channel.Red);
+// export const greenMatrix: ImageMatrix = CreateImageChannelMatrix(Channel.Green);
+// export const blueMatrix: ImageMatrix = CreateImageChannelMatrix(Channel.Blue);
+// export const hslMatrix: ImageMatrix = CreateImageChannelMatrix(Channel.HSL);
+// export const hueMatrix: ImageMatrix = CreateImageChannelMatrix(Channel.Hue);
+// export const saturationMatrix: ImageMatrix = CreateImageChannelMatrix(Channel.Saturation);
+// export const lightnessMatrix: ImageMatrix = CreateImageChannelMatrix(Channel.Lightness);
+// ...

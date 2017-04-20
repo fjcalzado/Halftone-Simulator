@@ -6,39 +6,73 @@ import chroma from "chroma-js";
  */
 export enum Channel {
     RGB = 1,
-    HSL,
     Red,
     Green,
     Blue,
-    Luminance,
+    HSL,
     Hue,
     Saturation,
     Lightness,
+    CMYK,
+    Cyan,
+    Magenta,
+    Yellow,
+    Black,
+    Luminance,
 }
 
 /**
- * Get value of a pixel's channel given its RGB components.
+ * Helper function to convert from RGB to CMYK color space.
  * @private
- * @function getChannelValue
- * @param  {number} r: number   {R component.}
- * @param  {number} g: number   {G component.}
- * @param  {number} b: number   {B component.}
- * @param  {Channel} ch: Channel {Target channel type.}
- * @return {number} {Normalized channel value [0..1].}
+ * @function RGBToCMYK
+ * @param  {number} r: number {Input R channel.}
+ * @param  {number} g: number {Input G channel.}
+ * @param  {number} b: number {Input B channel.}
+ * @return {number[]} {Output color in CMYK space.}
  */
-export function getChannelValue(r: number, g: number, b: number, ch: Channel): number {
-  switch (ch) {
-    case Channel.RGB:         return chroma(r, g, b).rgb();
-    case Channel.HSL:         return chroma(r, g, b).hsl();
-    case Channel.Red:         return r;
-    case Channel.Green:       return g;
-    case Channel.Blue:        return b;
-    case Channel.Luminance:   return chroma(r, g, b).luminance();
-    case Channel.Hue:         return chroma(r, g, b).hsl()[0];
-    case Channel.Saturation:  return chroma(r, g, b).hsl()[1];
-    case Channel.Lightness:   return chroma(r, g, b).hsl()[2];
-    default:                  return chroma(r, g, b).rgb();
-  }
+function RGBToCMYK(r: number, g: number, b: number): number[] {
+  const rn = r / 255;
+  const gn = g / 255;
+  const bn = b / 255;
+
+  const k = Math.min( 1 - rn, 1 - gn, 1 - bn );
+  const c = ( 1 - rn - k ) / ( 1 - k );
+  const m = ( 1 - gn - k ) / ( 1 - k );
+  const y = ( 1 - bn - k ) / ( 1 - k );
+
+  return [ Math.round( c * 100 ),
+           Math.round( m * 100 ),
+           Math.round( y * 100 ),
+           Math.round( k * 100 ) ];
+}
+
+/**
+ * Get a function to extract the value of a pixel's channel given its RGB components.
+ * @private
+ * @function CreateChFromRGBCalculator
+ * @param  {Channel} ch: Channel {Target channel type.}
+ * @return {function} {Channel value.}
+ */
+export function CreateChExtractorForRGB(ch: Channel) {
+  return (r: number, g: number, b: number): any => {
+    switch (ch) {
+      case Channel.RGB:         return chroma(r, g, b).rgb();
+      case Channel.Red:         return r;
+      case Channel.Green:       return g;
+      case Channel.Blue:        return b;
+      case Channel.HSL:         return chroma(r, g, b).hsl();
+      case Channel.Hue:         return chroma(r, g, b).hsl()[0];
+      case Channel.Saturation:  return chroma(r, g, b).hsl()[1];
+      case Channel.Lightness:   return chroma(r, g, b).hsl()[2];
+      case Channel.CMYK:        return RGBToCMYK(r, g, b);
+      case Channel.Cyan:        return RGBToCMYK(r, g, b)[0];
+      case Channel.Magenta:     return RGBToCMYK(r, g, b)[1];
+      case Channel.Yellow:      return RGBToCMYK(r, g, b)[2];
+      case Channel.Black:       return RGBToCMYK(r, g, b)[3];
+      case Channel.Luminance:   return chroma(r, g, b).luminance();
+      default:                  return chroma(r, g, b).rgb();
+    }
+  };
 }
 
 /**
@@ -54,6 +88,7 @@ export function extractImageChannel(imgData: ImageData, ch: Channel): Promise<nu
   return new Promise<number[][]> (
     (resolve, reject) => {
       try {
+        const chExtractor = CreateChExtractorForRGB(ch);
         const chMatrix: number[][] = [];
         const px = imgData.data;
         for (let i = 0; i < px.length; i += 4) {
@@ -66,7 +101,7 @@ export function extractImageChannel(imgData: ImageData, ch: Channel): Promise<nu
           if (colIndex === 0) {
             chMatrix.push([]);
           }
-          chMatrix[rowIndex][colIndex] = getChannelValue(px[i], px[i + 1], px[i + 2], ch);
+          chMatrix[rowIndex][colIndex] = chExtractor(px[i], px[i + 1], px[i + 2]);
         }
         resolve(chMatrix);
       } catch (e) {

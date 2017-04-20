@@ -26,28 +26,28 @@ export interface GridParameters {
    */
 }
 
-export type GridTopologyDataFiller = (point: {x: number, y: number}) => any;
-export interface GridTopologyNode {
+export type GridTopologyRGBFiller = (point: {x: number, y: number}) => number[];
+export interface GridNode {
   x: number;
   y: number;
-  data?: any;
+  rgb?: number[];
 }
-export type GridTopology = GridTopologyNode[];
+export type GridTopology = GridNode[];
 
 
 /**
  * Grid Topology factory. It creates a new grid topology: an array
  * of nodes (in coordinate format x,y) that follows a certain lattice or pattern.
- * Optionally, each node can be assigned certain custom data based on
- * its coordinates through the handler dataFiller.
+ * Optionally, each node can be assigned RGB data based on
+ * its coordinates through the handler rgbFiller.
  * @public
  * @function CreateGridTopology
  * @param {GridParameters} gridParameters: GridParameters {Set of grid configuration parameters}
- * @param {GridTopologyDataFiller} dataFiller {Optional function to fill each node with custom data.}
+ * @param {GridTopologyRGBFiller} rgbFiller {Optional function to fill each node with RGB data.}
  * @return {Promise<GridTopology>} {Promise that returns a grid topology (array of nodes) when resolved.}
  */
 export function CreateGridTopology(gridParameters: GridParameters,
-                                   dataFiller?: GridTopologyDataFiller): Promise<GridTopology> {
+                                   rgbFiller?: GridTopologyRGBFiller): Promise<GridTopology> {
   return new Promise<GridTopology>((resolve, reject) => {
     try {
       timer.reset();
@@ -100,17 +100,17 @@ export function CreateGridTopology(gridParameters: GridParameters,
             x: dp + vp,
             y: dl + vl,
           };
-          let tp = aft.transform(p);
+          let node: GridNode = aft.transform(p);
 
           // Filter points outside the target pixel-space area.
-          if (inside(tp)) {
-            // Finally fill with custom data if handler is available.
-            if (dataFiller) {
-              const data = dataFiller(tp);
-              if (data) { tp = {...tp, data}; }
+          if (inside(node)) {
+            // Finally fill with RGB data if handler is available.
+            if (rgbFiller) {
+              const rgb = rgbFiller(node);
+              if (rgb) { node = {...node, rgb}; }
               else { return; }
             }
-            grid.push(tp);
+            grid.push(node);
           }
         });
       });
