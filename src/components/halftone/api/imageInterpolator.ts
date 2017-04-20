@@ -32,7 +32,7 @@ export const CreateImageInterpolator = (imgMatrix: number[][][],
         return imgMatrix[pixel.y][pixel.x].map((ch, i) => ch * pixel.weight + avg[i]);
       }, [0, 0, 0]);
     } catch (error) {
-      console.error(`[ERROR] ImageInterpolator: ${error}`);
+      console.error(`[ERROR] Image Interpolator: ${error.message}`);
       throw error;
     }
   };

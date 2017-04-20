@@ -1,11 +1,10 @@
 import * as chroma from "chroma-js";
 import * as d3 from "d3";
 import * as timer from "../../../api/timerLog";
-import * as imgX from "../api/imageInterpolator";
 import * as imgCh from "../api/imageChannelExtractor";
 import * as dot from "./dotTopology";
 import * as grd from "./gridTopology";
-import * as px from "./pixelTopology"; // Only for testing.
+import * as layerManager from "./layerManager";
 const styles = require("../halftoneTheme.scss");
 
 /**
@@ -15,19 +14,22 @@ const styles = require("../halftoneTheme.scss");
 
 // Input elements.
 let imgMatrix: any[][] = null;
+let imgWidth: number = 0;
+let imgHeight: number = 0;
 
-// Chart main elements.
-let parentHtmlClassName: string = null;
+// Svg main elements.
+let svg = null;
 let svgViewport = null;
 
-// Width and Height of the component in relative units.
-// Fit the container by default unless a specific relative
+// Width and Height of the svg component in relative units.
+// Fit its parent by default unless a specific relative
 // size is indicated from the caller.
 let widthRel = "100%";
 let heightRel = "100%";
-// Width and Height of the component in absolute units.
+// Width and Height of the svg component in absolute units.
 let widthAbs = null;
 let heightAbs = null;
+
 
 /**
  * Helper Functions
@@ -35,8 +37,8 @@ let heightAbs = null;
  */
 
 function calculateAbsoluteSize() {
-  widthAbs = parseInt(svgViewport.style("width"), 10);
-  heightAbs = parseInt(svgViewport.style("height"), 10);
+  widthAbs = parseInt(svg.style("width"), 10);
+  heightAbs = parseInt(svg.style("height"), 10);
 }
 
 /**
@@ -44,18 +46,22 @@ function calculateAbsoluteSize() {
  * @private
  */
 
-function initializeChart() {
-  svgViewport = d3.select(`.${parentHtmlClassName}`)
+function initializeSvg(parentNodeClassName: string) {
+  svg = d3.select(`.${parentNodeClassName}`)
     .append("svg")
-      .attr("class", "svg-viewport")
+      .attr("class", "svg")
       .attr("width", widthRel)
       .attr("height", heightRel);
   calculateAbsoluteSize();
+  svgViewport = svg
+      .attr("viewBox", `-1 -1 ${imgWidth + 2} ${imgHeight + 2}`)
+      .attr("preserveAspectRatio", "xMidYMid meet")
+    .append("g")
+      .attr("class", "svg-viewport");
 }
 
 function initializeGrid() {
-  
-  
+
   const gridParams: grd.GridParameters = {
     pattern: grd.GridPatternType.Square,
     targetWidth: imgMatrix[0].length,
@@ -68,7 +74,7 @@ function initializeGrid() {
   };
 
   const dotParams: dot.DotParameters = {
-    shape: dot.DotType.Wye,
+    shape: dot.DotType.Circle,
     sizeBinding: imgCh.Channel.Lightness,
     sizeMinThreshold: 0,
     sizeMaxThreshold: 1,
@@ -77,34 +83,29 @@ function initializeGrid() {
     color: "rgb(0, 0, 243)",
   };
 
-  const gridContainer = svgViewport
-      .attr("viewBox", `-1 -1 ${gridParams.targetWidth + 2} ${gridParams.targetHeight + 2}`)
-      .attr("preserveAspectRatio", "xMidYMid meet")
-    .append("g")
-      .attr("class", "grid-container");
-  
-  const dotTopology = dot.CreateDotTopology(dotParams);
-  const rgbFiller = imgX.CreateImageInterpolator(imgMatrix, imgX.Bilinear);
-  let gridLayer = null;
-  grd.CreateGridTopology(gridParams, rgbFiller)
-    .then((gridTopology) => {
-      timer.reset();
-      gridLayer = gridContainer
-        .append("g")
-          .attr("class", "grid-topology-layer")
-        .selectAll("path")
-          .data(gridTopology)
-        .enter().append("path")
-            .attr("d", dotTopology.dotShape)
-            .attr("transform", dotTopology.dotTransform)
-            .attr("fill", dotTopology.dotFill);
-        // .enter().append("circle")
-        //   .attr("transform", (d) => `translate(${d.x}, ${d.y})`)
-        //   .attr("r", (d) => dotScale(1 - chroma(...d.rgb, "rgb").hsl()[2]))
-        //   .attr("fill", (d) => chroma(...d.rgb, "rgb").css("hsl"));
-      timer.logElapsed("[DrawGridTopology]");
-    })
-    .catch((error) => { console.error(`[ERROR] CreatingGridTopologyLayer: ${error}`); });
+  const layerParams: layerManager.LayerParameters = {
+    name: "first",
+    opacity: 1,
+    zIndex: 0,
+    baseImage: imgMatrix,
+    gridParams,
+    dotParams,
+  };
+
+  layerManager.addLayer(svgViewport, layerParams);
+  // layerManager.addLayer(svgViewport, {
+  //   ...layerParams,
+  //   name: "second",
+  //   gridParams: {
+  //     ...gridParams,
+  //     rotationAngle: 15,
+  //   },
+  //   dotParams: {
+  //     ...dotParams,
+  //     shape: dot.DotType.Cross,
+  //     sizeMaxThreshold: 0.5,
+  //     colorCustom: true,
+  //   }});
 }
 
 /**
@@ -112,13 +113,18 @@ function initializeGrid() {
  * @public
  */
 
-export function initialize(imageMatrix: any[][], elementId: string,
+export function initialize(imageMatrix: any[][], parentNode: string,
                            width: string = widthRel, height: string = heightRel) {
-  parentHtmlClassName = elementId;
+  // Input image.
   imgMatrix = imageMatrix;
+  imgWidth = imgMatrix[0].length;
+  imgHeight = imgMatrix.length;
+
+  // Component size.
   if (width) { widthRel = width; }
   if (height) { heightRel = height; }
 
-  initializeChart();
+  // Initialize.
+  initializeSvg(parentNode);
   initializeGrid();
 }

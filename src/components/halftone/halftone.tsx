@@ -104,7 +104,7 @@ export class HalftoneComponent extends React.Component < IProps, {} > {
     rgbMatrix.getMatrix(this.props.imageUrl, this.props.resolution)
       .then((imgMatrix) => appChart.initialize(imgMatrix, styles.container,
       this.props.width, this.props.height))
-      .catch((reason) => console.error(`ERROR: Halftone Simulator. ${reason}`));
+      .catch((error) => console.error(`[ERROR] Halftone Simulator App: ${error}`));
   }
 
 };

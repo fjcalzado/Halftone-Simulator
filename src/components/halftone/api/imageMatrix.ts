@@ -25,10 +25,17 @@ const CreateImageChannelMatrix = (ch: Channel) => {
     getMatrix: (url: string, resolution: number): Promise<any[][]> => {
       const promise = new Promise(
         (resolve, reject) => {
-          extractImageData(url, resolution)
+          try {
+            extractImageData(url, resolution)
             .then((imgData) => extractImageChannel(imgData, ch))
             .then((imgMatrix) => resolve(imgMatrix))
-            .catch(reject);
+            .catch((error) => {
+              console.error(`[ERROR] Extracting Image Data: ${error.message}`);
+              throw error; // Let error bubbles up.
+            });
+          } catch (error) {
+            reject(error);
+          }
         });
       return promise;
     },

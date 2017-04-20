@@ -118,7 +118,7 @@ export function CreateGridTopology(gridParameters: GridParameters,
       timer.logElapsed("[CreateGridTopology]");
       resolve(grid);
     } catch (error) {
-      reject(error.message);
+      reject(error);
     }
   });
 }

@@ -7,13 +7,13 @@ import { CreateGridTopology, GridParameters } from "./gridTopology";
  * Only for testing purposes. It appends a pixel topology: a grid that simulates
  * pixels layout.
  * @public
- * @function CreatePixelTopologyLayer
+ * @function CreatePixelTopology
  * @param  {number} width: number  {Number of horizontal pixels.}
  * @param  {number} height: number {Number of vertical pixels.}
  * @param  {any} parent: any {Target SVG item where pixel topology layer will be appended. }
  * @return {any} {Pixel Topology Layer (SVG item) generated.}
  */
-export function CreatePixelTopologyLayer(width: number, height: number, parent: any): Promise<any> {
+export function CreatePixelTopology(width: number, height: number, parent: any): Promise<any> {
   return new Promise<void>((resolve, reject) => {
     try {
       const gridParams: GridParameters = {
@@ -44,9 +44,12 @@ export function CreatePixelTopologyLayer(width: number, height: number, parent: 
         timer.logElapsed("[DrawPixelTopologyLayer]");
         resolve(pixelLayer);
       })
-      .catch((error) => { throw error; });
+      .catch((error) => {
+        console.error(`[ERROR] Creating Grid Topology: ${error.message}`);
+        throw error; // Let error bubbles up.
+      });
     } catch (error) {
-      reject(error.message);
+      reject(error);
     }
   });
 }

@@ -57,8 +57,8 @@ export function extractImageData(url: string, res: number): Promise < ImageData 
 
         // Let img object load the url.
         img.src = url;
-      } catch (e) {
-        reject(e.message);
+      } catch (error) {
+        reject(error);
       }
     });
 }
