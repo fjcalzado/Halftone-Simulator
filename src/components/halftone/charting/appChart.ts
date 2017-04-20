@@ -92,6 +92,7 @@ function initializeGrid() {
     dotParams,
   };
 
+  // TODO: Handle Promise here.
   layerManager.addLayer(svgViewport, layerParams);
   // layerManager.addLayer(svgViewport, {
   //   ...layerParams,

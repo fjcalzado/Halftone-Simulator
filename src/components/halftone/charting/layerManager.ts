@@ -61,3 +61,18 @@ export function addLayer(masterNode, layerParams: LayerParameters): Promise<bool
       }
   });
 }
+
+export function removeLayer(masterNode, name: string): Promise<boolean> {
+  return new Promise<boolean>(
+    (resolve, reject) => {
+      if (layerExists(masterNode, name)) {
+        resolve(false);
+      } else {
+        try {
+          
+        } catch (error) {
+          reject(error);
+        }
+      }
+  });
+}
