@@ -1,5 +1,6 @@
 import * as d3 from "d3";
-import * as timer from "../../../api/timerLog";
+
+import * as timer from "../../../api";
 import * as at from "./affineTransform";
 import * as grdp from "./gridPatterns";
 

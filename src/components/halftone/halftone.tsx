@@ -1,6 +1,7 @@
 import * as React from "react";
-import * as appChart from "./charting/appChart";
-import { rgbMatrix } from "./api/imageMatrix";
+
+import * as appChart from "./charting";
+import { rgbMatrix } from "./imaging";
 const styles = require("./halftoneTheme.scss");
 
 /**

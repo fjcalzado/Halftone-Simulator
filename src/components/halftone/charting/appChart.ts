@@ -1,7 +1,8 @@
-import * as chroma from "chroma-js";
+import chroma from "chroma-js";
 import * as d3 from "d3";
-import * as timer from "../../../api/timerLog";
-import * as imgCh from "../api/imageChannelExtractor";
+
+import * as timer from "../../../api";
+import * as img from "../imaging";
 import * as dot from "./dotTopology";
 import * as grd from "./gridTopology";
 import * as layerManager from "./layerManager";
@@ -13,9 +14,9 @@ const styles = require("../halftoneTheme.scss");
  */
 
 // Input elements.
-let imgMatrix: any[][] = null;
-let imgWidth: number = 0;
-let imgHeight: number = 0;
+let srcImage: any[][] = null;
+let srcImgWidth: number = 0;
+let srcImgHeight: number = 0;
 
 // Svg main elements.
 let svg = null;
@@ -54,7 +55,7 @@ function initializeSvg(parentNodeClassName: string) {
       .attr("height", heightRel);
   calculateAbsoluteSize();
   svgViewport = svg
-      .attr("viewBox", `-1 -1 ${imgWidth + 2} ${imgHeight + 2}`)
+      .attr("viewBox", `-1 -1 ${srcImgWidth + 2} ${srcImgHeight + 2}`)
       .attr("preserveAspectRatio", "xMidYMid meet")
     .append("g")
       .attr("class", "svg-viewport");
@@ -64,8 +65,8 @@ function initializeGrid() {
 
   const gridParams: grd.GridParameters = {
     pattern: grd.GridPatternType.Square,
-    targetWidth: imgMatrix[0].length,
-    targetHeight: imgMatrix.length,
+    targetWidth: srcImage[0].length,
+    targetHeight: srcImage.length,
     scaleFactor: 1,
     //translateX: imgMatrix[0].length / 2,
     //translateY: imgMatrix.length / 2,
@@ -75,7 +76,7 @@ function initializeGrid() {
 
   const dotParams: dot.DotParameters = {
     shape: dot.DotType.Circle,
-    sizeBinding: imgCh.Channel.Lightness,
+    sizeBinding: img.Channel.Lightness,
     sizeMinThreshold: 0,
     sizeMaxThreshold: 1,
     rotationAngle: 0,
@@ -87,7 +88,7 @@ function initializeGrid() {
     name: "first",
     opacity: 1,
     zIndex: 0,
-    baseImage: imgMatrix,
+    sourceImage: srcImage,
     gridParams,
     dotParams,
   };
@@ -114,12 +115,12 @@ function initializeGrid() {
  * @public
  */
 
-export function initialize(imageMatrix: any[][], parentNode: string,
+export function initialize(sourceImage: any[][], parentNode: string,
                            width: string = widthRel, height: string = heightRel) {
   // Input image.
-  imgMatrix = imageMatrix;
-  imgWidth = imgMatrix[0].length;
-  imgHeight = imgMatrix.length;
+  srcImage = sourceImage;
+  srcImgWidth = srcImage[0].length;
+  srcImgHeight = srcImage.length;
 
   // Component size.
   if (width) { widthRel = width; }

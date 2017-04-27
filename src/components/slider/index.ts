@@ -1,5 +1,1 @@
-import {SliderComponent} from "./slider";
-
-export {
-  SliderComponent
-}
+export {SliderComponent} from "./slider";

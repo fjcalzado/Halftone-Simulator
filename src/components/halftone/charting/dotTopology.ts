@@ -1,6 +1,7 @@
-import * as chroma from "chroma-js";
+import chroma from "chroma-js";
 import * as d3 from "d3";
-import * as imgCh from "../api/imageChannelExtractor";
+
+import * as img from "../imaging";
 import * as dotp from "./dotPatterns";
 import { GridNode } from "./gridTopology";
 
@@ -15,7 +16,7 @@ export {DotType};
 
 export interface DotParameters {
   shape: DotType;
-  sizeBinding: imgCh.Channel;
+  sizeBinding: img.Channel;
   sizeMinThreshold: number;
   sizeMaxThreshold: number;
   rotationAngle: number;
@@ -36,18 +37,18 @@ export interface DotTopology {
  */
 
 // Domain represents the input channel value.
-const getDomain = (ch: imgCh.Channel) => {
+const getDomain = (ch: img.Channel) => {
     switch (ch) {
-      case imgCh.Channel.Red:
-      case imgCh.Channel.Green:
-      case imgCh.Channel.Blue:
+      case img.Channel.Red:
+      case img.Channel.Green:
+      case img.Channel.Blue:
         return [0, 255];
-      case imgCh.Channel.Saturation:
-      case imgCh.Channel.Lightness:
-      case imgCh.Channel.Cyan:
-      case imgCh.Channel.Magenta:
-      case imgCh.Channel.Yellow:
-      case imgCh.Channel.Black:
+      case img.Channel.Saturation:
+      case img.Channel.Lightness:
+      case img.Channel.Cyan:
+      case img.Channel.Magenta:
+      case img.Channel.Yellow:
+      case img.Channel.Black:
         return [0, 1];
       default:
         return [0, 1];
@@ -59,8 +60,8 @@ const getRange = (dotParams: DotParameters) => {
   // Size = Area.
   // Lets determine which max area to cover a whole bin for each shape.
   const maxArea = dotp.getMaxCoverArea(dotParams.shape);
-  const inverted = ((dotParams.sizeBinding === imgCh.Channel.Lightness) ||
-                    (dotParams.sizeBinding === imgCh.Channel.Luminance)) ? true : false;
+  const inverted = ((dotParams.sizeBinding === img.Channel.Lightness) ||
+                    (dotParams.sizeBinding === img.Channel.Luminance)) ? true : false;
   // Apply size thresholds.
   const maxRange = maxArea * dotParams.sizeMaxThreshold;
   const minRange = 0 + dotParams.sizeMinThreshold;
@@ -77,18 +78,18 @@ function CreateSizeScale(dotParams: DotParameters) {
 
 // It creates an extractor function to get a specific channel value
 // from RGB pixel.
-function CreateChExtractor(ch: imgCh.Channel) {
+function CreateChExtractor(ch: img.Channel) {
   switch (ch) {
-    case imgCh.Channel.RGB:
-    case imgCh.Channel.HSL:
-    case imgCh.Channel.CMYK:
-    case imgCh.Channel.Hue:
+    case img.Channel.RGB:
+    case img.Channel.HSL:
+    case img.Channel.CMYK:
+    case img.Channel.Hue:
       // [RGB, HSL, CMYK] Unsupported multi-channel values for size binding.
       // [HUE] Doesn't make sense as it is qualitative not quantitative.
       // Lets consider Lightness channel for these cases.
-      return imgCh.CreateChExtractorForRGB(imgCh.Channel.Lightness);
+      return img.CreateChExtractorForRGB(img.Channel.Lightness);
     default:
-      return imgCh.CreateChExtractorForRGB(ch);
+      return img.CreateChExtractorForRGB(ch);
   }
 }
 

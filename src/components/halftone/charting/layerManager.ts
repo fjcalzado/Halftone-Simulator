@@ -1,8 +1,10 @@
 import * as d3 from "d3";
+
+import * as timer from "../../../api";
+import * as img from "../imaging";
 import * as dot from "./dotTopology";
 import * as grd from "./gridTopology";
-import * as timer from "../../../api/timerLog";
-import * as imgX from "../api/imageInterpolator";
+
 
 /**
  * Interface Export.
@@ -13,7 +15,7 @@ export interface LayerParameters {
   name: string;
   opacity: number;
   zIndex: number;
-  baseImage: any[][];
+  sourceImage: any[][];
   gridParams: grd.GridParameters;
   dotParams: dot.DotParameters;
 }
@@ -34,7 +36,7 @@ export function addLayer(masterNode, layerParams: LayerParameters): Promise<bool
       } else {
         try {
           const dotTopology = dot.CreateDotTopology(layerParams.dotParams);
-          const rgbFiller = imgX.CreateImageInterpolator(layerParams.baseImage, imgX.Bilinear);
+          const rgbFiller = img.CreateImageInterpolator(layerParams.sourceImage, img.Bilinear);
 
           grd.CreateGridTopology(layerParams.gridParams, rgbFiller)
             .then((gridTopology) => {
@@ -66,13 +68,13 @@ export function removeLayer(masterNode, name: string): Promise<boolean> {
   return new Promise<boolean>(
     (resolve, reject) => {
       if (layerExists(masterNode, name)) {
-        resolve(false);
-      } else {
         try {
           
         } catch (error) {
           reject(error);
         }
+      } else {
+        resolve(false);
       }
   });
 }

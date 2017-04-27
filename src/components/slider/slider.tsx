@@ -1,4 +1,5 @@
 import * as React from "react";
+
 const styles = require("./sliderTheme.scss");
 
 interface IProps {
