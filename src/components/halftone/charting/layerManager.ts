@@ -50,7 +50,7 @@ export function addLayer(masterNode, layerParams: LayerParameters): Promise<bool
                     .attr("d", dotTopology.dotShape)
                     .attr("transform", dotTopology.dotTransform)
                     .attr("fill", dotTopology.dotFill);
-              timer.logElapsed("[DrawGridTopology]");
+              timer.logElapsed("[Add Layer To DOM]");
               resolve(true);
             })
             .catch((error) => {
@@ -69,12 +69,36 @@ export function removeLayer(masterNode, name: string): Promise<boolean> {
     (resolve, reject) => {
       if (layerExists(masterNode, name)) {
         try {
-          
+          timer.reset();
+          selectLayer(masterNode, name).remove();
+          timer.logElapsed("[Remove Layer From DOM]");
         } catch (error) {
           reject(error);
         }
       } else {
         resolve(false);
       }
+  });
+}
+
+function updateLayerAttribute(masterNode, name: string,
+                              modifyAttribute: (selection) => void): boolean {
+  if (layerExists(masterNode, name)) {
+    modifyAttribute( selectLayer(masterNode, name) );
+    return true;
+  } else {
+    return false;
+  }
+}
+
+export function updateLayerName(masterNode, name: string, newName: string) {
+  return updateLayerAttribute(masterNode, name, (selection) => {
+    selection.attr("class", `layer-${newName}`);
+  });
+}
+
+export function updateLayerOpacity(masterNode, name: string, newOpacity: number) {
+  return updateLayerAttribute(masterNode, name, (selection) => {
+    selection.attr("opacity", newOpacity);
   });
 }

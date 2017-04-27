@@ -11,10 +11,10 @@ import { CreateGridTopology, GridParameters } from "./gridTopology";
  * @function CreatePixelTopology
  * @param  {number} width: number  {Number of horizontal pixels.}
  * @param  {number} height: number {Number of vertical pixels.}
- * @param  {any} parent: any {Target SVG item where pixel topology layer will be appended. }
+ * @param  {any} masterNode: any {Target SVG item where pixel topology layer will be appended. }
  * @return {any} {Pixel Topology Layer (SVG item) generated.}
  */
-export function CreatePixelTopology(width: number, height: number, parent: any): Promise<any> {
+export function AddPixelTopologyLayer(width: number, height: number, masterNode: any): Promise<any> {
   return new Promise<void>((resolve, reject) => {
     try {
       const gridParams: GridParameters = {
@@ -27,7 +27,7 @@ export function CreatePixelTopology(width: number, height: number, parent: any):
 
       CreateGridTopology(gridParams).then((gridTopology) => {
         timer.reset();
-        const pixelLayer = parent.append("g")
+        const pixelLayer = masterNode.append("g")
           .attr("class", "pixel-topology-layer")
           .attr("transform", `translate(-0.5, -0.5)`)
           .attr("fill", "none")
@@ -42,7 +42,7 @@ export function CreatePixelTopology(width: number, height: number, parent: any):
         pixelLayer.append("polyline")
           .attr("points", `0 ${height}, ${width} ${height}, ${width} 0`);
 
-        timer.logElapsed("[DrawPixelTopologyLayer]");
+        timer.logElapsed("[Add Pixel Topology Layer]");
         resolve(pixelLayer);
       })
       .catch((error) => {

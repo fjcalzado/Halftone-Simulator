@@ -8,6 +8,9 @@ import * as grd from "./gridTopology";
 import * as layerManager from "./layerManager";
 const styles = require("../halftoneTheme.scss");
 
+// Only for testing.
+//import { AddPixelTopologyLayer } from "./pixelTopology";
+
 /**
  * Module local variables.
  * @private
@@ -94,20 +97,24 @@ function initializeGrid() {
   };
 
   // TODO: Handle Promise here.
-  layerManager.addLayer(svgViewport, layerParams);
-  // layerManager.addLayer(svgViewport, {
-  //   ...layerParams,
-  //   name: "second",
-  //   gridParams: {
-  //     ...gridParams,
-  //     rotationAngle: 15,
-  //   },
-  //   dotParams: {
-  //     ...dotParams,
-  //     shape: dot.DotType.Cross,
-  //     sizeMaxThreshold: 0.5,
-  //     colorCustom: true,
-  //   }});
+  layerManager.addLayer(svgViewport, layerParams)
+    .then((result) => layerManager.updateLayerName(svgViewport, "first", "first-renamed"));
+  layerManager.addLayer(svgViewport, {
+    ...layerParams,
+    name: "second",
+    gridParams: {
+      ...gridParams,
+      rotationAngle: 15,
+    },
+    dotParams: {
+      ...dotParams,
+      shape: dot.DotType.Cross,
+      sizeMaxThreshold: 0.5,
+      colorCustom: true,
+    }}).then((result) => layerManager.removeLayer(svgViewport, "second"));
+
+
+  // AddPixelTopologyLayer(gridParams.targetWidth, gridParams.targetHeight, svgViewport);
 }
 
 /**
