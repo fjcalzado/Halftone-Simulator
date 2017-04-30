@@ -121,15 +121,19 @@ function initializeGrid() {
   setTimeout(() => {
     layerManager.draw(svgViewport, srcImage, layerStack2)
     .then((result) => layerManager.reportLayerDOMStatus(svgViewport));
-  }, 4000);
+  }, 6000);
 
-  const layerStack3 = [layerParams];
-  setTimeout(() => {
-    layerManager.draw(svgViewport, srcImage, layerStack3)
-    .then((result) => layerManager.reportLayerDOMStatus(svgViewport));
-  }, 4000);
+  // const layerStack2 = layerStack1.map((item, i) => ({...item, zIndex: 1 - i}));
+  // setTimeout(() => {
+  //   layerManager.draw(svgViewport, srcImage, layerStack2)
+  //   .then((result) => layerManager.reportLayerDOMStatus(svgViewport));
+  // }, 4000);
 
-
+  // const layerStack3 = [{...layerParams, dotParams: {...dotParams, shape: dot.DotType.Square }}];
+  // setTimeout(() => {
+  //   layerManager.draw(svgViewport, srcImage, layerStack3)
+  //   .then((result) => layerManager.reportLayerDOMStatus(svgViewport));
+  // }, 4000);
 
 
 
