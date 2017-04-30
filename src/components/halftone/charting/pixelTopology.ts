@@ -1,6 +1,6 @@
 import * as d3 from "d3";
 
-import * as timer from "../../../api";
+import {CreateTimer} from "../../../api-utils";
 import { GridPatternType } from "./gridPatterns";
 import { CreateGridTopology, GridParameters } from "./gridTopology";
 
@@ -26,7 +26,7 @@ export function AddPixelTopologyLayer(width: number, height: number, masterNode:
       };
 
       CreateGridTopology(gridParams).then((gridTopology) => {
-        timer.reset();
+        const timer = CreateTimer();
         const pixelLayer = masterNode.append("g")
           .attr("class", "pixel-topology-layer")
           .attr("transform", `translate(-0.5, -0.5)`)

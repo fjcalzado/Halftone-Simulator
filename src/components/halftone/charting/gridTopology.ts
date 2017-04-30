@@ -1,6 +1,6 @@
 import * as d3 from "d3";
 
-import * as timer from "../../../api";
+import {CreateTimer} from "../../../api-utils";
 import * as at from "./affineTransform";
 import * as grdp from "./gridPatterns";
 
@@ -51,7 +51,7 @@ export function CreateGridTopology(gridParameters: GridParameters,
                                    rgbFiller?: GridTopologyRGBFiller): Promise<GridTopology> {
   return new Promise<GridTopology>((resolve, reject) => {
     try {
-      timer.reset();
+      const timer = CreateTimer();
 
       // STEP 1: First of all, lets calculate our pre-requisites. This is just
       // done for performance efficiency.

@@ -1,7 +1,7 @@
 import chroma from "chroma-js";
 import * as d3 from "d3";
 
-import * as timer from "../../../api";
+import {CreateTimer} from "../../../api-utils";
 import * as img from "../imaging";
 import * as dot from "./dotTopology";
 import * as grd from "./gridTopology";
@@ -91,27 +91,46 @@ function initializeGrid() {
     name: "first",
     opacity: 1,
     zIndex: 0,
-    sourceImage: srcImage,
     gridParams,
     dotParams,
   };
 
-  // TODO: Handle Promise here.
-  layerManager.addLayer(svgViewport, layerParams)
-    .then((result) => layerManager.updateLayerName(svgViewport, "first", "first-renamed"));
-  layerManager.addLayer(svgViewport, {
-    ...layerParams,
-    name: "second",
-    gridParams: {
-      ...gridParams,
-      rotationAngle: 15,
+  const layerStack1: layerManager.LayerStack = [
+    layerParams,
+    { ...layerParams,
+      name: "second",
+      zIndex: 1,
+      gridParams: {
+        ...gridParams,
+        rotationAngle: 15,
+      },
+      dotParams: {
+        ...dotParams,
+        shape: dot.DotType.Cross,
+        sizeMaxThreshold: 0.5,
+        colorCustom: true,
+      },
     },
-    dotParams: {
-      ...dotParams,
-      shape: dot.DotType.Cross,
-      sizeMaxThreshold: 0.5,
-      colorCustom: true,
-    }}).then((result) => layerManager.removeLayer(svgViewport, "second"));
+  ];
+
+  // TODO: Handle Promise here.
+  layerManager.draw(svgViewport, srcImage, layerStack1)
+    .then((result) => layerManager.reportLayerDOMStatus(svgViewport));
+
+  const layerStack2 = layerStack1.map((item, i) => ({...item, zIndex: 1 - i}));
+  setTimeout(() => {
+    layerManager.draw(svgViewport, srcImage, layerStack2)
+    .then((result) => layerManager.reportLayerDOMStatus(svgViewport));
+  }, 4000);
+
+  const layerStack3 = [layerParams];
+  setTimeout(() => {
+    layerManager.draw(svgViewport, srcImage, layerStack3)
+    .then((result) => layerManager.reportLayerDOMStatus(svgViewport));
+  }, 4000);
+
+
+
 
 
   // AddPixelTopologyLayer(gridParams.targetWidth, gridParams.targetHeight, svgViewport);
