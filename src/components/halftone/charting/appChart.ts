@@ -88,7 +88,7 @@ function initializeGrid() {
   };
 
   const layerParams: layerManager.LayerParameters = {
-    name: "first",
+    name: "main",
     opacity: 1,
     zIndex: 0,
     gridParams,
@@ -98,7 +98,7 @@ function initializeGrid() {
   const layerStack1: layerManager.LayerStack = [
     layerParams,
     { ...layerParams,
-      name: "second",
+      name: "crossblue",
       zIndex: 1,
       gridParams: {
         ...gridParams,
@@ -117,7 +117,13 @@ function initializeGrid() {
   layerManager.draw(svgViewport, srcImage, layerStack1)
     .then((result) => layerManager.reportLayerDOMStatus(svgViewport));
 
-  const layerStack2 = layerStack1.map((item, i) => ({...item, zIndex: 1 - i}));
+  console.log(JSON.stringify(layerManager.previousState));
+
+  const layerStack2 = layerStack1.slice(0);
+  layerStack2[0].dotParams.shape = dot.DotType.Square;
+  
+  console.log(JSON.stringify(layerManager.previousState));
+
   setTimeout(() => {
     layerManager.draw(svgViewport, srcImage, layerStack2)
     .then((result) => layerManager.reportLayerDOMStatus(svgViewport));

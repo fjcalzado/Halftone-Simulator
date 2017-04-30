@@ -21,6 +21,7 @@ export interface LayerParameters {
 
 export type LayerStack = LayerParameters[];
 
+
 /**
  * Helper functions.
  * @private
@@ -71,13 +72,21 @@ function updateLayerDots(singleLayerSelection, layerParams: LayerParameters,
 
 function layerNeedsRedraw(oldLayerParams: LayerParameters, newLayerParams: LayerParameters): boolean {
   if (oldLayerParams && newLayerParams) {
-    const modifiedGridParams = JSON.stringify(oldLayerParams.gridParams) !== JSON.stringify(newLayerParams.gridParams);
-    const modifiedDotParams = JSON.stringify(oldLayerParams.dotParams) !== JSON.stringify(newLayerParams.dotParams);
+    const modifiedGridParams = JSON.stringify(oldLayerParams.gridParams) !==
+                               JSON.stringify(newLayerParams.gridParams);
+    const modifiedDotParams = JSON.stringify(oldLayerParams.dotParams) !==
+                              JSON.stringify(newLayerParams.dotParams);
     return modifiedGridParams || modifiedDotParams;
   } else {
     return true;
   }
 }
+
+export function clear(masterNodeSelection) {
+  masterNodeSelection.selectAll("g[class^='layer']").remove();
+}
+
+export let previousState: LayerStack = [];
 
 export function draw(masterNodeSelection, sourceImage: any[][], layers: LayerStack): Promise<boolean> {
   return new Promise<boolean>(
@@ -89,35 +98,40 @@ export function draw(masterNodeSelection, sourceImage: any[][], layers: LayerSta
         const sortedLayers = sortLayerStackByZIndex(layers);
         const layerSelection = masterNodeSelection.selectAll("g[class^='layer']");
 
-        // Save current layer parameters (old state) to be able to compare
-        // with new layer parameters and determine if a redraw is needed.
-        const oldState = d3.local();
-        layerSelection.each(function(oldLayerParams) {
-          oldState.set(this, oldLayerParams);
-        });
-
         // STEP 2: Handle UPDATE, ENTER AND EXIT selections for layers.
         // Generate the final layer selection that needs redraw. This selection
         // will be the union between layers in enter selection and thos layers in
         // update selection that really needs redraw (grid or dot topology modified).
         const updateLayerSelection = layerSelection
-            .data(sortedLayers, (d) => d.name).order();
+            .data(sortedLayers, (layer) => layer.name).order();
         updateLayerSelection.exit().remove();
         const mergedLayerSelection = updateLayerSelection
           .enter().append("g")
           .merge(updateLayerSelection)
-            .attr("class", (d) => `layer-${d.name}`)
-            .attr("opacity", (d) => d.opacity);
+            .attr("class", (layer) => `layer-${layer.name}`)
+            .attr("opacity", (layer) => layer.opacity);
 
         // STEP 3: Redraw dots for each layer that needs update.
         // DO NOT replace 'function' for 'arrow function' in 'each' method argument
         // as we need the proper scope for 'this', representing each layer node.
         const promiseList: Array<Promise<boolean>> = [];
         mergedLayerSelection.each(function(layerParams) {
-          if (layerNeedsRedraw(oldState.get(this), layerParams)) {
+          // Skip those layers that do no really needs redraw as there is no grid/dot
+          // topology modifications. We must compare with the previous layer params
+          // locally stored.
+          const oldLayerParams = previousState.find((item) => item.name === layerParams.name);
+          if (layerNeedsRedraw(oldLayerParams, layerParams)) {
             promiseList.push(updateLayerDots(d3.select(this), layerParams, imgFiller));
           }
+          // Store current layer params to be able to do the previous comparison for the
+          // next draw cycle.
+          // previousState.set(layerParams.name, layerParams);
+          // console.log(JSON.stringify(previousState.get(layerParams.name)));
         });
+
+        previousState = layers.map((item) => {
+          return {...item, gridParams: {...item.gridParams}, dotParams: {...item.dotParams}};
+        })
 
         // Wait for all layer promises to resolve.
         Promise.all(promiseList)
