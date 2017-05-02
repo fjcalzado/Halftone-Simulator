@@ -27,7 +27,7 @@ export type LayerStack = LayerParameters[];
  * @private
  */
 
-function sortLayerStackByZIndex(layers: LayerStack): LayerStack {
+function sortLayersByZIndex(layers: LayerStack): LayerStack {
   return layers.sort((a, b) => a.zIndex - b.zIndex);
 }
 
@@ -39,6 +39,18 @@ function cloneLayerParams(layerParams: LayerParameters): LayerParameters {
   };
 }
 
+
+/**
+ * Check whether a layer needs redraw by comparing it against its previous value
+ * and detecting any dot parameters or grid parameters change. Only layers with
+ * changes in its dot/grid topology need redraw, a change in layer parameters like
+ * zIndex or name should not imply a redraw to avoid a performance hit.
+ * @private
+ * @function layerNeedsRedraw
+ * @param  {LayerParameters} oldLayerParams: LayerParameters {First member in the comparison.}
+ * @param  {LayerParameters} newLayerParams: LayerParameters {Second member in the comparison.}
+ * @return {boolean} {True if grid or dot topology have changed.}
+ */
 function layerNeedsRedraw(oldLayerParams: LayerParameters, newLayerParams: LayerParameters): boolean {
   if (oldLayerParams && newLayerParams) {
     const modifiedGridParams = JSON.stringify(oldLayerParams.gridParams) !==
@@ -51,8 +63,18 @@ function layerNeedsRedraw(oldLayerParams: LayerParameters, newLayerParams: Layer
   }
 }
 
-function updateLayerDots(singleLayerSelection, layerParams: LayerParameters,
-                         imgFiller: img.ImageInterpolator): Promise<boolean> {
+/**
+ * Draw a layer described by its parameters and given a D3 selection
+ * to draw into and a link to the base image in form of an image filler.
+ * @private
+ * @function drawLayer
+ * @param  {D3 single selection} singleLayerSelection  {Layer selection in D3 format.}
+ * @param  {LayerParameters} layerParams: LayerParameters {Layer parameters.}
+ * @param  {ImageInterpolator} {Image interpolater used by brid topology to extract image pixel info.}
+ * @return {Promise<boolean>} {Promise indicating if operation was succesfully completed.}
+ */
+function drawLayer(singleLayerSelection, layerParams: LayerParameters,
+                   imgFiller: img.ImageInterpolator): Promise<boolean> {
   return new Promise<boolean>(
     (resolve, reject) => {
       try {
@@ -97,12 +119,27 @@ function updateLayerDots(singleLayerSelection, layerParams: LayerParameters,
 const previousLayers = d3.local();
 const layerSelector = "g[class^='layer']";
 
+/**
+ * Clear all layers for the given master node.
+ * @public
+ * @function clear
+ * @param  {D3 single selection} masterNodeSelection {Master node selection to be cleared.}
+ * @return {void} {void}
+ */
 export function clear(masterNodeSelection) {
   masterNodeSelection.selectAll(layerSelector).remove();
 }
 
-
-
+/**
+ * Draw layers given a set of layer parameters, a source image and
+ * a master node to draw into.
+ * @public
+ * @function draw
+ * @param  {D3 single selection} masterNodeSelection {Master node selection to be drawn.}
+ * @param  {any[][]} sourceImage: any[][] {Source image in matrix format}
+ * @param  {LayerStack} layers: LayerStack {Stack of layers described by its parameters}
+ * @return {Promise<boolean>} {Promise indicating if operation was succesfully completed.}
+ */
 export function draw(masterNodeSelection, sourceImage: any[][], layers: LayerStack): Promise<boolean> {
   return new Promise<boolean>(
     (resolve, reject) => {
@@ -110,7 +147,7 @@ export function draw(masterNodeSelection, sourceImage: any[][], layers: LayerSta
         // STEP 1: PREPROCESS
         // Initialize image-level processors and sort layers by its zIndex.
         const imgFiller = img.CreateImageInterpolator(sourceImage, img.Bilinear);
-        const sortedLayers = sortLayerStackByZIndex(layers);
+        const sortedLayers = sortLayersByZIndex(layers);
 
         // STEP 2: Handle UPDATE, ENTER AND EXIT selections for layers.
         // Generate the final layer selection that needs redraw. This selection
@@ -135,7 +172,7 @@ export function draw(masterNodeSelection, sourceImage: any[][], layers: LayerSta
           // topology modifications. We must compare with the previous layer params
           // locally stored.
           if (layerNeedsRedraw(previousLayers.get(this), layerParams)) {
-            promiseList.push(updateLayerDots(d3.select(this), layerParams, imgFiller));
+            promiseList.push(drawLayer(d3.select(this), layerParams, imgFiller));
           }
           // Store current layer params to be able to do the previous comparison for the
           // next draw cycle.
@@ -157,6 +194,13 @@ export function draw(masterNodeSelection, sourceImage: any[][], layers: LayerSta
   });
 }
 
+/**
+ * Only for debugg puposes. It logs current layers and its number of nodes.
+ * @public
+ * @function reportLayerDOMStatus
+ * @param  {D3 single selection} masterNodeSelection {Master node to report.}
+ * @return {void}
+ */
 export function reportLayerDOMStatus(masterNodeSelection) {
   if (masterNodeSelection) {
     masterNodeSelection.selectAll(layerSelector).each(function(layerDatum) {
