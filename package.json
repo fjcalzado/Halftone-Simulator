@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/fjcalzado/DemoSeries-D3JS-Halftone.git"
+    "url": "git+https://github.com/fjcalzado/Halftone-Simulator.git"
   },
   "keywords": [
     "d3",
@@ -24,9 +24,9 @@
   "author": "Javier Calzado",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/fjcalzado/DemoSeries-D3JS-Halftone/issues"
+    "url": "https://github.com/fjcalzado/Halftone-Simulator/issues"
   },
-  "homepage": "https://github.com/fjcalzado/DemoSeries-D3JS-Halftone#readme",
+  "homepage": "https://github.com/fjcalzado/Halftone-Simulator#readme",
   "devDependencies": {
     "@types/node": "^7.0.12",
     "@types/react": "~15.0.20",

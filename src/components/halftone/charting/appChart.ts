@@ -95,34 +95,34 @@ function initializeGrid() {
 
   const layerStack1: layerManager.LayerStack = [
     layerParams,
-    { ...layerParams,
-      name: "crossblue",
-      zIndex: 1,
-      gridParams: {
-        ...gridParams,
-        rotationAngle: 15,
-      },
-      dotParams: {
-        ...dotParams,
-        shape: dot.DotType.Cross,
-        sizeMaxThreshold: 0.5,
-        colorCustom: true,
-      },
-    },
+    // { ...layerParams,
+    //   name: "crossblue",
+    //   zIndex: 1,
+    //   gridParams: {
+    //     ...gridParams,
+    //     rotationAngle: 15,
+    //   },
+    //   dotParams: {
+    //     ...dotParams,
+    //     shape: dot.DotType.Cross,
+    //     sizeMaxThreshold: 0.5,
+    //     colorCustom: true,
+    //   },
+    // },
   ];
 
   // TODO: Handle Promise here.
   layerManager.draw(svgViewport, srcImage, layerStack1)
     .then((result) => layerManager.reportLayerDOMStatus(svgViewport));
 
-  const layerStack2 = layerStack1.slice(0);
-  layerStack2[0].dotParams.shape = dot.DotType.Square;
-  layerStack2[1].zIndex = -1;
+  // const layerStack2 = layerStack1.slice(0);
+  // layerStack2[0].dotParams.shape = dot.DotType.Square;
+  // layerStack2[1].zIndex = -1;
 
-  setTimeout(() => {
-    layerManager.draw(svgViewport, srcImage, layerStack2)
-    .then((result) => layerManager.reportLayerDOMStatus(svgViewport));
-  }, 6000);
+  // setTimeout(() => {
+  //   layerManager.draw(svgViewport, srcImage, layerStack2)
+  //   .then((result) => layerManager.reportLayerDOMStatus(svgViewport));
+  // }, 6000);
 
   // const layerStack2 = layerStack1.map((item, i) => ({...item, zIndex: 1 - i}));
   // setTimeout(() => {
