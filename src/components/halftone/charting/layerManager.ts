@@ -31,6 +31,26 @@ function sortLayerStackByZIndex(layers: LayerStack): LayerStack {
   return layers.sort((a, b) => a.zIndex - b.zIndex);
 }
 
+function cloneLayerParams(layerParams: LayerParameters): LayerParameters {
+  return {
+    ...layerParams,
+    gridParams: {...layerParams.gridParams},
+    dotParams: {...layerParams.dotParams},
+  };
+}
+
+function layerNeedsRedraw(oldLayerParams: LayerParameters, newLayerParams: LayerParameters): boolean {
+  if (oldLayerParams && newLayerParams) {
+    const modifiedGridParams = JSON.stringify(oldLayerParams.gridParams) !==
+                               JSON.stringify(newLayerParams.gridParams);
+    const modifiedDotParams = JSON.stringify(oldLayerParams.dotParams) !==
+                              JSON.stringify(newLayerParams.dotParams);
+    return modifiedGridParams || modifiedDotParams;
+  } else {
+    return true;
+  }
+}
+
 function updateLayerDots(singleLayerSelection, layerParams: LayerParameters,
                          imgFiller: img.ImageInterpolator): Promise<boolean> {
   return new Promise<boolean>(
@@ -70,23 +90,18 @@ function updateLayerDots(singleLayerSelection, layerParams: LayerParameters,
   });
 }
 
-function layerNeedsRedraw(oldLayerParams: LayerParameters, newLayerParams: LayerParameters): boolean {
-  if (oldLayerParams && newLayerParams) {
-    const modifiedGridParams = JSON.stringify(oldLayerParams.gridParams) !==
-                               JSON.stringify(newLayerParams.gridParams);
-    const modifiedDotParams = JSON.stringify(oldLayerParams.dotParams) !==
-                              JSON.stringify(newLayerParams.dotParams);
-    return modifiedGridParams || modifiedDotParams;
-  } else {
-    return true;
-  }
-}
+/**
+ * Constants.
+ * @private
+ */
+const previousLayers = d3.local();
+const layerSelector = "g[class^='layer']";
 
 export function clear(masterNodeSelection) {
-  masterNodeSelection.selectAll("g[class^='layer']").remove();
+  masterNodeSelection.selectAll(layerSelector).remove();
 }
 
-export let previousState: LayerStack = [];
+
 
 export function draw(masterNodeSelection, sourceImage: any[][], layers: LayerStack): Promise<boolean> {
   return new Promise<boolean>(
@@ -96,12 +111,12 @@ export function draw(masterNodeSelection, sourceImage: any[][], layers: LayerSta
         // Initialize image-level processors and sort layers by its zIndex.
         const imgFiller = img.CreateImageInterpolator(sourceImage, img.Bilinear);
         const sortedLayers = sortLayerStackByZIndex(layers);
-        const layerSelection = masterNodeSelection.selectAll("g[class^='layer']");
 
         // STEP 2: Handle UPDATE, ENTER AND EXIT selections for layers.
         // Generate the final layer selection that needs redraw. This selection
-        // will be the union between layers in enter selection and thos layers in
+        // will be the union between layers in enter selection and those layers in
         // update selection that really needs redraw (grid or dot topology modified).
+        const layerSelection = masterNodeSelection.selectAll(layerSelector);
         const updateLayerSelection = layerSelection
             .data(sortedLayers, (layer) => layer.name).order();
         updateLayerSelection.exit().remove();
@@ -116,22 +131,16 @@ export function draw(masterNodeSelection, sourceImage: any[][], layers: LayerSta
         // as we need the proper scope for 'this', representing each layer node.
         const promiseList: Array<Promise<boolean>> = [];
         mergedLayerSelection.each(function(layerParams) {
-          // Skip those layers that do no really needs redraw as there is no grid/dot
+          // Skip those layers that do no really need redraw as there is no grid/dot
           // topology modifications. We must compare with the previous layer params
           // locally stored.
-          const oldLayerParams = previousState.find((item) => item.name === layerParams.name);
-          if (layerNeedsRedraw(oldLayerParams, layerParams)) {
+          if (layerNeedsRedraw(previousLayers.get(this), layerParams)) {
             promiseList.push(updateLayerDots(d3.select(this), layerParams, imgFiller));
           }
           // Store current layer params to be able to do the previous comparison for the
           // next draw cycle.
-          // previousState.set(layerParams.name, layerParams);
-          // console.log(JSON.stringify(previousState.get(layerParams.name)));
+          previousLayers.set(this, cloneLayerParams(layerParams));
         });
-
-        previousState = layers.map((item) => {
-          return {...item, gridParams: {...item.gridParams}, dotParams: {...item.dotParams}};
-        })
 
         // Wait for all layer promises to resolve.
         Promise.all(promiseList)
@@ -150,7 +159,7 @@ export function draw(masterNodeSelection, sourceImage: any[][], layers: LayerSta
 
 export function reportLayerDOMStatus(masterNodeSelection) {
   if (masterNodeSelection) {
-    masterNodeSelection.selectAll("g[class^='layer']").each(function(layerDatum) {
+    masterNodeSelection.selectAll(layerSelector).each(function(layerDatum) {
       const size = d3.select(this).selectAll("path").size();
       logDebug(`[DOM Status] ${layerDatum.name}: ${size} nodes.`);
     });

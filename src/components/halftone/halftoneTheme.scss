@@ -1,13 +1,7 @@
 @import "../componentTheme.scss";
 
-$halftone-dot-color: $color-primary;
-
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  .dot {
-    fill: $halftone-dot-color;
-  }
 }

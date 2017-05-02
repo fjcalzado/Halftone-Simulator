@@ -8,8 +8,6 @@ import * as grd from "./gridTopology";
 import * as layerManager from "./layerManager";
 const styles = require("../halftoneTheme.scss");
 
-// Only for testing.
-//import { AddPixelTopologyLayer } from "./pixelTopology";
 
 /**
  * Module local variables.
@@ -117,12 +115,9 @@ function initializeGrid() {
   layerManager.draw(svgViewport, srcImage, layerStack1)
     .then((result) => layerManager.reportLayerDOMStatus(svgViewport));
 
-  console.log(JSON.stringify(layerManager.previousState));
-
   const layerStack2 = layerStack1.slice(0);
   layerStack2[0].dotParams.shape = dot.DotType.Square;
-  
-  console.log(JSON.stringify(layerManager.previousState));
+  layerStack2[1].zIndex = -1;
 
   setTimeout(() => {
     layerManager.draw(svgViewport, srcImage, layerStack2)
@@ -143,7 +138,6 @@ function initializeGrid() {
 
 
 
-  // AddPixelTopologyLayer(gridParams.targetWidth, gridParams.targetHeight, svgViewport);
 }
 
 /**
