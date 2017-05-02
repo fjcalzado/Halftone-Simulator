@@ -102,9 +102,12 @@ export class HalftoneComponent extends React.Component < IProps, {} > {
     // Halftone pattern can be made of circular, elliptical or square shapes.
     // When using circular dots, these should meet (overlap) at a tonal value of 70%.
     // The proper channel to determine the dots size is HSL lightness.
+    appChart.initialize(styles.container, this.props.width, this.props.height);
     rgbMatrix.getMatrix(this.props.imageUrl, this.props.resolution)
-      .then((imgMatrix) => appChart.initialize(imgMatrix, styles.container,
-      this.props.width, this.props.height))
+      .then((imgMatrix) => {
+        appChart.setImage(imgMatrix);
+        appChart.simulateLayerDrawing();
+      })
       .catch((error) => console.error(`[ERROR] Halftone Simulator App: ${error}`));
   }
 

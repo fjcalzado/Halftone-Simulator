@@ -10,14 +10,9 @@ const styles = require("../halftoneTheme.scss");
 
 
 /**
- * Module local variables.
+ * Local state.
  * @private
  */
-
-// Input elements.
-let srcImage: any[][] = null;
-let srcImgWidth: number = 0;
-let srcImgHeight: number = 0;
 
 // Svg main elements.
 let svg = null;
@@ -28,41 +23,90 @@ let svgViewport = null;
 // size is indicated from the caller.
 let widthRel = "100%";
 let heightRel = "100%";
-// Width and Height of the svg component in absolute units.
-let widthAbs = null;
-let heightAbs = null;
 
-
-/**
- * Helper Functions
- * @private
- */
-
-function calculateAbsoluteSize() {
-  widthAbs = parseInt(svg.style("width"), 10);
-  heightAbs = parseInt(svg.style("height"), 10);
-}
+// Input image.
+ let srcImage: any[][] = null
 
 /**
- * Initialization Functions
- * @private
+ * Initialization public API. Provide a source image, a container or
+ * parent node to hold the svg element as well as its width/height in
+ * relative units.
+ * @public
+ * @function initialize
+ * @param  {string} parentNode: string {Parent node to append SVG element to.}
+ * @param  {string} width: string {Width of the SVG element in relative units.}
+ * @param  {string} height: string {Height of the SVG element in relative units.}
+ * @return {void}
  */
+export function initialize(parentNode: string, width: string = widthRel, height: string = heightRel): void {
+  // Component size.
+  if (width) { widthRel = width; }
+  if (height) { heightRel = height; }
 
-function initializeSvg(parentNodeClassName: string) {
-  svg = d3.select(`.${parentNodeClassName}`)
+  // Initialize SVG element.
+  svg = d3.select(`.${parentNode}`)
     .append("svg")
       .attr("class", "svg")
       .attr("width", widthRel)
-      .attr("height", heightRel);
-  calculateAbsoluteSize();
-  svgViewport = svg
-      .attr("viewBox", `-1 -1 ${srcImgWidth + 2} ${srcImgHeight + 2}`)
-      .attr("preserveAspectRatio", "xMidYMid meet")
-    .append("g")
+      .attr("height", heightRel)
+      .attr("viewBox", `0 0 0 0`)
+      .attr("preserveAspectRatio", "xMidYMid meet");
+  svgViewport = svg.append("g")
       .attr("class", "svg-viewport");
 }
 
-function initializeGrid() {
+/**
+ * Set a new image to be drawn.
+ * @public
+ * @function setImage
+ * @param  {type} sourceImage: any[][] {Source Image.}
+ * @return {void}
+ */
+export function setImage(sourceImage: any[][]): void {
+  // Clear layers and reset previous state.
+  layerManager.clearLayers(svgViewport);
+  layerManager.resetState();
+
+  // Store Input image.
+  srcImage = sourceImage;
+  const srcImgWidth = srcImage[0].length;
+  const srcImgHeight = srcImage.length;
+
+  // Configure SVG Viewport based on new image dimensions.
+  svg.attr("viewBox", `-1 -1 ${srcImgWidth + 2} ${srcImgHeight + 2}`);
+}
+
+/**
+ * Draw halftone pattern for a given a set of layer parameters.
+ * @public
+ * @function draw
+ * @param  {LayerStack} layers: LayerStack {Stack of layers described by its parameters.}
+ * @return {Promise<boolean>} {Promise indicating if operation was succesfully completed.}
+ */
+export function draw(layers: layerManager.LayerStack): Promise<boolean> {
+  return layerManager.drawLayers(svgViewport, srcImage, layers);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// To be removed, just for testing.
+export function simulateLayerDrawing() {
 
   const gridParams: grd.GridParameters = {
     pattern: grd.GridPatternType.Square,
@@ -112,7 +156,7 @@ function initializeGrid() {
   ];
 
   // TODO: Handle Promise here.
-  layerManager.draw(svgViewport, srcImage, layerStack1)
+  draw(layerStack1)
     .then((result) => layerManager.reportLayerDOMStatus(svgViewport));
 
   // const layerStack2 = layerStack1.slice(0);
@@ -135,28 +179,4 @@ function initializeGrid() {
   //   layerManager.draw(svgViewport, srcImage, layerStack3)
   //   .then((result) => layerManager.reportLayerDOMStatus(svgViewport));
   // }, 4000);
-
-
-
-}
-
-/**
- * Initialization Public API.
- * @public
- */
-
-export function initialize(sourceImage: any[][], parentNode: string,
-                           width: string = widthRel, height: string = heightRel) {
-  // Input image.
-  srcImage = sourceImage;
-  srcImgWidth = srcImage[0].length;
-  srcImgHeight = srcImage.length;
-
-  // Component size.
-  if (width) { widthRel = width; }
-  if (height) { heightRel = height; }
-
-  // Initialize.
-  initializeSvg(parentNode);
-  initializeGrid();
 }

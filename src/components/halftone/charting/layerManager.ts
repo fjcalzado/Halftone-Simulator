@@ -116,8 +116,22 @@ function drawLayer(singleLayerSelection, layerParams: LayerParameters,
  * Constants.
  * @private
  */
-const previousLayers = d3.local();
 const layerSelector = "g[class^='layer']";
+
+/**
+ * Local state.
+ * @private
+ */
+let currentLayers = null;
+
+/**
+ * Reset current layer state.
+ * @function resetState
+ * @return {void}
+ */
+export function resetState() {
+  currentLayers = d3.local();
+}
 
 /**
  * Clear all layers for the given master node.
@@ -126,7 +140,7 @@ const layerSelector = "g[class^='layer']";
  * @param  {D3 single selection} masterNodeSelection {Master node selection to be cleared.}
  * @return {void} {void}
  */
-export function clear(masterNodeSelection) {
+export function clearLayers(masterNodeSelection) {
   masterNodeSelection.selectAll(layerSelector).remove();
 }
 
@@ -140,7 +154,7 @@ export function clear(masterNodeSelection) {
  * @param  {LayerStack} layers: LayerStack {Stack of layers described by its parameters}
  * @return {Promise<boolean>} {Promise indicating if operation was succesfully completed.}
  */
-export function draw(masterNodeSelection, sourceImage: any[][], layers: LayerStack): Promise<boolean> {
+export function drawLayers(masterNodeSelection, sourceImage: any[][], layers: LayerStack): Promise<boolean> {
   return new Promise<boolean>(
     (resolve, reject) => {
       try {
@@ -171,12 +185,12 @@ export function draw(masterNodeSelection, sourceImage: any[][], layers: LayerSta
           // Skip those layers that do no really need redraw as there is no grid/dot
           // topology modifications. We must compare with the previous layer params
           // locally stored.
-          if (layerNeedsRedraw(previousLayers.get(this), layerParams)) {
+          if (layerNeedsRedraw(currentLayers.get(this), layerParams)) {
             promiseList.push(drawLayer(d3.select(this), layerParams, imgFiller));
           }
           // Store current layer params to be able to do the previous comparison for the
           // next draw cycle.
-          previousLayers.set(this, cloneLayerParams(layerParams));
+          currentLayers.set(this, cloneLayerParams(layerParams));
         });
 
         // Wait for all layer promises to resolve.
