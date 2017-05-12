@@ -1,0 +1,1 @@
+This folder is intended to contain inmutable data model structures and interfaces.

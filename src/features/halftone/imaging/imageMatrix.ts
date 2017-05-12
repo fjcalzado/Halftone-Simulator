@@ -1,5 +1,6 @@
-import {Channel, extractImageChannel} from "./imageChannelExtractor";
-import {extractImageData} from "./imageDataExtractor";
+import { Channel } from "../../../models/channelModel";
+import { extractImageChannel } from "./imageChannelExtractor";
+import { extractImageData } from "./imageDataExtractor";
 
 /**
  * ImageChannelMatrix Interface export.

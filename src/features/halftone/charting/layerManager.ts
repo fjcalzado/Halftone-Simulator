@@ -1,25 +1,12 @@
 import * as d3 from "d3";
 
-import {CreateTimer, logDebug} from "../../../api-utils";
-import * as img from "../imaging";
-import * as dot from "./dotTopology";
-import * as grd from "./gridTopology";
-
-
-/**
- * Interface Export.
- * @public
- */
-
-export interface LayerParameters {
-  name: string;
-  opacity: number;
-  zIndex: number;
-  gridParams: grd.GridParameters;
-  dotParams: dot.DotParameters;
-}
-
-export type LayerStack = LayerParameters[];
+import { ImageInterpolator, CreateImageInterpolator, Bilinear } from "../imaging";
+import { CreateTimer, logDebug } from "../../../util";
+import { DotParameters } from "../../../models/dotModel";
+import { GridParameters } from "../../../models/gridModel";
+import { CreateDotTopology, DotTopology } from "./dotTopology";
+import { CreateGridTopology } from "./gridTopology";
+import { LayerParameters, LayerStack } from "../../../models/layerModel";
 
 
 /**
@@ -74,14 +61,14 @@ function layerNeedsRedraw(oldLayerParams: LayerParameters, newLayerParams: Layer
  * @return {Promise<boolean>} {Promise indicating if operation was succesfully completed.}
  */
 function drawLayer(singleLayerSelection, layerParams: LayerParameters,
-                   imgFiller: img.ImageInterpolator): Promise<boolean> {
+                   imgFiller: ImageInterpolator): Promise<boolean> {
   return new Promise<boolean>(
     (resolve, reject) => {
       try {
         // Create dotTopology and gridTopology from layer params in
         // order to generate the grid-arranged dots for the layer.
-        const dotTopology = dot.CreateDotTopology(layerParams.dotParams);
-        grd.CreateGridTopology(layerParams.gridParams, imgFiller)
+        const dotTopology = CreateDotTopology(layerParams.dotParams);
+        CreateGridTopology(layerParams.gridParams, imgFiller)
         .then((gridTopology) => {
           const timer = CreateTimer();
 
@@ -160,7 +147,7 @@ export function drawLayers(masterNodeSelection, sourceImage: any[][], layers: La
       try {
         // STEP 1: PREPROCESS
         // Initialize image-level processors and sort layers by its zIndex.
-        const imgFiller = img.CreateImageInterpolator(sourceImage, img.Bilinear);
+        const imgFiller = CreateImageInterpolator(sourceImage, Bilinear);
         const sortedLayers = sortLayersByZIndex(layers);
 
         // STEP 2: Handle UPDATE, ENTER AND EXIT selections for layers.

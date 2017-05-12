@@ -1,28 +1,16 @@
 import chroma from "chroma-js";
 import * as d3 from "d3";
 
-import * as img from "../imaging";
-import * as dotp from "./dotPatterns";
-import { GridNode } from "./gridTopology";
-
+import { CreateChExtractorForRGB } from "../imaging";
+import { CreateDotShape, getMaxCoverArea } from "./dotPatterns";
+import { Channel } from "../../../models/channelModel";
+import { DotType, DotParameters } from "../../../models/dotModel";
+import { GridNode } from "../../../models/gridModel";
 
 /**
- * Interface Export.
+ * Interface Export. Internal to component.
  * @public
  */
-
-import {DotType} from "./dotPatterns";
-export {DotType};
-
-export interface DotParameters {
-  shape: DotType;
-  sizeBinding: img.Channel;
-  sizeMinThreshold: number;
-  sizeMaxThreshold: number;
-  rotationAngle: number;
-  colorCustom: boolean;
-  color?: any;
-}
 
 export interface DotTopology {
   readonly dotShape: string;
@@ -37,18 +25,18 @@ export interface DotTopology {
  */
 
 // Domain represents the input channel value.
-const getDomain = (ch: img.Channel) => {
+const getDomain = (ch: Channel) => {
     switch (ch) {
-      case img.Channel.Red:
-      case img.Channel.Green:
-      case img.Channel.Blue:
+      case Channel.Red:
+      case Channel.Green:
+      case Channel.Blue:
         return [0, 255];
-      case img.Channel.Saturation:
-      case img.Channel.Lightness:
-      case img.Channel.Cyan:
-      case img.Channel.Magenta:
-      case img.Channel.Yellow:
-      case img.Channel.Black:
+      case Channel.Saturation:
+      case Channel.Lightness:
+      case Channel.Cyan:
+      case Channel.Magenta:
+      case Channel.Yellow:
+      case Channel.Black:
         return [0, 1];
       default:
         return [0, 1];
@@ -59,9 +47,9 @@ const getDomain = (ch: img.Channel) => {
 const getRange = (dotParams: DotParameters) => {
   // Size = Area.
   // Lets determine which max area to cover a whole bin for each shape.
-  const maxArea = dotp.getMaxCoverArea(dotParams.shape);
-  const inverted = ((dotParams.sizeBinding === img.Channel.Lightness) ||
-                    (dotParams.sizeBinding === img.Channel.Luminance)) ? true : false;
+  const maxArea = getMaxCoverArea(dotParams.shape);
+  const inverted = ((dotParams.sizeBinding === Channel.Lightness) ||
+                    (dotParams.sizeBinding === Channel.Luminance)) ? true : false;
   // Apply size thresholds.
   const maxRange = maxArea * dotParams.sizeMaxThreshold;
   const minRange = 0 + dotParams.sizeMinThreshold;
@@ -78,18 +66,18 @@ function CreateSizeScale(dotParams: DotParameters) {
 
 // It creates an extractor function to get a specific channel value
 // from RGB pixel.
-function CreateChExtractor(ch: img.Channel) {
+function CreateChExtractor(ch: Channel) {
   switch (ch) {
-    case img.Channel.RGB:
-    case img.Channel.HSL:
-    case img.Channel.CMYK:
-    case img.Channel.Hue:
+    case Channel.RGB:
+    case Channel.HSL:
+    case Channel.CMYK:
+    case Channel.Hue:
       // [RGB, HSL, CMYK] Unsupported multi-channel values for size binding.
       // [HUE] Doesn't make sense as it is qualitative not quantitative.
       // Lets consider Lightness channel for these cases.
-      return img.CreateChExtractorForRGB(img.Channel.Lightness);
+      return CreateChExtractorForRGB(Channel.Lightness);
     default:
-      return img.CreateChExtractorForRGB(ch);
+      return CreateChExtractorForRGB(ch);
   }
 }
 
@@ -110,7 +98,7 @@ function CreateFillColor(dotParams: DotParameters) {
  * @return {DotTopology} {The generated dot topology.}
  */
 export function CreateDotTopology(dotParams: DotParameters): DotTopology {
-  const rawShape = dotp.CreateDotShape(dotParams.shape);
+  const rawShape = CreateDotShape(dotParams.shape);
   const sizeScale = CreateSizeScale(dotParams);
   const chExtForSize = CreateChExtractor(dotParams.sizeBinding);
   const rotateString = dotParams.rotationAngle !== 0 ? `rotate(${dotParams.rotationAngle})` : "";

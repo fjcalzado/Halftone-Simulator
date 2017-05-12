@@ -1,38 +1,16 @@
 import * as d3 from "d3";
 
-import {CreateTimer} from "../../../api-utils";
-import * as at from "./affineTransform";
-import * as grdp from "./gridPatterns";
+import { CreateTimer } from "../../../util";
+import { AffineTransformer, CreateAffineTransformer } from "./affineTransform";
+import { GridNode, GridPatternType, GridParameters } from "../../../models/gridModel";
+import { CreateGridPattern } from "./gridPatterns";
 
 /**
- * Interface Export.
+ * Interface Export. Internal to component.
  * @public
  */
-import {GridPatternType} from "./gridPatterns";
-export {GridPatternType};
-
-export interface GridParameters {
-  pattern: GridPatternType;
-  targetWidth: number;
-  targetHeight: number;
-  rotationAngle?: number;
-  scaleFactor?: number;
-  translateX?: number;
-  translateY?: number;
-  specificParams?: any;
-  /**
-   * Scale factor emulates grid resolution. However, it is smarter to
-   * modify input picture resolution instead of grid scale given that
-   * picture rescaling will use a proper resampling algorithm.
-   */
-}
 
 export type GridTopologyRGBFiller = (point: {x: number, y: number}) => number[];
-export interface GridNode {
-  x: number;
-  y: number;
-  rgb?: number[];
-}
 export type GridTopology = GridNode[];
 
 
@@ -62,14 +40,14 @@ export function CreateGridTopology(gridParameters: GridParameters,
       // const anchorPoint = {x: (widthPx / 2) - 0.5, y: (heightPx / 2) - 0.5};
 
       // Affine transformer in pixel space
-      const aft = at.CreateAffineTransformer()
+      const aft = CreateAffineTransformer()
         .setupScale(gridParameters.hasOwnProperty("scaleFactor") ? gridParameters.scaleFactor : 1)
         .setupRotate(gridParameters.hasOwnProperty("rotationAngle") ? gridParameters.rotationAngle : 0)
         .setupTranslate(gridParameters.hasOwnProperty("translateX") ? gridParameters.translateX : 0,
                         gridParameters.hasOwnProperty("translateY") ? gridParameters.translateY : 0);
 
       // Grid space precalculus (lines and positions space).
-      const gridPattern = grdp.CreateGridPattern(gridParameters.pattern, gridParameters.specificParams);
+      const gridPattern = CreateGridPattern(gridParameters.pattern, gridParameters.specificParams);
       const extentPxSpace = calculateGridExtent(widthPx, heightPx, aft);
       const extentPatternSpace = gridPattern.getExtent(extentPxSpace.minY, extentPxSpace.maxY,
                                                        extentPxSpace.minX, extentPxSpace.maxX);
@@ -129,7 +107,7 @@ export function CreateGridTopology(gridParameters: GridParameters,
  * @private
  */
 
-function calculateGridExtent(width: number, height: number, aft: at.AffineTransformer) {
+function calculateGridExtent(width: number, height: number, aft: AffineTransformer) {
   // Apply inverse transformation to the 4 corners and keep the widen extent.
   const leftTop = aft.inverseTransform({x: 0, y: 0});
   const rightTop = aft.inverseTransform({x: width, y: 0});

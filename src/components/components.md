@@ -1,0 +1,1 @@
+This folder is intended to contain shared components across features, this is, small basic components such as buttons, cards, sliders and all this kind of reusable controls.

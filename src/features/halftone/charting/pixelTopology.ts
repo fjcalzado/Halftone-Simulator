@@ -1,8 +1,9 @@
 import * as d3 from "d3";
 
-import {CreateTimer} from "../../../api-utils";
-import { GridPatternType } from "./gridPatterns";
-import { CreateGridTopology, GridParameters } from "./gridTopology";
+import { CreateTimer } from "../../../util";
+import { GridPatternType, GridParameters } from "../../../models/gridModel";
+import { CreateGridTopology } from "./gridTopology";
+
 
 /**
  * Only for testing purposes. It appends a pixel topology: a grid that simulates

@@ -1,0 +1,1 @@
+This folder is intended to contain features, a set of components that together creaters a super-component that brings a feature to the page.

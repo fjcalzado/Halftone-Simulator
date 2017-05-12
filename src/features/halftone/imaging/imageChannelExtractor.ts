@@ -1,25 +1,6 @@
 import chroma from "chroma-js";
 
-/**
- * Channel Enum.
- * @public
- */
-export enum Channel {
-    RGB = 1,
-    Red,
-    Green,
-    Blue,
-    HSL,
-    Hue,
-    Saturation,
-    Lightness,
-    CMYK,
-    Cyan,
-    Magenta,
-    Yellow,
-    Black,
-    Luminance,
-}
+import { Channel } from "../../../models/channelModel";
 
 /**
  * Helper function to convert from RGB to CMYK color space.

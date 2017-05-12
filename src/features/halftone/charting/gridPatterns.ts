@@ -1,18 +1,9 @@
+import { GridPatternType } from "../../../models/gridModel";
+
 /**
- * Interface Export.
+ * Interface Export. Internal to component.
  * @public
  */
-
-export enum GridPatternType {
-  Square = 1,
-  Brick,
-  Triangle,
-  Hex,
-  Random,
-  Wave,
-  Chevron,
-  Radial,
-}
 
 export interface GridPattern {
     readonly deltaLine: (li: number) => any;

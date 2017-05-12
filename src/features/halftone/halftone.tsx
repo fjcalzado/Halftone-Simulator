@@ -51,7 +51,6 @@ interface IProps {
 }
 
 interface IState {
-
 }
 
 /**

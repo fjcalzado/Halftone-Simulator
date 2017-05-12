@@ -1,20 +1,6 @@
 import * as d3 from "d3";
 
-/**
- * Interface Export.
- * @public
- */
-
-export enum DotType {
-  Circle = 1,
-  Square,
-  Cross,
-  Diamond,
-  Star,
-  Triangle,
-  Wye,
-  // TODO: Ellipse, Heart, etc
-}
+import { DotType } from "../../../models/dotModel";
 
 /**
  * Get the max area needed to cover a whole bin of size 1.

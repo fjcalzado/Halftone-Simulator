@@ -1,0 +1,1 @@
+This folder is intended to contain Redux store configuration and root reducer, React Router routes, application root components with connections to Redux, Redux DevTools, React Router and React Intl.

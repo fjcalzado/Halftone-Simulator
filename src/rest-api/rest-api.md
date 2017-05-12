@@ -1,0 +1,1 @@
+This folder is intended to contain any non-React JavaScript code useful to retrieve server side data.
