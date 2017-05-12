@@ -4,6 +4,8 @@ import * as appChart from "./charting";
 import { rgbMatrix } from "./imaging";
 const styles = require("./halftoneTheme.scss");
 
+import { GenerateSampleLayerStack } from "../../ztmp/layerStackMock";
+
 /**
  * D3 handles the DOM natively while React do it virtually.
  * A React component does not expect anybody mutating the
@@ -105,7 +107,7 @@ export class HalftoneComponent extends React.Component < IProps, {} > {
     rgbMatrix.getMatrix(this.props.imageUrl, this.props.resolution)
       .then((imgMatrix) => {
         appChart.setImage(imgMatrix);
-        appChart.simulateLayerDrawing();
+        appChart.draw( GenerateSampleLayerStack(imgMatrix[0].length, imgMatrix.length) );
       })
       .catch((error) => console.error(`[ERROR] Halftone Simulator App: ${error}`));
   }

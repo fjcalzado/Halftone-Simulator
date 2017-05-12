@@ -4,7 +4,6 @@ import * as d3 from "d3";
 import { CreateTimer } from "../../../util";
 import { LayerStack } from "../../../models/layerModel";
 import * as layerManager from "./layerManager";
-const styles = require("../halftoneTheme.scss");
 
 
 /**
@@ -99,109 +98,20 @@ export function setBackgroundColor(color): void {
  * @return {Promise<boolean>} {Promise indicating if operation was succesfully completed.}
  */
 export function draw(layers: LayerStack): Promise<boolean> {
-  return layerManager.drawLayers(svgViewport, srcImage, layers);
+  return new Promise<boolean>(
+    (resolve, reject) => {
+      try {
+        layerManager.drawLayers(svgViewport, srcImage, layers)
+        .then((result) => {
+          layerManager.reportLayerDOMStatus(svgViewport);
+          resolve(result);
+        })
+        .catch((error) => {
+          console.error(`[ERROR] Drawing Layers: ${error.message}`);
+          throw error;  // Let error bubbles up.
+        });
+      } catch (error) {
+        reject(error);
+      }
+  });
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// ***********************************************************************
-// To be removed, just for testing.
-// ***********************************************************************
-
-import { Channel } from "../../../models/channelModel";
-import { DotType, DotParameters } from "../../../models/dotModel";
-import { GridPatternType, GridParameters } from "../../../models/gridModel";
-import { LayerParameters } from "../../../models/layerModel";
-
-export function simulateLayerDrawing() {
-
-  const gridParams: GridParameters = {
-    pattern: GridPatternType.Square,
-    targetWidth: srcImage[0].length,
-    targetHeight: srcImage.length,
-    scaleFactor: 1,
-    //translateX: imgMatrix[0].length / 2,
-    //translateY: imgMatrix.length / 2,
-    rotationAngle: 0,
-    specificParams: {wavelength: 30, amplitude: 5 },
-  };
-
-  const dotParams: DotParameters = {
-    shape: DotType.Circle,
-    sizeBinding: Channel.Lightness,
-    sizeMinThreshold: 0,
-    sizeMaxThreshold: 1,
-    rotationAngle: 0,
-    colorCustom: false,
-    color: "rgb(0, 0, 243)",
-  };
-
-  const layerParams: LayerParameters = {
-    name: "main",
-    opacity: 1,
-    zIndex: 0,
-    gridParams,
-    dotParams,
-  };
-
-  const layerStack1: LayerStack = [
-    layerParams,
-    // { ...layerParams,
-    //   name: "crossblue",
-    //   zIndex: 1,
-    //   gridParams: {
-    //     ...gridParams,
-    //     rotationAngle: 15,
-    //   },
-    //   dotParams: {
-    //     ...dotParams,
-    //     shape: DotType.Cross,
-    //     sizeMaxThreshold: 0.5,
-    //     colorCustom: true,
-    //   },
-    // },
-  ];
-
-  // TODO: Handle Promise here.
-  draw(layerStack1)
-    .then((result) => layerManager.reportLayerDOMStatus(svgViewport));
-
-  // const layerStack2 = layerStack1.slice(0);
-  // layerStack2[0].dotParams.shape = DotType.Square;
-  // layerStack2[1].zIndex = -1;
-
-  // setTimeout(() => {
-  //   layerManager.draw(svgViewport, srcImage, layerStack2)
-  //   .then((result) => layerManager.reportLayerDOMStatus(svgViewport));
-  // }, 6000);
-
-  // const layerStack2 = layerStack1.map((item, i) => ({...item, zIndex: 1 - i}));
-  // setTimeout(() => {
-  //   layerManager.draw(svgViewport, srcImage, layerStack2)
-  //   .then((result) => layerManager.reportLayerDOMStatus(svgViewport));
-  // }, 4000);
-
-  // const layerStack3 = [{...layerParams, dotParams: {...dotParams, shape: DotType.Square }}];
-  // setTimeout(() => {
-  //   layerManager.draw(svgViewport, srcImage, layerStack3)
-  //   .then((result) => layerManager.reportLayerDOMStatus(svgViewport));
-  // }, 4000);
-}
-
-
-// ***********************************************************************
