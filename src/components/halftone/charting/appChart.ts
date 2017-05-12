@@ -17,6 +17,7 @@ const styles = require("../halftoneTheme.scss");
 // Svg main elements.
 let svg = null;
 let svgViewport = null;
+let svgBackground = null;
 
 // Width and Height of the svg component in relative units.
 // Fit its parent by default unless a specific relative
@@ -25,7 +26,7 @@ let widthRel = "100%";
 let heightRel = "100%";
 
 // Input image.
- let srcImage: any[][] = null
+ let srcImage: any[][] = null;
 
 /**
  * Initialization public API. Provide a source image, a container or
@@ -53,6 +54,10 @@ export function initialize(parentNode: string, width: string = widthRel, height:
       .attr("preserveAspectRatio", "xMidYMid meet");
   svgViewport = svg.append("g")
       .attr("class", "svg-viewport");
+  svgBackground = svgViewport.append("rect")
+      .attr("class", "svg-background")
+      .attr("fill", "rgba(255, 255, 255, 0)")
+      .attr("x", 1).attr("y", 1);
 }
 
 /**
@@ -72,8 +77,20 @@ export function setImage(sourceImage: any[][]): void {
   const srcImgWidth = srcImage[0].length;
   const srcImgHeight = srcImage.length;
 
-  // Configure SVG Viewport based on new image dimensions.
+  // Configure SVG Viewport adn SVG Background based on
+  // new image dimensions.
   svg.attr("viewBox", `-1 -1 ${srcImgWidth + 2} ${srcImgHeight + 2}`);
+  svgBackground.attr("width", srcImgWidth - 2).attr("height", srcImgHeight - 2);
+}
+
+/**
+ * Set a background color for our viewport.
+ * @function setBackgroundColor
+ * @param  {any} color {Color in CSS or number format}
+ * @return {void}
+ */
+export function setBackgroundColor(color): void {
+  svgViewport.attr("fill", color);
 }
 
 /**
