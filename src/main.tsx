@@ -1,20 +1,37 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import {HalftoneComponent} from "./features/halftone";
+import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
+import { HalftoneComponent } from "./features/halftone";
+import { TestComponent } from "./tmp-mocks/materialUIMock";
+import { IntroComponent } from "./tmp-mocks/introMock";
 
+const styles = require("./main.scss");
+
+// Temporary solution needed for onTouchTap.
+// https://www.npmjs.com/package/material-ui
+// http://stackoverflow.com/a/34015469/988941
+import injectTapEventPlugin from "react-tap-event-plugin";
+injectTapEventPlugin();
+
+
+// Main render entry point.
 ReactDOM.render(
-  <div>
-    {/*<p>This is React component injecting HTML</p>
-    <SliderComponent initialValue={43}
-                     range={{min: 0,
-                             max: 100,
-                             step: 0.01}}
-                     onValueChanged={(value: number) => true}
-    />*/}
-    <HalftoneComponent imageUrl={"../res/img/lu.jpg"}                       resolution={10000}
-                       width={"90vw"}
-                       height={"75vh"}
-    />    
-  </div>
+  <MuiThemeProvider>
+    <div className={"layout-col-container"}>
+      <IntroComponent />
+      <div className={"layout-row-container"}>
+        <div className={"layout-left-panel"}>
+          <TestComponent />
+        </div>
+        <div className={"layout-main-panel"}>
+          <HalftoneComponent imageUrl={"../res/img/lu.jpg"}
+                             resolution={10000}
+                             width={"100%"}
+                             height={"100%"}
+          />
+        </div>
+      </div>
+    </div>
+  </MuiThemeProvider>
   , document.getElementsByClassName("app-container")[0]);
 

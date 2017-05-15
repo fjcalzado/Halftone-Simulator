@@ -1,6 +1,48 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500');
 
+// Stretch the height to the viewport. This page will behave as an app
+// instead of a traditional scrollable content page.
+@mixin expandHeight {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+html {
+  @include expandHeight;
+}
+
 body {
+  @include expandHeight;
+
   font-family: 'Roboto', sans-serif;
   font-weight: 300;
+}
+
+.app-container {
+  @include expandHeight;
+}
+
+.layout-col-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.layout-row-container {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  height: 100%;
+}
+
+.layout-left-panel {
+  flex-basis: 30%;
+  padding: 5px;
+  flex-grow: 0;
+}
+
+.layout-main-panel {
+  width: 100%;
+  border: solid 1px green;
 }

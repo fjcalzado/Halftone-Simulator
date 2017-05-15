@@ -4,7 +4,7 @@ import * as appChart from "./charting";
 import { rgbMatrix } from "./imaging";
 const styles = require("./halftoneTheme.scss");
 
-import { GenerateSampleLayerStack } from "../../ztmp/layerStackMock";
+import { GenerateSampleLayerStack } from "../../tmp-mocks/layerStackMock";
 
 /**
  * D3 handles the DOM natively while React do it virtually.

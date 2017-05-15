@@ -36,7 +36,7 @@ module.exports = function () {
           ]
         },
         // Loading pipe for the main page style. We do not want hashed rule names for this
-        // stylesheet to be able to anotate style class names in the markup.
+        // stylesheet to be able to anotate markup with class names directly.
         {
           test: /\.scss$/,
           include: /main.scss/,
