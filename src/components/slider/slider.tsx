@@ -1,8 +1,8 @@
 import * as React from "react";
 
-const styles = require("./sliderTheme.scss");
+const styles = require("./slider.theme.scss");
 
-interface IProps {
+interface Props {
   initialValue: number;
   range: {min: number,
           max: number,
@@ -10,11 +10,11 @@ interface IProps {
   onValueChanged?: (newValue: number) => void;
 };
 
-interface IState {
+interface State {
   value: number;
 };
 
-export class SliderComponent extends React.Component<IProps, IState> {
+export class SliderComponent extends React.Component<Props, State> {
   constructor(props) {
     super(props);
 

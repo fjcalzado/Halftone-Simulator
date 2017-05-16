@@ -57,18 +57,20 @@ function layerNeedsRedraw(oldLayerParams: LayerParameters, newLayerParams: Layer
  * @function drawLayer
  * @param  {D3 single selection} singleLayerSelection  {Layer selection in D3 format.}
  * @param  {LayerParameters} layerParams: LayerParameters {Layer parameters.}
+ * @param  {number} targetWidth {Target image width in pixels.}
+ * @param  {number} targetHeight {Target image height in pixels.}
  * @param  {ImageInterpolator} {Image interpolater used by brid topology to extract image pixel info.}
  * @return {Promise<boolean>} {Promise indicating if operation was succesfully completed.}
  */
-function drawLayer(singleLayerSelection, layerParams: LayerParameters,
-                   imgFiller: ImageInterpolator): Promise<boolean> {
+function drawLayer(singleLayerSelection, layerParams: LayerParameters, targetWidth: number,
+                   targetHeight: number, imgFiller: ImageInterpolator): Promise<boolean> {
   return new Promise<boolean>(
     (resolve, reject) => {
       try {
         // Create dotTopology and gridTopology from layer params in
         // order to generate the grid-arranged dots for the layer.
         const dotTopology = CreateDotTopology(layerParams.dotParams);
-        CreateGridTopology(layerParams.gridParams, imgFiller)
+        CreateGridTopology(layerParams.gridParams, targetWidth, targetHeight, imgFiller)
         .then((gridTopology) => {
           const timer = CreateTimer();
 
@@ -173,7 +175,9 @@ export function drawLayers(masterNodeSelection, sourceImage: any[][], layers: La
           // topology modifications. We must compare with the previous layer params
           // locally stored.
           if (layerNeedsRedraw(currentLayers.get(this), layerParams)) {
-            promiseList.push(drawLayer(d3.select(this), layerParams, imgFiller));
+            promiseList.push(drawLayer(d3.select(this), layerParams, 
+                                       sourceImage[0].length, sourceImage.length,
+                                       imgFiller));
           }
           // Store current layer params to be able to do the previous comparison for the
           // next draw cycle.

@@ -22,8 +22,6 @@ export enum GridPatternType {
 
 export interface GridParameters {
   pattern: GridPatternType;
-  targetWidth: number;
-  targetHeight: number;
   rotationAngle?: number;
   scaleFactor?: number;
   translateX?: number;

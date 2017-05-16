@@ -1,12 +1,12 @@
 // **************************************************************
 // TEST COMPONENT AREA. FOR TESTING ONLY, TO BE DELETED.
 import * as React from "react";
-import RaisedButton from "material-ui/RaisedButton";
 import IconButton from "material-ui/IconButton";
 import MoreVertIcon from "material-ui/svg-icons/navigation/more-vert";
+import DeleteIcon from "material-ui/svg-icons/action/delete";
 import IconMenu from "material-ui/IconMenu";
 import MenuItem from "material-ui/MenuItem";
-import {grey400, darkBlack} from "material-ui/styles/colors";
+import {grey400, cyanA400} from "material-ui/styles/colors";
 import {ListItem} from "material-ui/List";
 
 // This is from reac-sortable component.
@@ -32,14 +32,16 @@ const iconButtonElement = (
       tooltip="more"
       tooltipPosition="bottom-left"
     >
-      <MoreVertIcon color={grey400} />
+      <MoreVertIcon color={grey400}
+                    hoverColor={cyanA400}
+      />
     </IconButton>
   );
 
   const rightIconMenu = (
     <IconMenu iconButtonElement={iconButtonElement}>
       <MenuItem>Rename</MenuItem>
-      <MenuItem>Delete</MenuItem>
+      <MenuItem leftIcon={<DeleteIcon />}>Delete</MenuItem>
     </IconMenu>
   );
 
@@ -58,7 +60,8 @@ export const TestComponent = () => {
         (<span>List Item 3</span>),
         (<span>List Item 4</span>),
       ]}
-      useDragHandle={true} />
+      useDragHandle={true}
+    />
   );
 };
 // **************************************************************

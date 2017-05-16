@@ -22,10 +22,13 @@ export type GridTopology = GridNode[];
  * @public
  * @function CreateGridTopology
  * @param {GridParameters} gridParameters: GridParameters {Set of grid configuration parameters}
+ * @param {number} targetWidth {Target image width in pixels.}
+ * @param {number} targetHeight {Target image height in pixels.}
  * @param {GridTopologyRGBFiller} rgbFiller {Optional function to fill each node with RGB data.}
  * @return {Promise<GridTopology>} {Promise that returns a grid topology (array of nodes) when resolved.}
  */
 export function CreateGridTopology(gridParameters: GridParameters,
+                                   targetWidth: number, targetHeight: number,
                                    rgbFiller?: GridTopologyRGBFiller): Promise<GridTopology> {
   return new Promise<GridTopology>((resolve, reject) => {
     try {
@@ -35,8 +38,8 @@ export function CreateGridTopology(gridParameters: GridParameters,
       // done for performance efficiency.
 
       // Target space precalculus (pixels space).
-      const widthPx = gridParameters.targetWidth;
-      const heightPx = gridParameters.targetHeight;
+      const widthPx = targetWidth;
+      const heightPx = targetHeight;
       // const anchorPoint = {x: (widthPx / 2) - 0.5, y: (heightPx / 2) - 0.5};
 
       // Affine transformer in pixel space

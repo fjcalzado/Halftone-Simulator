@@ -1,0 +1,13 @@
+@import "../../../../main.theme.scss";
+
+:export { drag-handle-color: $color-grey-tone; }
+
+.drag-handle {
+  cursor: move;
+}
+
+.sortable-list {
+  list-style: none;
+}
+
+

@@ -1,11 +1,18 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
+
 import { HalftoneComponent } from "./features/halftone";
-import { TestComponent } from "./tmp-mocks/materialUIMock";
+import { LayerSetupComponent } from "./features/layerSetup";
+
+// MOCK DATA. TO BE DELETED *********************************
+//import { TestComponent } from "./tmp-mocks/materialUIMock";
 import { IntroComponent } from "./tmp-mocks/introMock";
+import { multiLayerStack } from "./tmp-mocks/layerStackMock";
+// **********************************************************
 
 const styles = require("./main.scss");
+
 
 // Temporary solution needed for onTouchTap.
 // https://www.npmjs.com/package/material-ui
@@ -21,7 +28,7 @@ ReactDOM.render(
       <IntroComponent />
       <div className={"layout-row-container"}>
         <div className={"layout-left-panel"}>
-          <TestComponent />
+          <LayerSetupComponent layerStack={multiLayerStack} />
         </div>
         <div className={"layout-main-panel"}>
           <HalftoneComponent imageUrl={"../res/img/lu.jpg"}
@@ -34,4 +41,3 @@ ReactDOM.render(
     </div>
   </MuiThemeProvider>
   , document.getElementsByClassName("app-container")[0]);
-

@@ -2,9 +2,9 @@ import * as React from "react";
 
 import * as appChart from "./charting";
 import { rgbMatrix } from "./imaging";
-const styles = require("./halftoneTheme.scss");
+const styles = require("./halftone.theme.scss");
 
-import { GenerateSampleLayerStack } from "../../tmp-mocks/layerStackMock";
+import { simpleLayerStack } from "../../tmp-mocks/layerStackMock";
 
 /**
  * D3 handles the DOM natively while React do it virtually.
@@ -44,7 +44,7 @@ import { GenerateSampleLayerStack } from "../../tmp-mocks/layerStackMock";
  *           implement, we have picked up this solution. 
  */
 
-interface IProps {
+interface Props {
   imageUrl: string;
   resolution?: number;
   // Optional Size. Fit the container by default.
@@ -52,19 +52,16 @@ interface IProps {
   height?: string;
 }
 
-interface IState {
-}
-
 /**
  * Halftone Simulator React Component.
  * Draw a picture using traditional halftone technique.
  * @public
  */
-export class HalftoneComponent extends React.Component < IProps, {} > {
+export class HalftoneComponent extends React.Component < Props, {} > {
   constructor(props) {
     super(props);
     // Default initial state.
-    const defaultState: IProps = {
+    const defaultState: Props = {
       imageUrl: "",
       resolution: 1000,
       width: "100%",
@@ -107,7 +104,7 @@ export class HalftoneComponent extends React.Component < IProps, {} > {
     rgbMatrix.getMatrix(this.props.imageUrl, this.props.resolution)
       .then((imgMatrix) => {
         appChart.setImage(imgMatrix);
-        appChart.draw( GenerateSampleLayerStack(imgMatrix[0].length, imgMatrix.length) );
+        appChart.draw( simpleLayerStack );
       })
       .catch((error) => console.error(`[ERROR] Halftone Simulator App: ${error}`));
   }

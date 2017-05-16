@@ -20,13 +20,11 @@ export function AddPixelTopologyLayer(width: number, height: number, masterNode:
     try {
       const gridParams: GridParameters = {
         pattern: GridPatternType.Square,
-        targetWidth: width,
-        targetHeight: height,
         scaleFactor: 1,
         rotationAngle: 0,
       };
 
-      CreateGridTopology(gridParams).then((gridTopology) => {
+      CreateGridTopology(gridParams, width, height).then((gridTopology) => {
         const timer = CreateTimer();
         const pixelLayer = masterNode.append("g")
           .attr("class", "pixel-topology-layer")
