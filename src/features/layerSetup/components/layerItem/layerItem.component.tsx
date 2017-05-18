@@ -5,24 +5,60 @@ import DeleteIcon from "material-ui/svg-icons/action/delete";
 import ModeEditIcon from "material-ui/svg-icons/editor/mode-edit";
 import IconMenu from "material-ui/IconMenu";
 import MenuItem from "material-ui/MenuItem";
-import {grey400, cyanA400} from "material-ui/styles/colors";
-import {ListItem} from "material-ui/List";
+import { ListItem } from "material-ui/List";
 
 import { LayerParameters } from "../../../../models/layerModel";
+import { LayerItemRenamerComponent } from "../layerItemRenamer";
 const styles = require("./layerItem.theme.scss");
 
+interface State {
+  openRenamer: boolean;
+}
 
 interface Props {
   layerParams: LayerParameters;
-  onItemDelete?: (itemName: string) => void;
-  onItemRename?: (itemName: string, newName: string) => void;
+  onItemDelete: (itemName: string) => boolean;
+  onItemRename: (itemName: string, newName: string) => boolean;
 }
 
 
-// Split the render markup into more readable subcomponents.
+export class LayerItemComponent extends React.Component<Props, State> {
+  constructor(props) {
+    super(props);
 
-// 1. This element represents the button on the right.
-const buttonElement = (
+    this.state = {
+      openRenamer: false,
+    };
+  }
+
+  private handleRename = (event) => {
+    this.setState({
+      ...this.state,
+      openRenamer: true,
+    });
+  }
+
+  public render() {
+    return(
+      <div>
+        <ListItem className={styles.layerItem}
+          rightIconButton={this.buttonMenuElement}
+          primaryText={this.props.layerParams.name}
+        />
+        {/*<LayerItemRenamerComponent name={this.props.layerParams.name}
+          onRename={this.props.onItemRename}
+          doOpen={this.state.openRenamer}
+        />*/}
+      </div>
+    );
+  }
+
+
+
+  // Split the render markup into more readable subcomponents.
+
+  // 1. This element represents the button on the right.
+  private buttonElement = (
     <IconButton
       touch={true}
       tooltip="Layer Options"
@@ -34,34 +70,24 @@ const buttonElement = (
     </IconButton>
   );
 
-// 2. This element represents the clickable-through-button 
-// context menu on the right.
-const buttonMenuElement = (
-    <IconMenu
-      iconButtonElement={buttonElement}
-    >
-      <MenuItem leftIcon={<ModeEditIcon />}>
+  // 2. This element represents the clickable-through-button 
+  // context menu on the right.
+  private buttonMenuElement = (
+    <IconMenu iconButtonElement={this.buttonElement}>
+      <MenuItem leftIcon={<ModeEditIcon />}
+        onTouchTap={this.handleRename}>
         Rename
       </MenuItem>
-      <MenuItem leftIcon={<DeleteIcon />}>
+      <MenuItem leftIcon={<DeleteIcon />}
+        onTouchTap={(event) => this.props.onItemDelete(this.props.layerParams.name)}>
         Delete
       </MenuItem>
     </IconMenu>
   );
-
-
-export class LayerItemComponent extends React.Component<Props, {}> {
-  constructor(props) {
-    super(props);
-  }
-
-  public render() {
-    return(
-      <ListItem className={styles.layerItem}
-        rightIconButton={buttonMenuElement}
-        primaryText={this.props.layerParams.name}
-      />
-    );
-  }
-
 }
+
+
+
+
+
+

@@ -10,7 +10,7 @@ module.exports = {
     extensions: ['.ts', '.tsx', '.js', '.jsx', '.scss']
   },
   entry: {
-    bundle: ['./main.tsx', './main.scss'],
+    bundle: ['./app.tsx', './app.scss'],
     vendor: 'd3'
   },
   module: {

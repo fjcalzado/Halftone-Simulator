@@ -18,7 +18,9 @@ export class LayerSetupComponent extends React.Component<Props, {}> {
 
   public render() {
     return(
-      <LayerListComponent layerStack={this.props.layerStack} />
+      <LayerListComponent layerStack={this.props.layerStack}
+        onItemDelete={/*TODO*/ (itemName: string) => { console.log(`Delete:${itemName}`); return true;}}
+        onItemRename={/*TODO*/ (itemName: string, newName: string) => {console.log(`Rename:${itemName}->${newName}`); return true;}} />
     );
   }
 

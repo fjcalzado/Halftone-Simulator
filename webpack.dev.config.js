@@ -21,7 +21,7 @@ module.exports = function () {
         // page style which is intended to be global and not a module.
         {
           test: /\.scss$/,
-          exclude: [/node_modules/, /main.scss/],
+          exclude: [/node_modules/, /app.scss/],
           use: [
             'style-loader',
             {
@@ -39,7 +39,7 @@ module.exports = function () {
         // stylesheet to be able to anotate markup with class names directly.
         {
           test: /\.scss$/,
-          include: /main.scss/,
+          include: /app.scss/,
           use: ['style-loader', 'css-loader', 'sass-loader']
         }
       ]

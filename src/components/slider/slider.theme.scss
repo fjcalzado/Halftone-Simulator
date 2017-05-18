@@ -1,15 +1,16 @@
-@import "../../main.theme.scss";
+@import "../../theme.scss";
 
-$slider-to-label-separation: $base-unit / 2;
-$slider-thumb-height: $base-unit * 0.8;
-$slider-thumb-width: $base-unit * 0.8;
-$slider-thumb-radius: min($slider-thumb-width, $slider-thumb-height) * $base-radius;
-$slider-thumb-color: $color-primary;
+// Mapping global theme variables to local.
+$slider-to-label-separation: $theme-base-unit / 2;
+$slider-thumb-height: $theme-base-unit * 0.8;
+$slider-thumb-width: $theme-base-unit * 0.8;
+$slider-thumb-radius: min($slider-thumb-width, $slider-thumb-height) * $theme-base-radius;
+$slider-thumb-color: $theme-color-primary;
 $slider-thumb-border: transparent;
 $slider-thumb-shadow: transparent;
-$slider-track-height: $base-unit / 5;
-$slider-track-radius: $slider-track-height * $base-radius;
-$slider-track-color: $color-subtle;
+$slider-track-height: $theme-base-unit / 5;
+$slider-track-radius: $slider-track-height * $theme-base-radius;
+$slider-track-color: $theme-color-subtle;
 $slider-track-border: transparent;
 $slider-track-shadow: transparent;
 
@@ -17,7 +18,8 @@ $slider-track-shadow: transparent;
 .container {
   display: flex;
 
-  .slider {}
+  .slider {
+  }
 
   .label {
     padding-left: $slider-to-label-separation;

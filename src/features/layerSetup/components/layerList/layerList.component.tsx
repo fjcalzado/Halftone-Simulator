@@ -6,10 +6,39 @@ import { LayerStack } from "../../../../models/layerModel";
 import { LayerItemComponent } from "../layerItem";
 const styles = require("./layerList.theme.scss");
 
+
 interface Props {
   layerStack: LayerStack;
+  onItemDelete: (itemName: string) => boolean;
+  onItemRename: (itemName: string, newName: string) => boolean;
 }
 
+
+export class LayerListComponent extends React.Component<Props, {}> {
+  constructor(props) {
+    super(props);
+  }
+
+  public render() {
+    const layerList = this.props.layerStack.map((layer) => {
+      return (
+        <LayerItemComponent layerParams={layer}
+          onItemRename={this.props.onItemRename}
+          onItemDelete={this.props.onItemDelete} />
+      );
+    });
+
+    return(
+      <SortableList
+        items={layerList}
+        useDragHandle={true}
+      />
+    );
+  }
+}
+
+
+// ***********************************************************************
 // These are subcomponents needed from react-sortable-hoc.
 // They are too simple and static to break into new independent components.
 const DragHandle = SortableHandle(() => {
@@ -37,25 +66,3 @@ const SortableList = SortableContainer(({items}) => {
     </div>
   );
 });
-
-
-export class LayerListComponent extends React.Component<Props, {}> {
-  constructor(props) {
-    super(props);
-  }
-
-  public render() {
-    const layerList = this.props.layerStack.map((layer) => {
-      return (
-        <LayerItemComponent layerParams={layer} />
-      );
-    });
-
-    return(
-      <SortableList
-        items={layerList}
-        useDragHandle={true}
-      />
-    );
-  }
-}

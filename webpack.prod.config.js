@@ -24,7 +24,7 @@ module.exports = function () {
         // NOTE: If this CSS doesn't weight too much, better leave it injected (disable plugin).
         {
           test: /\.scss$/,
-          exclude: [/node_modules/, /pageStyles.scss/],
+          exclude: [/node_modules/, /app.scss/],
           loader: ExtractTextPlugin.extract({
             fallback: 'style-loader',
             use: [
@@ -46,7 +46,7 @@ module.exports = function () {
         // NOTE: If this CSS doesn't weight too much, better leave it injected (disable plugin).
         {
           test: /\.scss$/,
-          include: /pageStyles.scss/,
+          include: /app.scss/,
           loader: ExtractTextPlugin.extract({
             fallback: 'style-loader',
             use: [

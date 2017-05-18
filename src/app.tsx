@@ -11,7 +11,7 @@ import { IntroComponent } from "./tmp-mocks/introMock";
 import { multiLayerStack } from "./tmp-mocks/layerStackMock";
 // **********************************************************
 
-const styles = require("./main.scss");
+const styles = require("./app.scss");
 
 
 // Temporary solution needed for onTouchTap.

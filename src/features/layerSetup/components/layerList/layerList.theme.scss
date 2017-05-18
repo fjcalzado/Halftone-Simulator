@@ -1,7 +1,16 @@
-@import "../../../../main.theme.scss";
+@import "../../../../theme.scss";
+
+// Export global theme variables to javascript.
 :export {
-  drag-handle-color: $color-subtle;
+  drag-handle-color: $theme-color-subtle;
 }
+
+// Mapping global theme variables to local.
+$list-background-color: $theme-color-background-shadowed;
+$list-soft-color: $theme-color-subtle;
+$item-background-color: $theme-color-background;
+$item-drag-shadow: $theme-shadow-drag;
+
 
 .drag-handle {
   cursor: move;
@@ -9,7 +18,8 @@
 
 .sortable-list {
   list-style: none;
-  background-color: $color-background-shadowed;
+  background-color: $list-background-color;
+  border: 0.5px solid $list-soft-color;
 }
 
 // Do not embedd this rule inside sortable-list.
@@ -19,12 +29,29 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding-left: 5px;
-  border: 1px solid $color-subtle;
-  margin: -1px 0 0 -1px;  // Emulate border-collapse: collapsed.
-  background-color: $color-background;
+  padding-left: 10px;
+  background-color: $item-background-color;
+
+  // This selects the item to be dragged.
+  body > & {
+    animation-name: animation-start-drag;
+    animation-duration: 0.2s;
+    animation-timing-function: ease-out;
+    animation-fill-mode: forwards;
+
+    @if $theme-experimental-smooth-drag {
+      transition-property: transform;
+      transition-duration: 50ms;
+    }
+  }
 
   .sortable-item-content {
     width: 100%;
   }
+}
+
+// Animations.
+@keyframes animation-start-drag {
+  from { box-shadow: 0; }
+  to { box-shadow: $item-drag-shadow; }
 }

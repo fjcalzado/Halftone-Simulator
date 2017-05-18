@@ -1,10 +1,15 @@
-@import "../../../../main.theme.scss";
+@import "../../../../theme.scss";
 
-:export { right-button-color: $color-text-accent;
-          right-button-color-hover: $color-primary;
+// Export global theme variables to javascript.
+:export { right-button-color: $theme-color-text-accent;
+          right-button-color-hover: $theme-color-primary-accent;
         }
+
 
 .layer-item {
   width: 100%;
-}
 
+  &:hover {
+    background-color: transparent !important;
+  }
+}
