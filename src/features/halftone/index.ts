@@ -1,1 +1,1 @@
-export {HalftoneComponent} from "./halftone";
+export {HalftoneComponent} from "./halftone.component";

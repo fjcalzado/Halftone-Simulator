@@ -21,7 +21,9 @@ const DragHandle = SortableHandle(() => {
 
 const SortableItem = SortableElement(({value}) => {
   return (
-    <div><DragHandle /> {value}</div>
+    <div className={styles.sortableItem}>
+      <DragHandle /> {value}
+    </div>
   );
 });
 
@@ -29,7 +31,8 @@ const SortableList = SortableContainer(({items}) => {
   return (
     <div className={styles.sortableList}>
       {items.map((value, index) => (
-        <SortableItem key={`item-${index}`} index={index} value={value} />
+        <SortableItem key={`item-${index}`} index={index} value={
+          <div className={styles.sortableItemContent}>{value}</div>} />
       ))}
     </div>
   );
@@ -43,7 +46,9 @@ export class LayerListComponent extends React.Component<Props, {}> {
 
   public render() {
     const layerList = this.props.layerStack.map((layer) => {
-      return (<LayerItemComponent layerParams={layer} />);
+      return (
+        <LayerItemComponent layerParams={layer} />
+      );
     });
 
     return(

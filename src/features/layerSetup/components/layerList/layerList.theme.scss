@@ -1,6 +1,7 @@
 @import "../../../../main.theme.scss";
-
-:export { drag-handle-color: $color-grey-tone; }
+:export {
+  drag-handle-color: $color-grey-tone;
+}
 
 .drag-handle {
   cursor: move;
@@ -10,4 +11,15 @@
   list-style: none;
 }
 
+// Do not embedd this rule inside sortable-list.
+// Sortable-items are copied at the bottom of <body>
+// when are dragged from the list.
+.sortable-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 
+  .sortable-item-content {
+    width: 100%;
+  }
+}

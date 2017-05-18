@@ -1,1 +1,1 @@
-export * from "./layerSetup";
+export * from "./layerSetup.component";

@@ -31,11 +31,11 @@ ReactDOM.render(
           <LayerSetupComponent layerStack={multiLayerStack} />
         </div>
         <div className={"layout-main-panel"}>
-          <HalftoneComponent imageUrl={"../res/img/lu.jpg"}
+          {/*<HalftoneComponent imageUrl={"../res/img/lu.jpg"}
                              resolution={10000}
                              width={"100%"}
                              height={"100%"}
-          />
+          />*/}
         </div>
       </div>
     </div>

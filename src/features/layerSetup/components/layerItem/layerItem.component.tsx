@@ -57,7 +57,7 @@ export class LayerItemComponent extends React.Component<Props, {}> {
 
   public render() {
     return(
-      <ListItem
+      <ListItem className={styles.layerItem}
         rightIconButton={buttonMenuElement}
         primaryText={this.props.layerParams.name}
       />

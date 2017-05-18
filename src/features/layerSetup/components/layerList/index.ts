@@ -1,1 +1,1 @@
-export * from "./layerList";
+export * from "./layerList.component";
