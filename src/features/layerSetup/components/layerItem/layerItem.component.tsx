@@ -8,34 +8,28 @@ import MenuItem from "material-ui/MenuItem";
 import { ListItem } from "material-ui/List";
 
 import { LayerParameters } from "../../../../models/layerModel";
-import { LayerItemRenamerComponent } from "../layerItemRenamer";
+
 const styles = require("./layerItem.theme.scss");
 
-interface State {
-  openRenamer: boolean;
-}
 
 interface Props {
   layerParams: LayerParameters;
-  onItemDelete: (itemName: string) => boolean;
-  onItemRename: (itemName: string, newName: string) => boolean;
+  onTouchTapRename: (targetItemName: string) => void;
+  onTouchTapDelete: (targetItemName: string) => void;  
 }
 
 
-export class LayerItemComponent extends React.Component<Props, State> {
+export class LayerItemComponent extends React.Component<Props, {}> {
   constructor(props) {
     super(props);
-
-    this.state = {
-      openRenamer: false,
-    };
   }
 
-  private handleRename = (event) => {
-    this.setState({
-      ...this.state,
-      openRenamer: true,
-    });
+  private handletouchTapRename = (event) => {
+    this.props.onTouchTapRename(this.props.layerParams.name);
+  }
+
+  private handleTouchTapDelete = (event) => {
+     this.props.onTouchTapDelete(this.props.layerParams.name);
   }
 
   public render() {
@@ -45,10 +39,7 @@ export class LayerItemComponent extends React.Component<Props, State> {
           rightIconButton={this.buttonMenuElement}
           primaryText={this.props.layerParams.name}
         />
-        {/*<LayerItemRenamerComponent name={this.props.layerParams.name}
-          onRename={this.props.onItemRename}
-          doOpen={this.state.openRenamer}
-        />*/}
+       
       </div>
     );
   }
@@ -75,11 +66,11 @@ export class LayerItemComponent extends React.Component<Props, State> {
   private buttonMenuElement = (
     <IconMenu iconButtonElement={this.buttonElement}>
       <MenuItem leftIcon={<ModeEditIcon />}
-        onTouchTap={this.handleRename}>
+        onTouchTap={this.handletouchTapRename}>
         Rename
       </MenuItem>
       <MenuItem leftIcon={<DeleteIcon />}
-        onTouchTap={(event) => this.props.onItemDelete(this.props.layerParams.name)}>
+        onTouchTap={this.handleTouchTapDelete}>
         Delete
       </MenuItem>
     </IconMenu>

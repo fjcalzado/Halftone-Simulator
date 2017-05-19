@@ -9,8 +9,8 @@ const styles = require("./layerList.theme.scss");
 
 interface Props {
   layerStack: LayerStack;
-  onItemDelete: (itemName: string) => boolean;
-  onItemRename: (itemName: string, newName: string) => boolean;
+  onTouchTapRename: (targetItemName: string) => void;
+  onTouchTapDelete: (targetItemName: string) => void;  
 }
 
 
@@ -23,8 +23,8 @@ export class LayerListComponent extends React.Component<Props, {}> {
     const layerList = this.props.layerStack.map((layer) => {
       return (
         <LayerItemComponent layerParams={layer}
-          onItemRename={this.props.onItemRename}
-          onItemDelete={this.props.onItemDelete} />
+          onTouchTapRename={this.props.onTouchTapRename}
+          onTouchTapDelete={this.props.onTouchTapDelete} />
       );
     });
 

@@ -5,46 +5,34 @@ import TextField from 'material-ui/TextField';
 
 const styles = require("./layerItemRenamer.theme.scss");
 
-interface State {
-  newName: string;
-  open: boolean;
-}
 
 interface Props {
-  name: string;
-  onRename: (name: string, newName: string) => boolean;
-  doOpen: boolean;
+  oldName: string;
+  newName: string;
+  openDialog: boolean;
+  onNameChange: (newName: string) => void;
+  onRename: (currentName: string, newName: string) => boolean;
+  onCloseDialog: () => void;  
 }
 
 
-export class LayerItemRenamerComponent extends React.Component<Props, State> {
+export class LayerItemRenamerComponent extends React.Component<Props, {}> {
   constructor(props) {
     super(props);
-
-    this.state = {
-      newName: props.name,
-      open: props.doOpen,
-    };
   }
 
-  private handleRename = (event) => {
-    if (this.props.onRename(this.props.name, this.state.newName)) {
-      this.handleCancel(event);
+  private handleTouchTapRename = (event) => {
+    if (this.props.onRename(this.props.oldName, this.props.newName)) {
+      this.props.onCloseDialog();
     }
   }
 
-  private handleCancel = (event) => {
-    this.setState({
-      ...this.state,
-      open: false,
-    });
+  private handleTouchTapCancel = (event) => {
+    this.props.onCloseDialog();
   }
 
   private handleNameChange = (event, newValue: string) => {
-    this.setState({
-      ...this.state,
-      open: false,
-    });
+    this.props.onNameChange(newValue);
   }
 
   public render() {
@@ -52,29 +40,29 @@ export class LayerItemRenamerComponent extends React.Component<Props, State> {
       <FlatButton
         label="Cancel"
         primary={true}
-        onTouchTap={this.handleCancel}
+        onTouchTap={this.handleTouchTapCancel}
       />,
       <FlatButton
         label="Ok"
         primary={true}
         keyboardFocused={true}
-        onTouchTap={this.handleRename}
+        onTouchTap={this.handleTouchTapRename}
       />,
     ];
 
     return(
       <Dialog className={styles.layerItemRenamer}
-          title="Rename Layer"
-          actions={dialogButtons}
-          modal={true}
-          open={this.state.open}
-        >
-          <TextField
-            defaultValue={this.state.newName}
-            floatingLabelText="New Name"
-            onChange={this.handleNameChange}
-          />
-        </Dialog>
+        title="Rename Layer"
+        actions={dialogButtons}
+        modal={true}
+        open={this.props.openDialog}
+      >
+        <TextField
+          floatingLabelText={this.props.oldName}
+          value={this.props.newName}
+          onChange={this.handleNameChange}
+        />
+      </Dialog>
     );
   }
 }
