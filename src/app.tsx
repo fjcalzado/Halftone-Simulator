@@ -1,17 +1,18 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
+import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
 import { HalftoneComponent } from "./features/halftone";
 import { LayerSetupComponent } from "./features/layerSetup";
 
 // MOCK DATA. TO BE DELETED *********************************
-//import { TestComponent } from "./tmp-mocks/materialUIMock";
 import { IntroComponent } from "./tmp-mocks/introMock";
 import { multiLayerStack } from "./tmp-mocks/layerStackMock";
 // **********************************************************
 
-const styles = require("./app.scss");
+const styles = require("./app.theme.scss");
 
 
 // Temporary solution needed for onTouchTap.
@@ -23,14 +24,14 @@ injectTapEventPlugin();
 
 // Main render entry point.
 ReactDOM.render(
-  <MuiThemeProvider>
-    <div className={"layout-col-container"}>
+  <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
+    <div className={styles.layoutColContainer}>
       <IntroComponent />
-      <div className={"layout-row-container"}>
-        <div className={"layout-left-panel"}>
+      <div className={styles.layoutRowContainer}>
+        <div className={styles.layoutLeftPanel}>
           <LayerSetupComponent layerStack={multiLayerStack} />
         </div>
-        <div className={"layout-main-panel"}>
+        <div className={styles.layoutMainPanel}>
           {/*<HalftoneComponent imageUrl={"../res/img/lu.jpg"}
                              resolution={10000}
                              width={"100%"}

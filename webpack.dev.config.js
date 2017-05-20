@@ -17,11 +17,10 @@ module.exports = function () {
 
     module: {
       rules: [
-        // Loading pipe for stylesheets as modules. The only exception will be the main
-        // page style which is intended to be global and not a module.
+        // Loading pipe for stylesheets as modules.
         {
           test: /\.scss$/,
-          exclude: [/node_modules/, /app.scss/],
+          exclude: [/node_modules/],
           use: [
             'style-loader',
             {
@@ -34,13 +33,6 @@ module.exports = function () {
             },
             'sass-loader'
           ]
-        },
-        // Loading pipe for the main page style. We do not want hashed rule names for this
-        // stylesheet to be able to anotate markup with class names directly.
-        {
-          test: /\.scss$/,
-          include: /app.scss/,
-          use: ['style-loader', 'css-loader', 'sass-loader']
         }
       ]
     },

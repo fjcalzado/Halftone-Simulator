@@ -1,4 +1,9 @@
-// Main variables to themify components
+/**
+ * GENERAL THEME DEFINITION
+ * This is the entry point file to customize the theme of the app.
+ * Third party components are also internally themified based on
+ * this general theme.
+ */
 
 // Measurements.
 $theme-base-unit: 1rem;

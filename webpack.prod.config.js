@@ -18,13 +18,10 @@ module.exports = function () {
 
     module: {
       rules: [
-        // Loading pipe for stylesheets as modules. The only exception will be the main
-        // page style which is intended to be global and not a module.
-        // ExtractTextPlugin used to extract all bundled CSS into a separate file.
-        // NOTE: If this CSS doesn't weight too much, better leave it injected (disable plugin).
+        // Loading pipe for stylesheets as modules.
         {
           test: /\.scss$/,
-          exclude: [/node_modules/, /app.scss/],
+          exclude: [/node_modules/],
           loader: ExtractTextPlugin.extract({
             fallback: 'style-loader',
             use: [
@@ -38,20 +35,6 @@ module.exports = function () {
               },
               { loader: 'sass-loader' }
             ]
-          })
-        },
-        // Loading pipe for the main page style. We do not want hashed rule names for this
-        // stylesheet to be able to anotate style class names in the markup.
-        // ExtractTextPlugin used to extract all bundled CSS into a separate file.
-        // NOTE: If this CSS doesn't weight too much, better leave it injected (disable plugin).
-        {
-          test: /\.scss$/,
-          include: /app.scss/,
-          loader: ExtractTextPlugin.extract({
-            fallback: 'style-loader',
-            use: [
-              { loader: 'css-loader' },
-              { loader: 'sass-loader' } ]
           })
         }
       ]
