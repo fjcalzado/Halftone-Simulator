@@ -5,17 +5,18 @@ import DeleteIcon from "material-ui/svg-icons/action/delete";
 import ModeEditIcon from "material-ui/svg-icons/editor/mode-edit";
 import IconMenu from "material-ui/IconMenu";
 import MenuItem from "material-ui/MenuItem";
-import { ListItem } from "material-ui/List";
+
+import { ListItem } from "react-toolbox/lib/list";
 
 import { LayerParameters } from "../../../../models/layerModel";
 
-const styles = require("./layerItem.theme.scss");
+const styles = require("./layerItem.scss");
 
 
 interface Props {
   layerParams: LayerParameters;
   onTouchTapRename: (targetItemName: string) => void;
-  onTouchTapDelete: (targetItemName: string) => void;  
+  onTouchTapDelete: (targetItemName: string) => void;
 }
 
 
@@ -34,13 +35,9 @@ export class LayerItemComponent extends React.Component<Props, {}> {
 
   public render() {
     return(
-      <div>
         <ListItem className={styles.layerItem}
-          rightIconButton={this.buttonMenuElement}
-          primaryText={this.props.layerParams.name}
+          caption={this.props.layerParams.name}
         />
-       
-      </div>
     );
   }
 

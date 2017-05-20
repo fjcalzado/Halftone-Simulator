@@ -1,8 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
-import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
 
 import { HalftoneComponent } from "./features/halftone";
 import { LayerSetupComponent } from "./features/layerSetup";
@@ -24,7 +22,7 @@ injectTapEventPlugin();
 
 // Main render entry point.
 ReactDOM.render(
-  <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
+  <MuiThemeProvider>
     <div className={styles.layoutColContainer}>
       <IntroComponent />
       <div className={styles.layoutRowContainer}>

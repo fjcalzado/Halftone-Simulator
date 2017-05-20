@@ -10,7 +10,7 @@ const styles = require("./layerList.theme.scss");
 interface Props {
   layerStack: LayerStack;
   onTouchTapRename: (targetItemName: string) => void;
-  onTouchTapDelete: (targetItemName: string) => void;  
+  onTouchTapDelete: (targetItemName: string) => void;
 }
 
 
