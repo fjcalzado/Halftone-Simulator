@@ -76,7 +76,6 @@ module.exports = function () {
         }
       ]
     },
-
     plugins: [
       new webpack.DefinePlugin({
         "process.env": {
@@ -89,4 +88,5 @@ module.exports = function () {
       port: 8080
     }
   });
-}
+};
+

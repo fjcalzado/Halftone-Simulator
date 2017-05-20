@@ -3,7 +3,7 @@ import * as React from "react";
 import { LayerStack } from "../../models/layerModel";
 import { LayerListComponent } from "./components/layerList";
 import { LayerItemRenamerComponent } from "./components/layerItemRenamer";
-const styles = require("./layerSetup.theme.scss");
+const styles = require("./layerSetup.scss");
 
 
 interface State {

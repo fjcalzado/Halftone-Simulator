@@ -1,17 +1,14 @@
+/******************* IMPORT *******************/
 import * as React from "react";
-import IconButton from "material-ui/IconButton";
-import MoreVertIcon from "material-ui/svg-icons/navigation/more-vert";
-import DeleteIcon from "material-ui/svg-icons/action/delete";
-import ModeEditIcon from "material-ui/svg-icons/editor/mode-edit";
-import IconMenu from "material-ui/IconMenu";
-import MenuItem from "material-ui/MenuItem";
-
 import { ListItem } from "react-toolbox/lib/list";
+import { IconMenu, MenuItem, MenuDivider } from "react-toolbox/lib/menu";
 
 import { LayerParameters } from "../../../../models/layerModel";
 
 const styles = require("./layerItem.scss");
 
+
+/******************* INTERFACE *******************/
 
 interface Props {
   layerParams: LayerParameters;
@@ -19,6 +16,8 @@ interface Props {
   onTouchTapDelete: (targetItemName: string) => void;
 }
 
+
+/******************* COMPONENT *******************/
 
 export class LayerItemComponent extends React.Component<Props, {}> {
   constructor(props) {
@@ -37,16 +36,23 @@ export class LayerItemComponent extends React.Component<Props, {}> {
     return(
         <ListItem className={styles.layerItem}
           caption={this.props.layerParams.name}
+          rightActions={[this.layerItemMenu]}
         />
     );
   }
 
-
+  private layerItemMenu = (
+    <IconMenu key="first-action" icon="more_vert" position="topLeft" menuRipple>
+      {/*<MenuItem icon="get_app" caption="Download" />
+      <MenuDivider />
+      <MenuItem icon="delete" caption="Delete" />*/}
+  </IconMenu>
+  );
 
   // Split the render markup into more readable subcomponents.
 
   // 1. This element represents the button on the right.
-  private buttonElement = (
+  /*private buttonElement = (
     <IconButton
       touch={true}
       tooltip="Layer Options"
@@ -71,7 +77,7 @@ export class LayerItemComponent extends React.Component<Props, {}> {
         Delete
       </MenuItem>
     </IconMenu>
-  );
+  );*/
 }
 
 

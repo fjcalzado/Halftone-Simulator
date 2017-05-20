@@ -2,7 +2,7 @@ import * as React from "react";
 
 import * as appChart from "./charting";
 import { rgbMatrix } from "./imaging";
-const styles = require("./halftone.theme.scss");
+const styles = require("./halftone.scss");
 
 import { simpleLayerStack } from "../../tmp-mocks/layerStackMock";
 

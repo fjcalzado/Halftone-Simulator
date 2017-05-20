@@ -55,6 +55,7 @@
     "material-ui": "^0.18.0",
     "postcss": "^6.0.1",
     "postcss-cssnext": "^2.11.0",
+    "postcss-modules-values": "^1.2.2",
     "react": "~15.4.0",
     "react-addons-css-transition-group": "~15.4.0",
     "react-dom": "~15.4.0",

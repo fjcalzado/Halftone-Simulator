@@ -4,7 +4,7 @@ import {SortableContainer, SortableElement, SortableHandle} from "react-sortable
 
 import { LayerStack } from "../../../../models/layerModel";
 import { LayerItemComponent } from "../layerItem";
-const styles = require("./layerList.theme.scss");
+const styles = require("./layerList.scss");
 
 
 interface Props {

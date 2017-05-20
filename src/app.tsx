@@ -10,7 +10,7 @@ import { IntroComponent } from "./tmp-mocks/introMock";
 import { multiLayerStack } from "./tmp-mocks/layerStackMock";
 // **********************************************************
 
-const styles = require("./app.theme.scss");
+const styles = require("./app.scss");
 
 
 // Temporary solution needed for onTouchTap.
@@ -40,3 +40,4 @@ ReactDOM.render(
     </div>
   </MuiThemeProvider>
   , document.getElementsByClassName("app-container")[0]);
+  

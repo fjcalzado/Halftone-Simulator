@@ -3,7 +3,7 @@ import Dialog from "material-ui/Dialog";
 import FlatButton from "material-ui/FlatButton";
 import TextField from 'material-ui/TextField';
 
-const styles = require("./layerItemRenamer.theme.scss");
+const styles = require("./layerItemRenamer.scss");
 
 
 interface Props {
