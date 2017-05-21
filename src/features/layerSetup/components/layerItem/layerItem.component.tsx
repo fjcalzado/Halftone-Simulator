@@ -1,7 +1,8 @@
 /******************* IMPORT *******************/
 import * as React from "react";
 import { ListItem } from "react-toolbox/lib/list";
-import { IconMenu, MenuItem, MenuDivider } from "react-toolbox/lib/menu";
+import { IconMenu, MenuItem } from "react-toolbox/lib/menu";
+import { Switch } from "react-toolbox/lib/switch";
 
 import { LayerParameters } from "../../../../models/layerModel";
 
@@ -12,8 +13,8 @@ const styles = require("./layerItem.scss");
 
 interface Props {
   layerParams: LayerParameters;
-  onTouchTapRename: (targetItemName: string) => void;
-  onTouchTapDelete: (targetItemName: string) => void;
+  onClickRename: (targetItemName: string) => void;
+  onClickDelete: (targetItemName: string) => void;
 }
 
 
@@ -24,60 +25,33 @@ export class LayerItemComponent extends React.Component<Props, {}> {
     super(props);
   }
 
-  private handletouchTapRename = (event) => {
-    this.props.onTouchTapRename(this.props.layerParams.name);
+  private handleClickRename = (event) => {
+    this.props.onClickRename(this.props.layerParams.name);
   }
 
-  private handleTouchTapDelete = (event) => {
-     this.props.onTouchTapDelete(this.props.layerParams.name);
+  private handleClickDelete = (event) => {
+     this.props.onClickDelete(this.props.layerParams.name);
   }
 
   public render() {
     return(
         <ListItem className={styles.layerItem}
           caption={this.props.layerParams.name}
-          rightActions={[this.layerItemMenu]}
+          rightActions={this.layerItemMenu}
         />
     );
   }
 
-  private layerItemMenu = (
+  // TODO: Model enable/disable toggle and layer property.
+  // TODO: Think if it is better to show a menu or maybe just a delete button and
+  // the rest of layer properties in a layer panel along with dot and grid panels.
+  private layerItemMenu = ([
     <IconMenu key="first-action" icon="more_vert" position="topLeft" menuRipple>
-      {/*<MenuItem icon="get_app" caption="Download" />
-      <MenuDivider />
-      <MenuItem icon="delete" caption="Delete" />*/}
-  </IconMenu>
-  );
-
-  // Split the render markup into more readable subcomponents.
-
-  // 1. This element represents the button on the right.
-  /*private buttonElement = (
-    <IconButton
-      touch={true}
-      tooltip="Layer Options"
-      tooltipPosition="bottom-right"
-    >
-      <MoreVertIcon color={styles.rightButtonColor}
-                    hoverColor={styles.rightButtonColorHover}
-      />
-    </IconButton>
-  );
-
-  // 2. This element represents the clickable-through-button 
-  // context menu on the right.
-  private buttonMenuElement = (
-    <IconMenu iconButtonElement={this.buttonElement}>
-      <MenuItem leftIcon={<ModeEditIcon />}
-        onTouchTap={this.handletouchTapRename}>
-        Rename
-      </MenuItem>
-      <MenuItem leftIcon={<DeleteIcon />}
-        onTouchTap={this.handleTouchTapDelete}>
-        Delete
-      </MenuItem>
-    </IconMenu>
-  );*/
+      <Switch checked={true} label={"Enable"}/>
+      <MenuItem icon="mode_edit" caption="Rename" onClick={this.handleClickRename}/>
+      <MenuItem icon="delete" caption="Delete" onClick={this.handleClickDelete}/>
+    </IconMenu>,
+  ]);
 }
 
 

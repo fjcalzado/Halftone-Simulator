@@ -19,29 +19,33 @@ body {
   font-weight: 300;
 }
 
-.app-container {
+// Use selector 'starts with' to avoid 
+// webpack localIdentName not matching.
+div[id^="appContainer"] {
   @include expandHeight;
 }
 
-.layout-col-container {
+.layoutContainerColumn {
   display: flex;
-  flex-direction: column;
   height: 100%;
+  flex-direction: column;
 }
 
-.layout-row-container {
+.layoutContainerRow {
   display: flex;
+  height: 100%;
   flex-direction: row;
   align-items: stretch;
-  height: 100%;
 }
 
-.layout-left-panel {
+.panelLeft {
   flex-basis: 35%;
   padding: 5px;
   flex-grow: 0;
 }
 
-.layout-main-panel {
+.panelMain {
   width: 100%;
 }
+
+

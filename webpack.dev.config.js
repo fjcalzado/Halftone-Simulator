@@ -17,6 +17,24 @@ module.exports = function () {
 
     module: {
       rules: [
+        // Loading pipe for external PostCSS stylesheets as modules
+        // required by react-toolbox.
+        {
+          test: /\.css$/,
+          use: [
+            "style-loader",
+            {
+              loader: "css-loader",
+              options: {
+                modules: true,
+                sourceMap: true,
+                importLoaders: 1,
+                localIdentName: "[local]__[name]___[hash:base64:5]"
+              }
+            },
+            "postcss-loader"
+          ]
+        },
         // Loading pipe for user SASS stylesheets as modules.
         {
           test: /\.scss$/,
@@ -34,44 +52,6 @@ module.exports = function () {
               }
             },
             "sass-loader"
-          ]
-        },
-        // Loading pipe for external PostCSS stylesheets as modules
-        // required by react-toolbox. Lets be more specific in DEV mode
-        // and tag react-toolbox themes so they can be easily identifying
-        // when debuggin DOM elements and classes.
-        {
-          test: /\.css$/,
-          include: [/react-toolbox/],
-          use: [
-            "style-loader",
-            {
-              loader: "css-loader",
-              options: {
-                modules: true,
-                sourceMap: true,
-                importLoaders: 1,
-                localIdentName: "[local]__rtb-[name]___[hash:base64:5]"
-              }
-            },
-            "postcss-loader"
-          ]
-        },
-        {
-          test: /\.css$/,
-          exclude: [/react-toolbox/],
-          use: [
-            "style-loader",
-            {
-              loader: "css-loader",
-              options: {
-                modules: true,
-                sourceMap: true,
-                importLoaders: 1,
-                localIdentName: "[local]__[name]___[hash:base64:5]"
-              }
-            },
-            "postcss-loader"
           ]
         }
       ]

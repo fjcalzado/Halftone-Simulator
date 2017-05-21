@@ -12,11 +12,12 @@ $item-background-color: $theme-color-background;
 $item-drag-shadow: $theme-shadow-drag;
 
 
-.drag-handle {
+.dragHandle {
   cursor: move;
+  color: $list-soft-color;
 }
 
-.sortable-list {
+.sortableList {
   background-color: $list-background-color;
   border: 0.5px solid $list-soft-color;
 }
@@ -24,7 +25,7 @@ $item-drag-shadow: $theme-shadow-drag;
 // Do not embedd this rule inside sortable-list.
 // Sortable-items are copied at the bottom of <body>
 // when are dragged from the list.
-.sortable-item {
+.sortableItem {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -44,7 +45,7 @@ $item-drag-shadow: $theme-shadow-drag;
     }
   }
 
-  .sortable-item-content {
+  &Content {
     width: 100%;
   }
 }

@@ -1,9 +1,11 @@
+/******************* IMPORT *******************/
 import * as React from "react";
 
 import * as appChart from "./charting";
 import { rgbMatrix } from "./imaging";
 const styles = require("./halftone.scss");
 
+// TODO: Mock to be deleted.
 import { simpleLayerStack } from "../../tmp-mocks/layerStackMock";
 
 /**
@@ -44,6 +46,8 @@ import { simpleLayerStack } from "../../tmp-mocks/layerStackMock";
  *           implement, we have picked up this solution. 
  */
 
+/******************* INTERFACE *******************/
+
 interface Props {
   imageUrl: string;
   resolution?: number;
@@ -51,6 +55,9 @@ interface Props {
   width?: string;
   height?: string;
 }
+
+
+/******************* COMPONENT *******************/
 
 /**
  * Halftone Simulator React Component.
@@ -72,7 +79,7 @@ export class HalftoneComponent extends React.Component < Props, {} > {
 
   public render() {
     return (
-      <div className = {styles.container}>
+      <div className = {styles.halftoneView}>
       </div>
     );
   }
@@ -100,7 +107,7 @@ export class HalftoneComponent extends React.Component < Props, {} > {
     // Halftone pattern can be made of circular, elliptical or square shapes.
     // When using circular dots, these should meet (overlap) at a tonal value of 70%.
     // The proper channel to determine the dots size is HSL lightness.
-    appChart.initialize(styles.container, this.props.width, this.props.height);
+    appChart.initialize(styles.halftoneView, this.props.width, this.props.height);
     rgbMatrix.getMatrix(this.props.imageUrl, this.props.resolution)
       .then((imgMatrix) => {
         appChart.setImage(imgMatrix);

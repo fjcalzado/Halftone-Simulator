@@ -1,18 +1,24 @@
+/******************* IMPORT *******************/
 import * as React from "react";
-import ReorderIcon from "material-ui/svg-icons/action/reorder";
-import {SortableContainer, SortableElement, SortableHandle} from "react-sortable-hoc";
+import { SortableContainer, SortableElement, SortableHandle } from "react-sortable-hoc";
+import { FontIcon } from "react-toolbox/lib/font_icon";
 
 import { LayerStack } from "../../../../models/layerModel";
 import { LayerItemComponent } from "../layerItem";
+
 const styles = require("./layerList.scss");
 
 
+/******************* INTERFACE *******************/
+
 interface Props {
   layerStack: LayerStack;
-  onTouchTapRename: (targetItemName: string) => void;
-  onTouchTapDelete: (targetItemName: string) => void;
+  onClickRename: (targetItemName: string) => void;
+  onClickDelete: (targetItemName: string) => void;
 }
 
+
+/******************* COMPONENT *******************/
 
 export class LayerListComponent extends React.Component<Props, {}> {
   constructor(props) {
@@ -20,11 +26,12 @@ export class LayerListComponent extends React.Component<Props, {}> {
   }
 
   public render() {
+    // Rebuild each layer item component in the list on each render.
     const layerList = this.props.layerStack.map((layer) => {
       return (
         <LayerItemComponent layerParams={layer}
-          onTouchTapRename={this.props.onTouchTapRename}
-          onTouchTapDelete={this.props.onTouchTapDelete} />
+          onClickRename={this.props.onClickRename}
+          onClickDelete={this.props.onClickDelete} />
       );
     });
 
@@ -37,14 +44,12 @@ export class LayerListComponent extends React.Component<Props, {}> {
   }
 }
 
-
-// ***********************************************************************
 // These are subcomponents needed from react-sortable-hoc.
 // They are too simple and static to break into new independent components.
 const DragHandle = SortableHandle(() => {
   return (
-    <ReorderIcon className={styles.dragHandle}
-                 color={styles.dragHandleColor} />
+    <FontIcon className={styles.dragHandle}
+              value="reorder" />
   );
 });
 

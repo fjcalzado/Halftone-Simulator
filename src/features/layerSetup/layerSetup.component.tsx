@@ -1,20 +1,24 @@
+/******************* IMPORT *******************/
 import * as React from "react";
 
 import { LayerStack } from "../../models/layerModel";
 import { LayerListComponent } from "./components/layerList";
 import { LayerItemRenamerComponent } from "./components/layerItemRenamer";
+
 const styles = require("./layerSetup.scss");
 
 
+/******************* INTERFACE *******************/
+
 interface State {
   layerStack: LayerStack;
-  
+
   // Layer name that fired up actions like delete or rename.
   targetName: string;
 
   // Renaming.
   newName: string;
-  openRenameDialog: boolean;  
+  openRenameDialog: boolean;
 }
 
 interface Props {
@@ -22,9 +26,8 @@ interface Props {
 }
 
 
-/**
- * Layer Setup Component.
- */
+/******************* COMPONENT *******************/
+
 export class LayerSetupComponent extends React.Component<Props, State> {
   constructor(props) {
     super(props);
@@ -33,17 +36,17 @@ export class LayerSetupComponent extends React.Component<Props, State> {
       layerStack: props.layerStack,
       targetName: "",
       newName: "",
-      openRenameDialog: false,      
+      openRenameDialog: false,
     };
   }
 
-  private handletouchTapRename = (targetItemName: string):void => {
+  private handleClickRename = (targetItemName: string):void => {
     // Fired by Rename menu entry. Change state to open rename dialog.
     this.setState({
       ...this.state,
       targetName: targetItemName,
       newName: "",
-      openRenameDialog: true,      
+      openRenameDialog: true,
     } as State);
   }
 
@@ -55,7 +58,7 @@ export class LayerSetupComponent extends React.Component<Props, State> {
 
   private handleRename = (currentName: string, newName: string) => {
     // Fired by OK button in rename dialog.
-    // *TODO*
+    // TODO: Implementation
     console.log(`Rename: ${currentName} to ${newName}`);
     return true;
   }
@@ -70,9 +73,9 @@ export class LayerSetupComponent extends React.Component<Props, State> {
     } as State);
   }
 
-  private handleTouchTapDelete = (targetItemName: string):void => {
+  private handleClickDelete = (targetItemName: string):void => {
     // Fired by Delete menu entry.
-    // *TODO*
+    // TODO: Implementation
     console.log(`Delete: ${targetItemName}`);
   }
 
@@ -80,16 +83,16 @@ export class LayerSetupComponent extends React.Component<Props, State> {
     return(
       <div className={styles.layerSetup}>
         <LayerListComponent layerStack={this.props.layerStack}
-          onTouchTapRename={this.handletouchTapRename}
-          onTouchTapDelete={this.handleTouchTapDelete}
+          onClickRename={this.handleClickRename}
+          onClickDelete={this.handleClickDelete}
         />        
-        <LayerItemRenamerComponent 
+        <LayerItemRenamerComponent
             oldName={this.state.targetName}
             newName={this.state.newName}
             openDialog={this.state.openRenameDialog}
             onNameChange={this.handleNameChange}
-            onRename={this.handleRename}  
-            onCloseDialog={this.handleCloseRenameDialog}          
+            onRename={this.handleRename}
+            onCloseDialog={this.handleCloseRenameDialog}
         />
       </div>
     );

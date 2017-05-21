@@ -1,10 +1,13 @@
+/******************* IMPORT *******************/
 import * as React from "react";
-import Dialog from "material-ui/Dialog";
-import FlatButton from "material-ui/FlatButton";
-import TextField from 'material-ui/TextField';
+import { Button } from "react-toolbox/lib/button";
+import { Input } from "react-toolbox/lib/input";
+import { Dialog } from "react-toolbox/lib/dialog";
 
 const styles = require("./layerItemRenamer.scss");
 
+
+/******************* INTERFACE *******************/
 
 interface Props {
   oldName: string;
@@ -12,22 +15,24 @@ interface Props {
   openDialog: boolean;
   onNameChange: (newName: string) => void;
   onRename: (currentName: string, newName: string) => boolean;
-  onCloseDialog: () => void;  
+  onCloseDialog: () => void;
 }
 
+
+/******************* COMPONENT *******************/
 
 export class LayerItemRenamerComponent extends React.Component<Props, {}> {
   constructor(props) {
     super(props);
   }
 
-  private handleTouchTapRename = (event) => {
+  private handleClickRename = (event) => {
     if (this.props.onRename(this.props.oldName, this.props.newName)) {
       this.props.onCloseDialog();
     }
   }
 
-  private handleTouchTapCancel = (event) => {
+  private handleClickCancel = (event) => {
     this.props.onCloseDialog();
   }
 
@@ -36,33 +41,28 @@ export class LayerItemRenamerComponent extends React.Component<Props, {}> {
   }
 
   public render() {
-    const dialogButtons = [
-      <FlatButton
-        label="Cancel"
-        primary={true}
-        onTouchTap={this.handleTouchTapCancel}
-      />,
-      <FlatButton
-        label="Ok"
-        primary={true}
-        keyboardFocused={true}
-        onTouchTap={this.handleTouchTapRename}
-      />,
-    ];
-
     return(
       <Dialog className={styles.layerItemRenamer}
         title="Rename Layer"
-        actions={dialogButtons}
-        modal={true}
-        open={this.props.openDialog}
+        actions={this.dialogActions}
+        onEscKeyDown={this.handleClickCancel}
+        onOverlayClick={this.handleClickCancel}
+        active={this.props.openDialog}
       >
-        <TextField
-          floatingLabelText={this.props.oldName}
+        <Input
+          type="text"
+          name="layer_name"
+          label={this.props.oldName}
           value={this.props.newName}
-          onChange={this.handleNameChange}
+          onChange={this.handleNameChange.bind(this, "layer_name")}
+          maxLength={20}
         />
       </Dialog>
     );
   }
+
+  private dialogActions = [
+      {label: "Cancel", onClick: this.handleClickCancel},
+      {label: "Ok", onClick: this.handleClickRename},
+    ];
 }
