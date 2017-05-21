@@ -1,4 +1,4 @@
-@import "./theme/theme.scss";
+@import "../theme/autothemer.scss";
 
 // Stretch the height to the viewport. This page will behave as an app
 // instead of a traditional scrollable content page.
@@ -14,9 +14,11 @@ html {
 
 body {
   @include expandHeight;
+  @include themify(font-family, $fontPrimary);
+  @include themify(font-weight, $fontWeightThin);
 
-  font-family: 'Roboto', sans-serif;
-  font-weight: 300;
+  //font-family: 'Roboto', sans-serif;
+  //font-weight: 300;
 }
 
 // Use selector 'starts with' to avoid 

@@ -1,5 +1,6 @@
 /******************* IMPORT *******************/
 import * as React from "react";
+//import { themr } from "react-css-themr";
 import { SortableContainer, SortableElement, SortableHandle } from "react-sortable-hoc";
 import { FontIcon } from "react-toolbox/lib/font_icon";
 
@@ -19,7 +20,7 @@ interface Props {
 
 
 /******************* COMPONENT *******************/
-
+//@themr("CMPLayerList")
 export class LayerListComponent extends React.Component<Props, {}> {
   constructor(props) {
     super(props);

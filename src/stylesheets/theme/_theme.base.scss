@@ -1,0 +1,13 @@
+@import "./_definitions.scss";
+@import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500");
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+
+$themeBase: (
+  $colorBackground: white,
+  $colorBackgroundDark: hsla(30, 3.4%, 88.2%, 1),
+  $fontPrimary: Roboto,
+  $fontWeightThin: 300,
+  $fontWeightNormal: 400,
+  $fontWeightSemi: 500,
+  $fontWeightBold: 700,
+) !default;

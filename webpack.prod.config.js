@@ -18,26 +18,6 @@ module.exports = function () {
 
     module: {
       rules: [
-        // Loading pipe for user SASS stylesheets as modules.
-        {
-          test: /\.scss$/,
-          exclude: [/node_modules/],
-          loader: ExtractTextPlugin.extract({
-            fallback: "style-loader",
-            use: [
-              {
-                loader: "css-loader",
-                options: {
-                  modules: true,
-                  camelCase: true,
-                  importLoaders: 1,
-                  localIdentName: "[local]__[name]___[hash:base64:5]"
-                }
-              },
-              { loader: "sass-loader" }
-            ]
-          })
-        },
         // Loading pipe for external PostCSS stylesheets as modules
         // required by react-toolbox.
         {
@@ -55,6 +35,26 @@ module.exports = function () {
                 }
               },
               { loader: "postcss-loader" }
+            ]
+          })
+        },
+        // Loading pipe for user SASS stylesheets as modules.
+        {
+          test: /\.scss$/,
+          exclude: [/node_modules/],
+          loader: ExtractTextPlugin.extract({
+            fallback: "style-loader",
+            use: [
+              {
+                loader: "css-loader",
+                options: {
+                  modules: true,
+                  camelCase: true,
+                  importLoaders: 1,
+                  localIdentName: "[local]__[name]___[hash:base64:5]"
+                }
+              },
+              { loader: "sass-loader" }
             ]
           })
         }

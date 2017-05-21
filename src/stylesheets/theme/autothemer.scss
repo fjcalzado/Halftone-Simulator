@@ -1,0 +1,60 @@
+@import "./theme.base.scss";
+@import "./theme.light.scss";
+@import "./theme.dark.scss";
+
+
+/**
+ * Themes collection map.
+ */
+$themeCollection: (
+  // Keep custom theme after base theme as second map takes
+  // precedence when merging.
+  "light": map-merge($themeBase, $themeLight),
+  "dark": map-merge($themeBase, $themeDark)
+) !default;
+
+
+/**
+ * Themify API. Generates themed rules for given properties following
+ * predefined values in a theme collection.
+ * @mixin {themify}
+ * @param {List} $properties: Properties to themify.
+ * @param {List} $keys: Theme items to map properies against to.
+ */
+@mixin themify($properties, $keys) {
+  // Iterate over the themes.
+  @each $theme, $themeItem in $themeCollection {
+    // Create a selector CLASS -> THEME and also THEME -> CLASS.
+    &.theme-#{$theme},
+    .theme-#{$theme} & {
+      // Iterate over each property-key value.
+      @for $i from 1 through length($properties) {
+        $property: nth($properties, $i);
+        $key: nth($keys, $i);
+        #{$property}: map-get($themeItem, $key);
+      }
+    }
+  }
+}
+
+
+/**
+ * Device specific media query helper.
+ * @param $device: device type out of [small, medium, large].
+ */
+$mobileBreakpoint: 600px;
+$tabletBreakpoint: 992px;
+
+@mixin respond-to($device) {
+  @if $device == small {
+    @media screen and (max-width: $mobileBreakpoint) { @content; }
+  }
+
+  @else if $device == medium {
+    @media screen and (min-width: $mobileBreakpoint + 1) and (max-width: $tabletBreakpoint) { @content; }
+  }
+
+  @else if $device == large {
+    @media screen and (min-width: $tabletBreakpoint + 1) { @content; }
+  }
+}
