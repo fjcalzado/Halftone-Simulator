@@ -22,7 +22,7 @@ document.body.setAttribute("class", styles.themeLight);
 ReactDOM.render(
   <ThemeProvider theme={ContextTheme}>
     <div className={styles.layoutContainerColumn}>
-      <IntroComponent />
+      <IntroComponent fakeProperty={true} />
       <div className={styles.layoutContainerRow}>
         <div className={styles.panelLeft}>
           <LayerSetupComponent layerStack={multiLayerStack} />
