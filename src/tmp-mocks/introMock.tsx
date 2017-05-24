@@ -6,8 +6,16 @@ interface Props {
   theme?: any;
 }
 
-@themr("CMPIntroMock")
-export class IntroComponent extends React.Component<Props, {}> {
+
+class IntroComponentInner extends React.Component<Props, {}> {
+  constructor(props) {
+    super(props);
+  };
+
+  public whatevermethod() {
+    console.log("yeah");
+  }
+
   public render() {
     return (
       <div className={this.props.theme.redtext}>
@@ -19,3 +27,5 @@ export class IntroComponent extends React.Component<Props, {}> {
     );
   };
 };
+export const IntroComponent = themr("CMPIntroMock")(IntroComponentInner);
+

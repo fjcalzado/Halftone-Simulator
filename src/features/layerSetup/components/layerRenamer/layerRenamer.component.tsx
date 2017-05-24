@@ -1,10 +1,11 @@
 /******************* IMPORT *******************/
 import * as React from "react";
+import { themr } from "react-css-themr";
 import { Button } from "react-toolbox/lib/button";
 import { Input } from "react-toolbox/lib/input";
 import { Dialog } from "react-toolbox/lib/dialog";
 
-const styles = require("./layerItemRenamer.scss");
+import { identifiers } from "../../../../identifiers";
 
 
 /******************* INTERFACE *******************/
@@ -16,12 +17,17 @@ interface Props {
   onNameChange: (newName: string) => void;
   onRename: (currentName: string, newName: string) => boolean;
   onCloseDialog: () => void;
+
+  // Context theme API.
+  theme?: {
+    dialog: string;
+  };
 }
 
 
 /******************* COMPONENT *******************/
 
-export class LayerItemRenamerComponent extends React.Component<Props, {}> {
+class LayerRenamer extends React.Component<Props, {}> {
   constructor(props) {
     super(props);
   }
@@ -42,7 +48,7 @@ export class LayerItemRenamerComponent extends React.Component<Props, {}> {
 
   public render() {
     return(
-      <Dialog className={styles.layerItemRenamer}
+      <Dialog className={this.props.theme.dialog}
         title="Rename Layer"
         actions={this.dialogActions}
         onEscKeyDown={this.handleClickCancel}
@@ -66,3 +72,4 @@ export class LayerItemRenamerComponent extends React.Component<Props, {}> {
       {label: "Ok", onClick: this.handleClickRename},
     ];
 }
+export const LayerRenamerComponent = themr(identifiers.layerRenamer)(LayerRenamer);

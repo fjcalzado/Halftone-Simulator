@@ -1,12 +1,12 @@
 /******************* IMPORT *******************/
 import * as React from "react";
+import { themr } from "react-css-themr";
 import { ListItem } from "react-toolbox/lib/list";
 import { IconMenu, MenuItem } from "react-toolbox/lib/menu";
 import { Switch } from "react-toolbox/lib/switch";
 
+import { identifiers } from "../../../../identifiers";
 import { LayerParameters } from "../../../../models/layerModel";
-
-const styles = require("./layerItem.scss");
 
 
 /******************* INTERFACE *******************/
@@ -15,12 +15,17 @@ interface Props {
   layerParams: LayerParameters;
   onClickRename: (targetItemName: string) => void;
   onClickDelete: (targetItemName: string) => void;
+
+  // Context theme API.
+  theme?: {
+    item: string;
+  };
 }
 
 
 /******************* COMPONENT *******************/
 
-export class LayerItemComponent extends React.Component<Props, {}> {
+class LayerItem extends React.Component<Props, {}> {
   constructor(props) {
     super(props);
   }
@@ -35,7 +40,7 @@ export class LayerItemComponent extends React.Component<Props, {}> {
 
   public render() {
     return(
-        <ListItem className={styles.layerItem}
+        <ListItem className={this.props.theme.item}
           caption={this.props.layerParams.name}
           rightActions={this.layerItemMenu}
         />
@@ -53,7 +58,7 @@ export class LayerItemComponent extends React.Component<Props, {}> {
     </IconMenu>,
   ]);
 }
-
+export const LayerItemComponent = themr(identifiers.layerItem)(LayerItem);
 
 
 

@@ -1,13 +1,12 @@
 /******************* IMPORT *******************/
 import * as React from "react";
-//import { themr } from "react-css-themr";
+import { themr } from "react-css-themr";
 import { SortableContainer, SortableElement, SortableHandle } from "react-sortable-hoc";
 import { FontIcon } from "react-toolbox/lib/font_icon";
 
+import { identifiers } from "../../../../identifiers";
 import { LayerStack } from "../../../../models/layerModel";
 import { LayerItemComponent } from "../layerItem";
-
-const styles = require("./layerList.scss");
 
 
 /******************* INTERFACE *******************/
@@ -16,12 +15,20 @@ interface Props {
   layerStack: LayerStack;
   onClickRename: (targetItemName: string) => void;
   onClickDelete: (targetItemName: string) => void;
+
+  // Context theme API.
+  theme?: {
+    dragHandle: string;
+    sortableList: string;
+    sortableItem: string;
+    sortableItemContent: string;
+  };
 }
 
 
 /******************* COMPONENT *******************/
-//@themr("CMPLayerList")
-export class LayerListComponent extends React.Component<Props, {}> {
+
+class LayerList extends React.Component<Props, {}> {
   constructor(props) {
     super(props);
   }
@@ -37,38 +44,41 @@ export class LayerListComponent extends React.Component<Props, {}> {
     });
 
     return(
-      <SortableList
+      <this.SortableList
         items={layerList}
         useDragHandle={true}
       />
     );
   }
+
+  // These are subcomponents needed from react-sortable-hoc.
+  // They are too simple and static to break into new independent components.
+  private DragHandle = SortableHandle(() => {
+    return (
+      <FontIcon className={this.props.theme.dragHandle}
+                value="reorder" />
+    );
+  });
+
+  private SortableItem = SortableElement(({value}) => {
+    return (
+      <div className={this.props.theme.sortableItem}>
+        <this.DragHandle /> {value}
+      </div>
+    );
+  });
+
+  private SortableList = SortableContainer(({items}) => {
+    return (
+      <div className={this.props.theme.sortableList}>
+        {items.map((value, index) => (
+          <this.SortableItem key={`item-${index}`} index={index} value={
+            <div className={this.props.theme.sortableItemContent}>{value}</div>} />
+        ))}
+      </div>
+    );
+  });
 }
+export const LayerListComponent = themr(identifiers.layerList)(LayerList);
 
-// These are subcomponents needed from react-sortable-hoc.
-// They are too simple and static to break into new independent components.
-const DragHandle = SortableHandle(() => {
-  return (
-    <FontIcon className={styles.dragHandle}
-              value="reorder" />
-  );
-});
 
-const SortableItem = SortableElement(({value}) => {
-  return (
-    <div className={styles.sortableItem}>
-      <DragHandle /> {value}
-    </div>
-  );
-});
-
-const SortableList = SortableContainer(({items}) => {
-  return (
-    <div className={styles.sortableList}>
-      {items.map((value, index) => (
-        <SortableItem key={`item-${index}`} index={index} value={
-          <div className={styles.sortableItemContent}>{value}</div>} />
-      ))}
-    </div>
-  );
-});

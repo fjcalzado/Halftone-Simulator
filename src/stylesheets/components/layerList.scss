@@ -1,7 +1,54 @@
 @import "../theme/autothemer.scss";
 
+
 .dragHandle {
-  @include themify(color, $colorBackgroundDark);
+  @include themify(color, $colorBackgroundAccent);
 
   cursor: move;
+}
+
+.sortableList {
+  @include themify(background-color border-color,
+  $colorBackgroundAccent $colorBackgroundAccent);
+
+  border-width: 0.5px;
+  border-style: solid;
+}
+
+// Do not embedd this rule inside sortable-list.
+// Sortable-items are copied at the bottom of <body>
+// when are dragged from the list.
+.sortableItem {
+  @include themify(background-color, $colorBackgroundPrimary);
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-left: 10px;
+
+  // This selects the item to be dragged.
+  body > & {
+    animation-name: animation-start-drag;
+    animation-duration: 0.2s;
+    animation-timing-function: ease-out;
+    animation-fill-mode: forwards;
+
+    // Experimental smooth drag. It will
+    // depend on browser. 
+    // transition-property: transform;
+    // transition-duration: 50ms;    
+  }
+
+  &Content {
+    width: 100%;
+  }
+}
+
+// Animations.
+@keyframes animation-start-drag {
+  from { box-shadow: 0; }
+
+  to {
+    @include themify(box-shadow, $shadow16p);
+  }
 }

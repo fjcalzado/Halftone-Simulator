@@ -1,7 +1,17 @@
+# Implemented strategy
+
+Decentralized and separated stylesheet system, so components can be shipped without styles. Folder `stylesheets`contains the whole system, with a barrel file for easy import. This barrel file severs as an importation interface as it holds every import statement already translated into a Javascript object. Instead of spreading the import of the barrel everywhere, we just inject it through a HOC wrapping our application. 
+
+This is called `context theming`. Styles are just injected into the React tree root context, so that every child component could refer to its CSS using a single name identifier. 
+
+The magic happens thanks to an extension called `react-css-themr`, which basically adds a HOC wrapper for every decorated component that is responsible of spreading the context theme downwards.
+
 
 # Alternative strategy
 
-Although I have tested it and it works, I ended up deprecating it.
+I evaluated and tested the following strategy and it works. However, I ended up deprecating it. Although it has a clear advantage due to a very easy way of theming multiple components just by overwriting global CSS variables that can be applied on runtime and thus, changing the appearance of the theme, this method lacks of fine control over certain rules. Also, it force us to work with PostCSS with is not as mature as I would like. I found some limitations and had to struggle too much. I bet that once it is more robust in the future, PostCSS would be the way to go.
+
+In short, this alternative method consists in spread global PostCSS variables accross modules (thanks to a postcss plugin) and then overwrite those variables on demand by injecting them from javascript objects.
 
 
 ## POSTCSS.CONFIG.JS File
@@ -60,7 +70,7 @@ Global variables defined by React-toolbox in order to customize
 theme are redeclared here to be overriden.
 This data will flow towards Webpack postcss plugins that will
 inject these variables across CSS modules, overwritting the
-existing one. Check postcss.config.js file for further detail.
+existing one.
 
 ```javascript
 module.exports = {

@@ -1,11 +1,11 @@
 /******************* IMPORT *******************/
 import * as React from "react";
+import { themr } from "react-css-themr";
 
+import { identifiers } from "../../identifiers";
 import { LayerStack } from "../../models/layerModel";
 import { LayerListComponent } from "./components/layerList";
-import { LayerItemRenamerComponent } from "./components/layerItemRenamer";
-
-const styles = require("./layerSetup.scss");
+import { LayerRenamerComponent } from "./components/layerRenamer";
 
 
 /******************* INTERFACE *******************/
@@ -23,12 +23,17 @@ interface State {
 
 interface Props {
   layerStack: LayerStack;
+
+  // Context theme API.
+  theme?: {
+    layerSetup: string;
+  };
 }
 
 
 /******************* COMPONENT *******************/
 
-export class LayerSetupComponent extends React.Component<Props, State> {
+class LayerSetup extends React.Component<Props, State> {
   constructor(props) {
     super(props);
 
@@ -81,12 +86,12 @@ export class LayerSetupComponent extends React.Component<Props, State> {
 
   public render() {
     return(
-      <div className={styles.layerSetup}>
+      <div className={this.props.theme.layerSetup}>
         <LayerListComponent layerStack={this.props.layerStack}
           onClickRename={this.handleClickRename}
           onClickDelete={this.handleClickDelete}
         />        
-        <LayerItemRenamerComponent
+        <LayerRenamerComponent
             oldName={this.state.targetName}
             newName={this.state.newName}
             openDialog={this.state.openRenameDialog}
@@ -98,3 +103,4 @@ export class LayerSetupComponent extends React.Component<Props, State> {
     );
   }
 }
+export const LayerSetupComponent = themr(identifiers.layerSetup)(LayerSetup);

@@ -14,11 +14,7 @@ html {
 
 body {
   @include expandHeight;
-  @include themify(font-family, $fontPrimary);
-  @include themify(font-weight, $fontWeightThin);
-
-  //font-family: 'Roboto', sans-serif;
-  //font-weight: 300;
+  @include themify(font-family font-weight, $fontPrimary $fontWeightThin, true);
 }
 
 // Use selector 'starts with' to avoid 

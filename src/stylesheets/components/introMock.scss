@@ -1,4 +1,5 @@
+@import "../theme/autothemer.scss";
+
 .redtext {
-  color: red;
-  font-family: "Roboto";
+  @include themify(font-family, $fontPrimary);
 }

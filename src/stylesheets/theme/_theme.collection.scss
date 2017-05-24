@@ -1,0 +1,14 @@
+@import "./theme.base.scss";
+@import "./theme.light.scss";
+@import "./theme.dark.scss";
+
+
+/**
+ * Themes collection map.
+ */
+$themeCollection: (
+  // Keep custom theme after base theme as second map takes
+  // precedence when merging.
+  "light": map-merge($themeBase, $themeLight),
+  "dark": map-merge($themeBase, $themeDark)
+) !default;

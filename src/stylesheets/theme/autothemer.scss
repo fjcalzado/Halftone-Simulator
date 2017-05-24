@@ -1,18 +1,4 @@
-@import "./theme.base.scss";
-@import "./theme.light.scss";
-@import "./theme.dark.scss";
-
-
-/**
- * Themes collection map.
- */
-$themeCollection: (
-  // Keep custom theme after base theme as second map takes
-  // precedence when merging.
-  "light": map-merge($themeBase, $themeLight),
-  "dark": map-merge($themeBase, $themeDark)
-) !default;
-
+@import "./_theme.collection.scss";
 
 /**
  * Themify API. Generates themed rules for given properties following
@@ -20,23 +6,40 @@ $themeCollection: (
  * @mixin {themify}
  * @param {List} $properties: Properties to themify.
  * @param {List} $keys: Theme items to map properies against to.
+ * @param {Bool} $inverted: Write selector with inverted logic.
  */
-@mixin themify($properties, $keys) {
+@mixin themify($properties, $keys, $invertSelector: false) {
   // Iterate over the themes.
   @each $theme, $themeItem in $themeCollection {
-    // Create a selector CLASS -> THEME and also THEME -> CLASS.
-    &.theme-#{$theme},
-    .theme-#{$theme} & {
-      // Iterate over each property-key value.
-      @for $i from 1 through length($properties) {
-        $property: nth($properties, $i);
-        $key: nth($keys, $i);
-        #{$property}: map-get($themeItem, $key);
+    // Create a selector THEME -> CLASS. Note how selector is written
+    // to avoid webpack hashed names confusion. Instead of ' .class & '
+    // (which it would be detected by webpack and hashed), use query format.
+    @if $invertSelector {
+      &[class="theme-#{$theme}"] {
+        @include applySingleTheme($themeItem, $properties, $keys);
+      }
+    }
+
+    @else {
+      [class="theme-#{$theme}"] & {
+        @include applySingleTheme($themeItem, $properties, $keys);
       }
     }
   }
 }
 
+/**
+ * Themify Helper mixin.
+ */
+@mixin applySingleTheme($themeItem, $properties, $keys) {
+  // Iterate over each property-key value for the given theme.
+  @for $i from 1 through length($properties) {
+    $property: nth($properties, $i);
+    $key: nth($keys, $i);
+
+    #{$property}: map-get($themeItem, $key);
+  }
+}
 
 /**
  * Device specific media query helper.

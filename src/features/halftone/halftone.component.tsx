@@ -1,9 +1,10 @@
 /******************* IMPORT *******************/
 import * as React from "react";
+import { themr } from "react-css-themr";
 
+import { identifiers } from "../../identifiers";
 import * as appChart from "./charting";
 import { rgbMatrix } from "./imaging";
-const styles = require("./halftone.scss");
 
 // TODO: Mock to be deleted.
 import { simpleLayerStack } from "../../tmp-mocks/layerStackMock";
@@ -43,7 +44,7 @@ import { simpleLayerStack } from "../../tmp-mocks/layerStackMock";
  *    a native way. We can manually control a children React component render
  *    process though.
  *    Usage: as it retains full D3 functionality and it is very easy to
- *           implement, we have picked up this solution. 
+ *           implement, we have picked up this solution.
  */
 
 /******************* INTERFACE *******************/
@@ -54,6 +55,11 @@ interface Props {
   // Optional Size. Fit the container by default.
   width?: string;
   height?: string;
+
+  // Context theme API.
+  theme?: {
+    halftoneView: string;
+  };
 }
 
 
@@ -64,7 +70,7 @@ interface Props {
  * Draw a picture using traditional halftone technique.
  * @public
  */
-export class HalftoneComponent extends React.Component < Props, {} > {
+class Halftone extends React.Component <Props, {}> {
   constructor(props) {
     super(props);
     // Default initial state.
@@ -79,14 +85,14 @@ export class HalftoneComponent extends React.Component < Props, {} > {
 
   public render() {
     return (
-      <div className = {styles.halftoneView}>
+      <div className={this.props.theme.halftoneView}>
       </div>
     );
   }
 
   // Lifecycle: Initialization Phase. After Mounting.
   // (Once the component is created and inserted into the DOM).
-  private componentDidMount() {
+  public componentDidMount() {
     this.drawChart();
   }
 
@@ -107,7 +113,7 @@ export class HalftoneComponent extends React.Component < Props, {} > {
     // Halftone pattern can be made of circular, elliptical or square shapes.
     // When using circular dots, these should meet (overlap) at a tonal value of 70%.
     // The proper channel to determine the dots size is HSL lightness.
-    appChart.initialize(styles.halftoneView, this.props.width, this.props.height);
+    appChart.initialize(this.props.theme.halftoneView, this.props.width, this.props.height);
     rgbMatrix.getMatrix(this.props.imageUrl, this.props.resolution)
       .then((imgMatrix) => {
         appChart.setImage(imgMatrix);
@@ -118,3 +124,6 @@ export class HalftoneComponent extends React.Component < Props, {} > {
 
 };
 
+// Final component exported.
+// This is a HOC that wraps our component to pass theme through context.
+export const HalftoneComponent = themr(identifiers.halftone)(Halftone);
