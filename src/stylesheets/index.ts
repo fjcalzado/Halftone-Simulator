@@ -15,9 +15,12 @@ export const contextStylesheets = {
   [identifiers.layerRenamer]: require("./components/layerRenamer.scss"),
 
   // Vendor/Third-Party Components CSS.
-  [identifiers.vendorList]: "",
-  [identifiers.vendorMenu]: "",
+  [identifiers.vendorButton]: require("./components/react-toolbox/button.scss"),
   [identifiers.vendorDialog]: require("./components/react-toolbox/dialog.scss"),
+  [identifiers.vendorInput]: require("./components/react-toolbox/input.scss"),
+  [identifiers.vendorList]: require("./components/react-toolbox/list.scss"),
+  [identifiers.vendorMenu]: require("./components/react-toolbox/menu.scss"),
+  [identifiers.vendorSwitch]: require("./components/react-toolbox/switch.scss"),
 
   // TODO: Remove, just for testing ************************
   CMPIntroMock: require("./components/introMock.scss"),

@@ -1,0 +1,9 @@
+@import "../../theme/autothemer.scss";
+
+.on {
+  @include themify(background, $colorPrimaryContrast);
+
+  & .thumb {
+    @include themify(background, $colorPrimary);
+  }
+}

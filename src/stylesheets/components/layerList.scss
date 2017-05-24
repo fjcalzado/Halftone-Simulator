@@ -2,14 +2,14 @@
 
 
 .dragHandle {
-  @include themify(color, $colorBackgroundAccent);
+  @include themify(color, $colorBackgroundDark);
 
   cursor: move;
 }
 
 .sortableList {
   @include themify(background-color border-color,
-  $colorBackgroundAccent $colorBackgroundAccent);
+  $colorBackgroundDark $colorBackgroundDark);
 
   border-width: 0.5px;
   border-style: solid;
@@ -19,7 +19,7 @@
 // Sortable-items are copied at the bottom of <body>
 // when are dragged from the list.
 .sortableItem {
-  @include themify(background-color, $colorBackgroundPrimary);
+  @include themify(background-color, $colorBackground);
 
   display: flex;
   flex-direction: row;

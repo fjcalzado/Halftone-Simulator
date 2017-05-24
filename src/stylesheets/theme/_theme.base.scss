@@ -3,8 +3,17 @@
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 
 $themeBase: (
-  $colorBackgroundPrimary: white,
-  $colorBackgroundAccent: hsla(30, 3.4%, 88.2%, 1),
+  $colorBlack: hsl(0, 0, 0%),
+  $colorWhite: hsl(0, 0%, 100%),
+  $colorDarkContrast: hsl(0, 0%, 100%),
+  $colorLightContrast: hsl(0, 0, 0%),
+
+  $colorPrimary: hsla(186.8, 100%, 50%, 1),
+  $colorPrimaryDark: hsla(186.8, 100%, 35%, 1),
+  $colorPrimaryContrast: hsla(186.8, 100%, 90%, 1),
+
+  $colorBackground: hsl(0, 0%, 100%),
+  $colorBackgroundDark: hsl(0, 0%, 85%),
 
   $fontPrimary: Roboto,
   $fontWeightThin: 300,
