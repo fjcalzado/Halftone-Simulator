@@ -13,6 +13,7 @@ export const contextStylesheets = {
   [identifiers.layerItem]: require("./components/layerItem.scss"),
   [identifiers.layerList]: require("./components/layerList.scss"),
   [identifiers.layerRenamer]: require("./components/layerRenamer.scss"),
+  [identifiers.layerAdder]: require("./components/layerAdder.scss"),
 
   // Vendor/Third-Party Components CSS.
   [identifiers.vendorButton]: require("./components/react-toolbox/button.scss"),

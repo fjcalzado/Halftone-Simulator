@@ -12,6 +12,7 @@ export const identifiers = {
   layerItem: "CMPLayerItem",
   layerList: "CMPLayerList",
   layerRenamer: "CMPLayerRenamer",
+  layerAdder: "CMPLayerAdder",
 
   // Vendor/Third-Party Components CSS.
   // RT: React-Toolbox.

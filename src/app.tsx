@@ -26,7 +26,9 @@ ReactDOM.render(
       <IntroComponent fakeProperty={true} />
       <div className={styles.layoutContainerRow}>
         <div className={styles.panelLeft}>
-          <LayerSetupComponent layerStack={multiLayerStack} />
+          <LayerSetupComponent layerStack={multiLayerStack}
+            maxNumLayers={4}
+          />
         </div>
         <div className={styles.panelMain}>
           <HalftoneComponent imageUrl={"../res/img/lu.jpg"}

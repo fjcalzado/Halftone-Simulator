@@ -4,6 +4,7 @@ import { themr } from "react-css-themr";
 
 import { identifiers } from "../../identifiers";
 import { LayerStack } from "../../models/layerModel";
+import { LayerAdderComponent } from "./components/layerAdder";
 import { LayerListComponent } from "./components/layerList";
 import { LayerRenamerComponent } from "./components/layerRenamer";
 
@@ -16,13 +17,17 @@ interface State {
   // Layer name that fired up actions like delete or rename.
   targetName: string;
 
-  // Renaming.
-  newName: string;
+  // ADD.
+  adderNewName: string;
+
+  // RENAME.
+  renamerNewName: string;
   openRenameDialog: boolean;
 }
 
 interface Props {
   layerStack: LayerStack;
+  maxNumLayers: number;
 
   // Context theme API.
   theme?: {
@@ -40,25 +45,40 @@ class LayerSetup extends React.Component<Props, State> {
     this.state = {
       layerStack: props.layerStack,
       targetName: "",
-      newName: "",
+      adderNewName: "",
+      renamerNewName: "",
       openRenameDialog: false,
     };
   }
 
-  private handleClickRename = (targetItemName: string):void => {
+  private handleAdd = (newLayerName: string): void => {
+    // Fired by Add layer button.
+    // TODO: Implementation
+    console.log(`Add Layer: ${newLayerName}`);
+  }
+
+  private handleAdderNameChange = (newName: string) => {
+    // Fired by add new layer text input. Change state to reflect
+    // editing name.
+    // TODO: Input validation (Layer names must be unique)
+    this.setState({...this.state, adderNewName: newName} as State);
+  }
+
+  private handleClickRename = (targetItemName: string): void => {
     // Fired by Rename menu entry. Change state to open rename dialog.
     this.setState({
       ...this.state,
       targetName: targetItemName,
-      newName: "",
+      renamerNewName: "",
       openRenameDialog: true,
     } as State);
   }
 
-  private handleNameChange = (newName: string) => {
+  private handleRenamerNameChange = (newName: string) => {
     // Fired by text input in rename dialog. Change state to reflect
     // new name.
-    this.setState({...this.state, newName} as State);
+    // TODO: Input validation (Layer names must be unique)
+    this.setState({...this.state, renamerNewName: newName} as State);
   }
 
   private handleRename = (currentName: string, newName: string) => {
@@ -73,7 +93,7 @@ class LayerSetup extends React.Component<Props, State> {
     this.setState({
       ...this.state,
       targetName: "",
-      newName: "",
+      renamerNewName: "",
       openRenameDialog: false,
     } as State);
   }
@@ -84,18 +104,25 @@ class LayerSetup extends React.Component<Props, State> {
     console.log(`Delete: ${targetItemName}`);
   }
 
+  private validNumLayers = (): boolean => this.props.layerStack.length <= this.props.maxNumLayers;
+
   public render() {
     return(
       <div className={this.props.theme.layerSetup}>
+        <LayerAdderComponent disabled={!this.validNumLayers}
+          name={this.state.adderNewName}
+          onNameChange={this.handleAdderNameChange}
+          onAdd={this.handleAdd}
+        />
         <LayerListComponent layerStack={this.props.layerStack}
           onClickRename={this.handleClickRename}
           onClickDelete={this.handleClickDelete}
         />        
         <LayerRenamerComponent
             oldName={this.state.targetName}
-            newName={this.state.newName}
+            newName={this.state.renamerNewName}
             openDialog={this.state.openRenameDialog}
-            onNameChange={this.handleNameChange}
+            onNameChange={this.handleRenamerNameChange}
             onRename={this.handleRename}
             onCloseDialog={this.handleCloseRenameDialog}
         />

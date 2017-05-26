@@ -17,6 +17,7 @@ interface Props {
   onNameChange: (newName: string) => void;
   onRename: (currentName: string, newName: string) => boolean;
   onCloseDialog: () => void;
+  error?: string;
 
   // Context theme API.
   theme?: {
@@ -57,10 +58,11 @@ class LayerRenamer extends React.Component<Props, {}> {
       >
         <Input
           type="text"
-          name="layer_name"
+          name="renameLayer_name"
           label={this.props.oldName}
           value={this.props.newName}
-          onChange={this.handleNameChange.bind(this, "layer_name")}
+          error={this.props.error}
+          onChange={this.handleNameChange.bind(this, "renameLayer_name")}
           maxLength={20}
         />
       </Dialog>
