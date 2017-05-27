@@ -10,14 +10,14 @@ export interface GridNode {
 }
 
 export enum GridPatternType {
-  Square = 1,
-  Brick,
-  Triangle,
-  Hex,
-  Random,
-  Wave,
-  Chevron,
-  Radial,
+  Square = "Square" as any,
+  Brick = "Brick" as any,
+  Triangle = "Triangle" as any,
+  Hex = "Hex" as any,
+  Random = "Random" as any,
+  Wave = "Wave" as any,
+  Chevron = "Chevron" as any,
+  Radial = "Radial" as any,
 }
 
 export interface GridParameters {

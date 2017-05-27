@@ -24,4 +24,6 @@ export const identifiers = {
   vendorList: "RTList",
   vendorMenu: "RTMenu",
   vendorSwitch: "RTSwitch",
+  vendorSlider: "RTSlider",
+  vendorDropdown: "RTDropdown",
 };
