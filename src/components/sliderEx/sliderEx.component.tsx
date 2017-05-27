@@ -77,7 +77,7 @@ class SliderEx extends React.Component<Props, {}> {
           pinned={this.props.pinned}
           snaps={this.props.snaps}
           step={this.props.displayStep}
-          value={Math.round(this.scale()(this.props.value) * this.props.displayStep) / this.props.displayStep}
+          value={Math.round(this.scale()(this.props.value) / this.props.displayStep) * this.props.displayStep}
           onChange={this.handleOnChange}
         />
       </div>

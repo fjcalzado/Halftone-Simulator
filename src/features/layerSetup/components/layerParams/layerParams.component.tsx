@@ -4,7 +4,6 @@ import { themr } from "react-css-themr";
 import { List, ListItem, ListSubHeader, ListDivider, ListCheckbox } from "react-toolbox/lib/list";
 import { Switch } from "react-toolbox/lib/switch";
 
-
 import { identifiers } from "../../../../identifiers";
 import { SliderExComponent } from "../../../../components/sliderEx";
 import { LayerParameters } from "../../../../models/layerModel";
@@ -62,7 +61,7 @@ class LayerParams extends React.Component<Props, {}> {
   private Opacity = () => {
     return (
       <SliderExComponent editable min={0} max={1}
-        displayMin={0} displayMax={500} displayStep={1}
+        displayMin={0} displayMax={100} displayStep={1}
         label={"Opacity"}
         value={this.props.layerParams.opacity}
         onChange={this.handleLayerChange.bind(this, "opacity")}
