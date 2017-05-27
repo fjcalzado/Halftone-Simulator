@@ -15,6 +15,7 @@ interface Props {
   layerStack: LayerStack;
   onClickRename: (targetItemName: string) => void;
   onClickDelete: (targetItemName: string) => void;
+  onSelectLayer: (targetItemName: string) => void;
   onSort: (oldIndex: number, newIndex: number) => void;
 
   // Context theme API.
@@ -40,7 +41,9 @@ class LayerList extends React.Component<Props, {}> {
       return (
         <LayerItemComponent layerParams={layer}
           onClickRename={this.props.onClickRename}
-          onClickDelete={this.props.onClickDelete} />
+          onClickDelete={this.props.onClickDelete}
+          onSelectLayer={this.props.onSelectLayer}
+        />
       );
     });
 

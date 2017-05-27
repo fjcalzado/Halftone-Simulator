@@ -15,7 +15,7 @@ interface Props {
   layerParams: LayerParameters;
   onClickRename: (targetItemName: string) => void;
   onClickDelete: (targetItemName: string) => void;
-  onClickItem: (targetItemName: string) => void;
+  onSelectLayer: (targetItemName: string) => void;
 
   // Context theme API.
   theme?: {
@@ -39,12 +39,16 @@ class LayerItem extends React.Component<Props, {}> {
      this.props.onClickDelete(this.props.layerParams.name);
   }
 
+  private handleSelectLayer = (event) => {
+     this.props.onSelectLayer(this.props.layerParams.name);
+  }
+
   public render() {
     return(
         <ListItem className={this.props.theme.item}
           caption={this.props.layerParams.name}
           rightActions={this.layerItemMenu}
-          onClick={this.props.onClickItem}
+          onClick={this.handleSelectLayer}
           selectable={true}
         />
     );

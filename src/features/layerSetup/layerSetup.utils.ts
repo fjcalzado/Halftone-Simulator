@@ -1,4 +1,5 @@
-import { LayerStack, CreateDefaultLayerParams } from "../../models/layerModel";
+import { LayerStack, CreateDefaultLayerParams,
+         CloneLayerParams, LayerParameters } from "../../models/layerModel";
 import { arrayMove } from "react-sortable-hoc";
 
 const isLayerNameDuplicated = (ls: LayerStack, name: string) => {
@@ -6,7 +7,6 @@ const isLayerNameDuplicated = (ls: LayerStack, name: string) => {
 };
 
 export const isLayerNameValid = (ls: LayerStack, name: string) => {
-  // Check against empty and whitespaces.
   const trimmedName = name.trim();
   let error = "";
   let ok = true;
@@ -23,7 +23,7 @@ export const isLayerNameValid = (ls: LayerStack, name: string) => {
 export const synchZindex = (ls: LayerStack): LayerStack => {
   return ls.map((item, index) => {
     return {
-      ...item,
+      ...CloneLayerParams(item),
       zIndex: index,
     };
   });
@@ -47,8 +47,22 @@ export const sortLayer = (ls: LayerStack, oldIndex: number, newIndex: number): L
 export const renameLayer = (ls: LayerStack, oldName: string, newName: string): LayerStack => {
   return ls.map((item) => {
    if (item.name === oldName) {
-    return {...item, name: newName};
+    return {...CloneLayerParams(item), name: newName};
    } else {
-     return {...item};
+     return {...CloneLayerParams(item)};
   }});
 };
+
+export const replaceLayerParams = (ls: LayerStack, targetLayerName: string, lp: LayerParameters) => {
+  return ls.map((item) => {
+   if (item.name === targetLayerName) {
+    return {...CloneLayerParams(lp)};
+   } else {
+     return {...CloneLayerParams(item)};
+  }});
+};
+
+export const cloneLayerStack = (ls: LayerStack): LayerStack => {
+ return ls.map((item) => CloneLayerParams(item));
+};
+

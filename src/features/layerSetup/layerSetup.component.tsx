@@ -28,9 +28,9 @@ interface Props {
   renameLayerCurrentName: string;
   renameLayerErrorMessage?: string;
 
-  onSortList: (oldIndex: number, newIndex: number) => void;
-
   onDeleteLayer: (targetLayerName: string) => void;
+  onSortList: (oldIndex: number, newIndex: number) => void;
+  onSelectLayer: (targetLayerName: string) => void;
 
   // Context theme API.
   theme?: {
@@ -59,6 +59,7 @@ class LayerSetup extends React.Component<Props, {}> {
           onClickRename={this.props.onClickRenameLayer}
           onClickDelete={this.props.onDeleteLayer}
           onSort={this.props.onSortList}
+          onSelectLayer={this.props.onSelectLayer}
         />        
         <LayerRenamerComponent
             currentName={this.props.renameLayerCurrentName}

@@ -1,7 +1,7 @@
 /******************* IMPORT *******************/
 import * as React from "react";
 
-import { LayerStack } from "../../models/layerModel";
+import { LayerParameters, LayerStack, CloneLayerParams } from "../../models/layerModel";
 import { LayerSetupComponent } from "./layerSetup.component";
 import * as layerUtil from "./layerSetup.utils";
 
@@ -11,6 +11,7 @@ import * as layerUtil from "./layerSetup.utils";
 interface State {
   layerStack: LayerStack;
   maxNumLayers: number;
+  selectedLayer: string;
 
   addLayerEditingName: string;
   addLayerErrorMessage: string;
@@ -33,8 +34,9 @@ export class LayerSetupContainer extends React.Component<Props, State> {
     super(props);
 
     this.state = {
-      layerStack: props.layerStack,
+      layerStack: layerUtil.cloneLayerStack(props.layerStack),
       maxNumLayers: props.maxNumLayers,
+      selectedLayer: "",
       addLayerEditingName: "",
       addLayerErrorMessage: "",
       addLayerDisabled: false,
@@ -106,14 +108,6 @@ export class LayerSetupContainer extends React.Component<Props, State> {
     } as State);
   }
 
-  private handleSortList = (oldIndex: number, newIndex: number): void => {
-    // Fired on drag and drop sorting.
-    this.setState({
-      ...this.state,
-      layerStack: layerUtil.sortLayer(this.state.layerStack, oldIndex, newIndex),
-    } as State);
-  }
-
   private handleDeleteLayer = (targetLayerName: string): void => {
     // Fired by Delete menu entry.
     this.setState({
@@ -122,13 +116,49 @@ export class LayerSetupContainer extends React.Component<Props, State> {
     } as State);
   }
 
+  private handleSortList = (oldIndex: number, newIndex: number): void => {
+    // Fired on drag and drop sorting.
+    this.setState({
+      ...this.state,
+      layerStack: layerUtil.sortLayer(this.state.layerStack, oldIndex, newIndex),
+    } as State);
+  }
+
+  private handleSelectLayer = (targetLayerName: string): void => {
+    // Fired on click on layer item.
+    this.setState({
+      ...this.state,
+      selectedLayer: targetLayerName,
+    } as State);
+  }
+
+  private handleSelectedLayerParamsChanged = (lp: LayerParameters): void => {
+    // Fired whenever a change is done in any parameter from LayerParams component.
+    this.setState({
+      ...this.state,
+      layerStack: layerUtil.replaceLayerParams(this.state.layerStack, this.state.selectedLayer, lp),
+    } as State);
+  }
+
   private exceedNumLayers = (): boolean => this.state.layerStack.length >= this.state.maxNumLayers;
+
+  public componentWillReceiveProps(nextProps) {
+    // Update state by cloning the received layerStack into state.
+    this.setState({
+      ...this.state,
+      layerStack: layerUtil.cloneLayerStack(nextProps.layerStack),
+      maxNumLayers: nextProps.maxNumLayers,
+    } as State);
+  }
 
   public render() {
 
-    const addErrorMsg = this.exceedNumLayers() ? `Max layers reached (${this.props.maxNumLayers})` 
+    // Resolve variables from current state that can be done on the fly.
+    const addErrorMsg = this.exceedNumLayers() ? `Max layers reached (${this.props.maxNumLayers})`
       : this.state.addLayerErrorMessage;
     const addDisabled = this.exceedNumLayers() || this.state.addLayerDisabled;
+    const selectedLayerParams = this.state.layerStack.find((item) =>
+      item.name === this.state.selectedLayer);
 
     return(
       <LayerSetupComponent layerStack={this.state.layerStack}
@@ -144,8 +174,10 @@ export class LayerSetupContainer extends React.Component<Props, State> {
         renameLayerEditingName={this.state.renameLayerEditingName}
         renameLayerCurrentName={this.state.renameLayerCurrentName}
         renameLayerErrorMessage={this.state.renameLayerErrorMessage}
-        onSortList={this.handleSortList}
         onDeleteLayer={this.handleDeleteLayer}
+        onSortList={this.handleSortList}
+        onSelectLayer={this.handleSelectLayer}
+        selectedLayerParams={selectedLayerParams}
       />
     );
   }
