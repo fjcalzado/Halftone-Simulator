@@ -8,6 +8,7 @@ import { DotParameters, CreateDefaultDotParams } from "./dotModel";
 
 export interface LayerParameters {
   name: string;
+  visible: boolean;
   opacity: number;
   zIndex: number;
   gridParams: GridParameters;
@@ -19,6 +20,7 @@ export type LayerStack = LayerParameters[];
 export const CreateDefaultLayerParams = () => {
   return {
     name: "NewLayer",
+    visible: true,
     opacity: 1,
     zIndex: 0,
     gridParams: CreateDefaultGridParams(),

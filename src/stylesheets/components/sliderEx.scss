@@ -1,0 +1,16 @@
+//@import "../theme/autothemer.scss";
+
+.container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.label {
+  flex-grow: 0;
+}
+
+.slider {
+  flex-grow: 1;
+}
+

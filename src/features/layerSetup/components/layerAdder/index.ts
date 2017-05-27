@@ -1,1 +1,1 @@
-export * from "./layerAdder.component";
+export { LayerAdderComponent } from "./layerAdder.component";

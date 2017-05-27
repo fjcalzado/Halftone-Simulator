@@ -1,1 +1,1 @@
-export * from "./layerRenamer.component";
+export { LayerRenamerComponent } from "./layerRenamer.component";

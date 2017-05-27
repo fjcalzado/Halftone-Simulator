@@ -9,10 +9,12 @@ export const identifiers = {
   layerSetup: "FTLayerSetup",
 
   // Project Components (CMP).
+  sliderEx: "CMPSliderEx",
   layerItem: "CMPLayerItem",
   layerList: "CMPLayerList",
   layerRenamer: "CMPLayerRenamer",
   layerAdder: "CMPLayerAdder",
+  layerParams: "CMPLayerParams",
 
   // Vendor/Third-Party Components CSS.
   // RT: React-Toolbox.

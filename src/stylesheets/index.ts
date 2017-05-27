@@ -10,10 +10,12 @@ export const contextStylesheets = {
   [identifiers.layerSetup]: require("./components/layerSetup.scss"),
 
   // Project Components CSS.
+  [identifiers.sliderEx]: require("./components/sliderEx.scss"),
   [identifiers.layerItem]: require("./components/layerItem.scss"),
   [identifiers.layerList]: require("./components/layerList.scss"),
   [identifiers.layerRenamer]: require("./components/layerRenamer.scss"),
   [identifiers.layerAdder]: require("./components/layerAdder.scss"),
+  [identifiers.layerParams]: require("./components/layerParams.scss"),
 
   // Vendor/Third-Party Components CSS.
   [identifiers.vendorButton]: require("./components/react-toolbox/button.scss"),

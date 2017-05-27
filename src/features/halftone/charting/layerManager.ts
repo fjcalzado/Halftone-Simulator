@@ -140,9 +140,10 @@ export function drawLayers(masterNodeSelection, sourceImage: any[][], layers: La
     (resolve, reject) => {
       try {
         // STEP 1: PREPROCESS
-        // Initialize image-level processors and sort layers by its zIndex.
+        // Initialize image-level processors.
+        // Also sort layers by its zIndex and filter not visible ones.
         const imgFiller = CreateImageInterpolator(sourceImage, Bilinear);
-        const sortedLayers = sortLayersByZIndex(layers);
+        const sortedVisibleLayers = sortLayersByZIndex(layers).filter((layer) => layer.visible);
 
         // STEP 2: Handle UPDATE, ENTER AND EXIT selections for layers.
         // Generate the final layer selection that needs redraw. This selection
@@ -150,7 +151,7 @@ export function drawLayers(masterNodeSelection, sourceImage: any[][], layers: La
         // update selection that really needs redraw (grid or dot topology modified).
         const layerSelection = masterNodeSelection.selectAll(layerSelector);
         const updateLayerSelection = layerSelection
-            .data(sortedLayers, (layer) => layer.name).order();
+            .data(sortedVisibleLayers, (layer) => layer.name).order();
         updateLayerSelection.exit().remove();
         const mergedLayerSelection = updateLayerSelection
           .enter().append("g")

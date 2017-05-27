@@ -3,10 +3,11 @@ import * as React from "react";
 import { themr } from "react-css-themr";
 
 import { identifiers } from "../../identifiers";
-import { LayerStack } from "../../models/layerModel";
+import { LayerParameters, LayerStack } from "../../models/layerModel";
 import { LayerAdderComponent } from "./components/layerAdder";
 import { LayerListComponent } from "./components/layerList";
 import { LayerRenamerComponent } from "./components/layerRenamer";
+import { LayerParamsComponent } from "./components/layerParams";
 
 
 /******************* INTERFACE *******************/
@@ -30,7 +31,10 @@ interface Props {
 
   onDeleteLayer: (targetLayerName: string) => void;
   onSortList: (oldIndex: number, newIndex: number) => void;
+
   onSelectLayer: (targetLayerName: string) => void;
+  selectedLayerParams: LayerParameters;
+  onSelectedLayerParamsChanged: (lp: LayerParameters) => void;
 
   // Context theme API.
   theme?: {
@@ -70,6 +74,14 @@ class LayerSetup extends React.Component<Props, {}> {
             onCloseDialog={this.props.onCloseRenameLayerDialog}
             error={this.props.renameLayerErrorMessage}
         />
+
+        {/*// TODO: To be inserted in Cards, one on top of the other.*/}
+        {this.props.selectedLayerParams ?
+          (<LayerParamsComponent
+            layerParams={this.props.selectedLayerParams}
+            onLayerParamsChanged={this.props.onSelectedLayerParamsChanged}
+          />) : null
+        }
       </div>
     );
   }

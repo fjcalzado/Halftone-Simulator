@@ -178,6 +178,7 @@ export class LayerSetupContainer extends React.Component<Props, State> {
         onSortList={this.handleSortList}
         onSelectLayer={this.handleSelectLayer}
         selectedLayerParams={selectedLayerParams}
+        onSelectedLayerParamsChanged={this.handleSelectedLayerParamsChanged}
       />
     );
   }

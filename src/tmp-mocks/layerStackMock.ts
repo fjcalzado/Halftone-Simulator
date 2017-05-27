@@ -14,6 +14,7 @@ const dotParams: DotParameters = CreateDefaultDotParams();
 
 const layerParams: LayerParameters = {
     name: "Single Layer",
+    visible: true,
     opacity: 1,
     zIndex: 0,
     gridParams,
