@@ -15,6 +15,7 @@ interface Props {
   layerParams: LayerParameters;
   onClickRename: (targetItemName: string) => void;
   onClickDelete: (targetItemName: string) => void;
+  onClickItem: (targetItemName: string) => void;
 
   // Context theme API.
   theme?: {
@@ -43,6 +44,8 @@ class LayerItem extends React.Component<Props, {}> {
         <ListItem className={this.props.theme.item}
           caption={this.props.layerParams.name}
           rightActions={this.layerItemMenu}
+          onClick={this.props.onClickItem}
+          selectable={true}
         />
     );
   }
@@ -52,7 +55,6 @@ class LayerItem extends React.Component<Props, {}> {
   // the rest of layer properties in a layer panel along with dot and grid panels.
   private layerItemMenu = ([
     <IconMenu key="first-action" icon="more_vert" position="topLeft" menuRipple>
-      <Switch checked={true} label={"Enable"}/>
       <MenuItem icon="mode_edit" caption="Rename" onClick={this.handleClickRename}/>
       <MenuItem icon="delete" caption="Delete" onClick={this.handleClickDelete}/>
     </IconMenu>,

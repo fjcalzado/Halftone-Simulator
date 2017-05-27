@@ -33,3 +33,11 @@ export interface GridParameters {
    * picture rescaling will use a proper resampling algorithm.
    */
 }
+
+export const CreateDefaultGridParams = () => {
+  return {
+    pattern: GridPatternType.Square,
+    rotationAngle: 0,
+    scaleFactor: 1,
+  };
+};

@@ -15,6 +15,7 @@ interface Props {
   layerStack: LayerStack;
   onClickRename: (targetItemName: string) => void;
   onClickDelete: (targetItemName: string) => void;
+  onSort: (oldIndex: number, newIndex: number) => void;
 
   // Context theme API.
   theme?: {
@@ -47,6 +48,7 @@ class LayerList extends React.Component<Props, {}> {
       <this.SortableList
         items={layerList}
         useDragHandle={true}
+        onSortEnd={({oldIndex, newIndex}) => this.props.onSort(oldIndex, newIndex)}
       />
     );
   }

@@ -25,3 +25,15 @@ export interface DotParameters {
   colorCustom: boolean;
   color?: any;
 }
+
+export const CreateDefaultDotParams = () => {
+  return {
+    shape: DotType.Circle,
+    sizeBinding: Channel.Lightness,
+    sizeMinThreshold: 0,
+    sizeMaxThreshold: 1,
+    rotationAngle: 0,
+    colorCustom: false,
+    color: "rgb(0, 0, 0)",
+  };
+};

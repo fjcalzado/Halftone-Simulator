@@ -11,11 +11,11 @@ import { identifiers } from "../../../../identifiers";
 /******************* INTERFACE *******************/
 
 interface Props {
-  oldName: string;
+  currentName: string;
   newName: string;
   openDialog: boolean;
-  onNameChange: (newName: string) => void;
-  onRename: (currentName: string, newName: string) => boolean;
+  onNameChange: (editingName: string) => void;
+  onRenameLayer: (currentName: string, newName: string) => boolean;
   onCloseDialog: () => void;
   error?: string;
 
@@ -34,7 +34,7 @@ class LayerRenamer extends React.Component<Props, {}> {
   }
 
   private handleClickRename = (event) => {
-    if (this.props.onRename(this.props.oldName, this.props.newName)) {
+    if (this.props.onRenameLayer(this.props.currentName, this.props.newName)) {
       this.props.onCloseDialog();
     }
   }
@@ -51,7 +51,7 @@ class LayerRenamer extends React.Component<Props, {}> {
     return(
       <Dialog className={this.props.theme.dialog}
         title="Rename Layer"
-        actions={this.dialogActions}
+        actions={this.dialogActions()}
         onEscKeyDown={this.handleClickCancel}
         onOverlayClick={this.handleClickCancel}
         active={this.props.openDialog}
@@ -59,7 +59,7 @@ class LayerRenamer extends React.Component<Props, {}> {
         <Input
           type="text"
           name="renameLayer_name"
-          label={this.props.oldName}
+          label={this.props.currentName}
           value={this.props.newName}
           error={this.props.error}
           onChange={this.handleNameChange.bind(this, "renameLayer_name")}
@@ -69,9 +69,13 @@ class LayerRenamer extends React.Component<Props, {}> {
     );
   }
 
-  private dialogActions = [
+  private okDisabled = () => {
+    return Boolean(this.props.error) || !this.props.newName;
+  }
+
+  private dialogActions = () => [
       {label: "Cancel", onClick: this.handleClickCancel},
-      {label: "Ok", onClick: this.handleClickRename},
-    ];
+      {label: "Ok", onClick: this.handleClickRename, disabled: this.okDisabled()},
+    ]
 }
 export const LayerRenamerComponent = themr(identifiers.layerRenamer)(LayerRenamer);

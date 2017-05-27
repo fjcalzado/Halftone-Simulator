@@ -6,7 +6,7 @@ import { DotParameters } from "../../../models/dotModel";
 import { GridParameters } from "../../../models/gridModel";
 import { CreateDotTopology, DotTopology } from "./dotTopology";
 import { CreateGridTopology } from "./gridTopology";
-import { LayerParameters, LayerStack } from "../../../models/layerModel";
+import { LayerParameters, LayerStack, CloneLayerParams } from "../../../models/layerModel";
 
 
 /**
@@ -16,14 +16,6 @@ import { LayerParameters, LayerStack } from "../../../models/layerModel";
 
 function sortLayersByZIndex(layers: LayerStack): LayerStack {
   return layers.sort((a, b) => a.zIndex - b.zIndex);
-}
-
-function cloneLayerParams(layerParams: LayerParameters): LayerParameters {
-  return {
-    ...layerParams,
-    gridParams: {...layerParams.gridParams},
-    dotParams: {...layerParams.dotParams},
-  };
 }
 
 
@@ -181,7 +173,7 @@ export function drawLayers(masterNodeSelection, sourceImage: any[][], layers: La
           }
           // Store current layer params to be able to do the previous comparison for the
           // next draw cycle.
-          currentLayers.set(this, cloneLayerParams(layerParams));
+          currentLayers.set(this, CloneLayerParams(layerParams));
         });
 
         // Wait for all layer promises to resolve.

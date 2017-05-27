@@ -2,17 +2,17 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import { ThemeProvider } from "react-css-themr";
 
-import { HalftoneComponent } from "./features/halftone";
-import { LayerSetupComponent } from "./features/layerSetup";
-import { contextStylesheets } from "./stylesheets";
+import { HalftoneComponent } from "../features/halftone";
+import { LayerSetupContainer } from "../features/layerSetup";
+import { contextStylesheets } from "../stylesheets";
 
 // TODO: To be deleted **************************************
-import { IntroComponent } from "./tmp-mocks/introMock";
-import { multiLayerStack } from "./tmp-mocks/layerStackMock";
+import { IntroComponent } from "../tmp-mocks/introMock";
+import { multiLayerStack } from "../tmp-mocks/layerStackMock";
 // **********************************************************
 
 /*TODO*/
-const styles = require("./stylesheets/base/app.scss");
+const styles = require("../stylesheets/base/app.scss");
 
 // TODO: Set theme class name to body in order for auto themer to
 // work. Find a cleaner method to export all the themes identNames
@@ -26,7 +26,7 @@ ReactDOM.render(
       <IntroComponent fakeProperty={true} />
       <div className={styles.layoutContainerRow}>
         <div className={styles.panelLeft}>
-          <LayerSetupComponent layerStack={multiLayerStack}
+          <LayerSetupContainer layerStack={multiLayerStack}
             maxNumLayers={4}
           />
         </div>

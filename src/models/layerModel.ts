@@ -1,5 +1,5 @@
-import { GridParameters } from "./gridModel";
-import { DotParameters } from "./dotModel";
+import { GridParameters, CreateDefaultGridParams } from "./gridModel";
+import { DotParameters, CreateDefaultDotParams } from "./dotModel";
 
 /**
  * Layer Model.
@@ -15,3 +15,21 @@ export interface LayerParameters {
 }
 
 export type LayerStack = LayerParameters[];
+
+export const CreateDefaultLayerParams = () => {
+  return {
+    name: "NewLayer",
+    opacity: 1,
+    zIndex: 0,
+    gridParams: CreateDefaultGridParams(),
+    dotParams: CreateDefaultDotParams(),
+  };
+};
+
+export const CloneLayerParams = (layerParams: LayerParameters): LayerParameters => {
+  return {
+    ...layerParams,
+    gridParams: {...layerParams.gridParams},
+    dotParams: {...layerParams.dotParams},
+  };
+};

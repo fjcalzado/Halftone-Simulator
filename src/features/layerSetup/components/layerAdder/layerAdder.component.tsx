@@ -12,8 +12,8 @@ import { identifiers } from "../../../../identifiers";
 interface Props {
   disabled: boolean;
   name: string;
-  onNameChange: (newName: string) => void;
-  onAdd: (newName: string) => void;
+  onNameChange: (editingName: string) => void;
+  onAddLayer: (newName: string) => void;
   error?: string;
 
   // Context theme API.
@@ -33,23 +33,18 @@ class LayerAdder extends React.Component<Props, {}> {
   }
 
   private handleClickAdd = (event) => {
-    this.props.onAdd(this.props.name);
+    this.props.onAddLayer(this.props.name);
   }
 
   private handleNameChange = (event, newValue: string) => {
     this.props.onNameChange(newValue);
   }
 
-  private shouldDisableAddButton = (): boolean => {
-    // Add button should not be available when a name validation
-    // error is present or whenever the name is empty or whitespaced only.
-    return Boolean(this.props.error) || /^\s*$/.test(this.props.name);
-  }
-
+  // As a function because it must be recalculated on each render().
   private ButtonAdd = () => {
     return (
       <IconButton className={this.props.theme.button}
-        disabled={this.props.disabled || this.shouldDisableAddButton()}
+        disabled={this.props.disabled || Boolean(this.props.error) || !this.props.name}
         icon="add" accent
         onClick={this.handleClickAdd}
       />
@@ -61,7 +56,6 @@ class LayerAdder extends React.Component<Props, {}> {
      <div className={this.props.theme.container}>
         {this.ButtonAdd()}
         <Input className={this.props.theme.textInput}
-          disabled={this.props.disabled}
           type="text"
           name="addLayer_name"
           label={"Add New Layer"}

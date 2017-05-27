@@ -4,26 +4,13 @@
 // ***********************************************************************
 
 import { Channel } from "../models/channelModel";
-import { DotType, DotParameters } from "../models/dotModel";
-import { GridPatternType, GridParameters } from "../models/gridModel";
+import { DotType, DotParameters, CreateDefaultDotParams } from "../models/dotModel";
+import { GridPatternType, GridParameters, CreateDefaultGridParams } from "../models/gridModel";
 import { LayerParameters, LayerStack } from "../models/layerModel";
 
-const gridParams: GridParameters = {
-  pattern: GridPatternType.Square,
-  scaleFactor: 1,
-  rotationAngle: 0,
-  specificParams: {wavelength: 30, amplitude: 5 },
-};
+const gridParams: GridParameters = CreateDefaultGridParams();
 
-const dotParams: DotParameters = {
-  shape: DotType.Circle,
-  sizeBinding: Channel.Lightness,
-  sizeMinThreshold: 0,
-  sizeMaxThreshold: 1,
-  rotationAngle: 0,
-  colorCustom: false,
-  color: "rgb(0, 0, 243)",
-};
+const dotParams: DotParameters = CreateDefaultDotParams();
 
 const layerParams: LayerParameters = {
     name: "Single Layer",
@@ -38,17 +25,17 @@ export const simpleLayerStack: LayerStack = [layerParams];
 export const multiLayerStack: LayerStack = [
   {
     ...layerParams,
-    name: "First Layer",
+    name: "firstlayer",
     zIndex: 0,
   },
   {
     ...layerParams,
-    name: "Second Layer",
+    name: "secondlayer",
     zIndex: 1,
   },
   {
     ...layerParams,
-    name: "Third Layer",
+    name: "AnotherOne",
     zIndex: 2,
   },
 ];

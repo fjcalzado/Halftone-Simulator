@@ -10,7 +10,7 @@ module.exports = {
     extensions: [".ts", ".tsx", ".js", ".jsx", ".css", ".scss"]
   },
   entry: {
-    bundle: ["./app.tsx"]
+    bundle: ["./app/app.tsx"]
     // Why separating vendor into a different bundle creates a heavier result?
     //vendor: ["d3", "chroma-js", "react", "react-dom", "react-css-themr", "react-addons-css-transition-group", 
     //  "react-sortable-hoc", "react-toolbox", "postcss"]
