@@ -280,29 +280,31 @@ class LayerParams extends React.Component<Props, {}> {
   }
 
   private DotSizeMinThreshold = () => {
-    const min = this.props.layerParams.dotParams.sizeMinThreshold;
-    const max = this.props.layerParams.dotParams.sizeMaxThreshold;
-    const value = min > max ? max : min;
     return (
       <SliderExComponent editable min={0} max={2}
         displayMin={0} displayMax={200} displayStep={1}
         label={"Min"}
-        value={value}
-        onChange={this.handleDotChange.bind(this, "sizeMinThreshold")}
+        value={this.props.layerParams.dotParams.sizeMinThreshold}
+        onChange={ (value) => {
+          const max = this.props.layerParams.dotParams.sizeMaxThreshold;
+          const constrainedValue = value > max ? max : value;
+          this.handleDotChange("sizeMinThreshold", constrainedValue);
+        }}
       />
     );
   }
 
   private DotSizeMaxThreshold = () => {
-    const min = this.props.layerParams.dotParams.sizeMinThreshold;
-    const max = this.props.layerParams.dotParams.sizeMaxThreshold;
-    const value = max < min ? min : max;
     return (
       <SliderExComponent editable min={0} max={2}
         displayMin={0} displayMax={200} displayStep={1}
         label={"Max"}
-        value={value}
-        onChange={this.handleDotChange.bind(this, "sizeMaxThreshold")}
+        value={this.props.layerParams.dotParams.sizeMaxThreshold}
+        onChange={ (value) => {
+          const min = this.props.layerParams.dotParams.sizeMinThreshold;
+          const constrainedValue = value < min ? min : value;
+          this.handleDotChange("sizeMaxThreshold", constrainedValue);
+        }}
       />
     );
   }
