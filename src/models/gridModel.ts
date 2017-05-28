@@ -22,11 +22,11 @@ export enum GridPatternType {
 
 export interface GridParameters {
   pattern: GridPatternType;
-  rotationAngle?: number;
-  scaleFactor?: number;
+  rotationAngle: number;
+  scaleFactor: number;
+  specificParams: any;
   translateX?: number;
   translateY?: number;
-  specificParams?: any;
   /**
    * Scale factor emulates grid resolution. However, it is smarter to
    * modify input picture resolution instead of grid scale given that
@@ -34,10 +34,26 @@ export interface GridParameters {
    */
 }
 
+export const CreateDefaultSpecificParams = (pattern: GridPatternType): any => {
+  switch (pattern) {
+    case GridPatternType.Hex:
+      return {radius: 0.7};
+    case GridPatternType.Random:
+      return {limit: 1};
+    case GridPatternType.Wave:
+      return {wavelength: 30, amplitude: 3};
+    case GridPatternType.Chevron:
+      return {length: 10, amplitude: 5};
+    default:
+      return null;
+  }
+};
+
 export const CreateDefaultGridParams = () => {
   return {
     pattern: GridPatternType.Square,
     rotationAngle: 0,
     scaleFactor: 1,
+    specificParams: CreateDefaultSpecificParams(GridPatternType.Square),
   };
 };

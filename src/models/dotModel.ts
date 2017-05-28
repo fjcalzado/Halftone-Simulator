@@ -6,13 +6,13 @@ import { Channel } from "./channelModel";
  */
 
 export enum DotType {
-  Circle = 1,
-  Square,
-  Cross,
-  Diamond,
-  Star,
-  Triangle,
-  Wye,
+  Circle = "Circle" as any,
+  Square = "Square" as any,
+  Cross = "Cross" as any,
+  Diamond = "Diamond" as any,
+  Star = "Star" as any,
+  Triangle = "Triangle" as any,
+  Wye = "Wye" as any,
   // TODO: Ellipse, Heart, etc
 }
 

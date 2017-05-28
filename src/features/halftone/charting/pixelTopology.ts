@@ -1,7 +1,7 @@
 import * as d3 from "d3";
 
 import { CreateTimer } from "../../../util";
-import { GridPatternType, GridParameters } from "../../../models/gridModel";
+import { GridPatternType, GridParameters, CreateDefaultGridParams } from "../../../models/gridModel";
 import { CreateGridTopology } from "./gridTopology";
 
 
@@ -18,11 +18,7 @@ import { CreateGridTopology } from "./gridTopology";
 export function AddPixelTopologyLayer(width: number, height: number, masterNode: any): Promise<any> {
   return new Promise<void>((resolve, reject) => {
     try {
-      const gridParams: GridParameters = {
-        pattern: GridPatternType.Square,
-        scaleFactor: 1,
-        rotationAngle: 0,
-      };
+      const gridParams: GridParameters = CreateDefaultGridParams();
 
       CreateGridTopology(gridParams, width, height).then((gridTopology) => {
         const timer = CreateTimer();
