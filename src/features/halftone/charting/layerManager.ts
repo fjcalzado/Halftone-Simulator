@@ -1,6 +1,6 @@
 import * as d3 from "d3";
 
-import { ImageInterpolator, CreateImageInterpolator, Bilinear } from "../imaging";
+import { ImageInterpolator, CreateImageInterpolator, Bilinear, NearestNeighbor } from "../imaging";
 import { CreateTimer, logDebug } from "../../../util";
 import { DotParameters } from "../../../models/dotModel";
 import { GridParameters } from "../../../models/gridModel";
@@ -142,6 +142,7 @@ export function drawLayers(masterNodeSelection, sourceImage: any[][], layers: La
         // STEP 1: PREPROCESS
         // Initialize image-level processors.
         // Also sort layers by its zIndex and filter not visible ones.
+        // TODO: Interpolator selectable from UI (NN/Bilinear).
         const imgFiller = CreateImageInterpolator(sourceImage, Bilinear);
         const sortedVisibleLayers = sortLayersByZIndex(layers).filter((layer) => layer.visible);
 

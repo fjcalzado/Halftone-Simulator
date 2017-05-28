@@ -24,6 +24,7 @@ interface State {
 interface Props {
   layerStack: LayerStack;
   maxNumLayers: number;
+  onDrawLayersChange: (layerStack: LayerStack) => void;
 }
 
 
@@ -44,6 +45,10 @@ export class LayerSetupContainer extends React.Component<Props, State> {
       renameLayerCurrentName: "",
       renameLayerErrorMessage: "",
     };
+  }
+
+  private handleDrawLayers = (event) => {
+    this.props.onDrawLayersChange(this.state.layerStack);
   }
 
   private handleAddLayerNameChange = (editingName: string) => {
@@ -162,6 +167,7 @@ export class LayerSetupContainer extends React.Component<Props, State> {
 
     return(
       <LayerSetupComponent layerStack={this.state.layerStack}
+        onClickDrawLayers={this.handleDrawLayers}
         addLayerDisabled={addDisabled}
         onAddLayerNameChange={this.handleAddLayerNameChange}
         onAddLayer={this.handleAddLayer}

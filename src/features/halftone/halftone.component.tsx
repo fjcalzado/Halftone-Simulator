@@ -3,11 +3,9 @@ import * as React from "react";
 import { themr } from "react-css-themr";
 
 import { identifiers } from "../../identifiers";
-import * as appChart from "./charting";
 import { rgbMatrix } from "./imaging";
-
-// TODO: Mock to be deleted.
-import { simpleLayerStack } from "../../tmp-mocks/layerStackMock";
+import { LayerStack } from "../../models/layerModel";
+import * as appChart from "./charting";
 
 /**
  * D3 handles the DOM natively while React do it virtually.
@@ -51,8 +49,13 @@ import { simpleLayerStack } from "../../tmp-mocks/layerStackMock";
 
 interface Props {
   imageUrl: string;
-  resolution?: number;
-  // Optional Size. Fit the container by default.
+  resolution: number;
+  layerStack: LayerStack;
+
+  // Optionals.
+  // Background color. White by default.
+  // Size. Fit the container by default.
+  backgroundColor?: any;
   width?: string;
   height?: string;
 
@@ -65,23 +68,16 @@ interface Props {
 
 /******************* COMPONENT *******************/
 
-/**
- * Halftone Simulator React Component.
- * Draw a picture using traditional halftone technique.
- * @public
- */
 class Halftone extends React.Component <Props, {}> {
   constructor(props) {
     super(props);
-    // Default initial state.
-    const defaultState: Props = {
-      imageUrl: "",
-      resolution: 1000,
-      width: "100%",
-      height: "100%",
-    };
-    this.state = defaultState;
   }
+
+  public static defaultProps: Partial<Props> = {
+    backgroundColor: "rgb(255, 255, 255)",
+    width: "100%",
+    height: "100%",
+  };
 
   public render() {
     return (
@@ -93,35 +89,66 @@ class Halftone extends React.Component <Props, {}> {
   // Lifecycle: Initialization Phase. After Mounting.
   // (Once the component is created and inserted into the DOM).
   public componentDidMount() {
-    this.drawChart();
+    this.drawComplete(this.props);
   }
 
   // Lifecycle: Props changes. Before receiving a prop change.
   // (Only called on re-rendering, not on initial render).
-  private componentWillReceiveProps(nextProps) {
+  public componentWillReceiveProps(nextProps) {
     // Control props changes once the component has been mounted.
+    if ((nextProps.width !== this.props.width) || (nextProps.height !== this.props.height)) {
+      this.drawComplete(nextProps);
+      return;
+    }
+
+    if ((nextProps.imageUrl !== this.props.imageUrl) || (nextProps.resolution !== this.props.resolution) ) {
+      this.setImage(nextProps);
+      this.setBackground(nextProps);
+      return;
+    }
+
+    if (nextProps.layerStack !== this.props.layerStack) {
+      this.drawLayers(nextProps);
+    }
+
+    if (nextProps.backgroundColor !== this.props.backgroundColor) {
+      this.setBackground(nextProps);
+    }
   }
 
   // Lifecycle: State Changes. Before render method.
   // (Used to determine if a re-render is needed or can be skipped). 
-  private shouldComponentUpdate() {
+  public shouldComponentUpdate() {
     // This prevents future re-renders of this component.
     return false;
   }
 
-  private drawChart() {
-    // Halftone pattern can be made of circular, elliptical or square shapes.
-    // When using circular dots, these should meet (overlap) at a tonal value of 70%.
-    // The proper channel to determine the dots size is HSL lightness.
-    appChart.initialize(this.props.theme.halftoneView, this.props.width, this.props.height);
-    rgbMatrix.getMatrix(this.props.imageUrl, this.props.resolution)
+  private drawComplete(props: Props) {
+    this.initializeChart(props);
+    this.setImage(props);
+    this.setBackground(props.backgroundColor);
+  }
+
+  private initializeChart(props: Props) {
+    appChart.initialize(this.props.theme.halftoneView, props.width, props.height);
+  }
+
+  private setImage(props: Props) {
+    rgbMatrix.getMatrix(props.imageUrl, props.resolution)
       .then((imgMatrix) => {
         appChart.setImage(imgMatrix);
-        appChart.draw( simpleLayerStack );
+        this.drawLayers(props);
       })
       .catch((error) => console.error(`[ERROR] Halftone Simulator App: ${error}`));
   }
 
+  private drawLayers(props: Props) {
+    appChart.draw(props.layerStack);
+  }
+
+  private setBackground(props: Props) {
+    appChart.setBackgroundColor(props.backgroundColor);
+  }
 };
 
 // Final component exported.

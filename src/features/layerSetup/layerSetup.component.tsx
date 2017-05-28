@@ -1,6 +1,7 @@
 /******************* IMPORT *******************/
 import * as React from "react";
 import { themr } from "react-css-themr";
+import { Button } from "react-toolbox/lib/button";
 
 import { identifiers } from "../../identifiers";
 import { LayerParameters, LayerStack } from "../../models/layerModel";
@@ -14,6 +15,7 @@ import { LayerParamsComponent } from "./components/layerParams";
 
 interface Props {
   layerStack: LayerStack;
+  onClickDrawLayers: (event) => void;
 
   addLayerDisabled: boolean;
   onAddLayerNameChange: (editingName: string) => void;
@@ -53,6 +55,10 @@ class LayerSetup extends React.Component<Props, {}> {
   public render() {
     return(
       <div className={this.props.theme.layerSetup}>
+        {/*// TODO: To be inserted as Card action.*/}
+        <Button icon="brush" label="Draw" raised accent
+          onClick={this.props.onClickDrawLayers} />
+
         <LayerAdderComponent disabled={this.props.addLayerDisabled}
           name={this.props.addLayerEditingName}
           onNameChange={this.props.onAddLayerNameChange}
