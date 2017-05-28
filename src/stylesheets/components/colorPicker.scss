@@ -1,0 +1,42 @@
+@import "../theme/autothemer.scss";
+
+.container {
+
+}
+
+.swatch {
+  @include themify(box-shadow, $shadow2p);
+
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0.5rem;
+  border-radius: 50%;
+  display: inline-block;
+  cursor: pointer;
+  transition-property: transform;
+  transition-duration: 200ms;
+  transition-timing-function: ease;
+
+  &:hover,
+  &.open {
+    transform: scale(1.25);
+  }
+
+  &.disabled {
+    opacity: 0.3;
+    pointer-events: none;
+  }
+}
+
+.popover {
+  position: absolute;
+  z-index: 2;
+}
+
+.cover {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}

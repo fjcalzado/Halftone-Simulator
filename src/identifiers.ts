@@ -10,6 +10,7 @@ export const identifiers = {
 
   // Project Components (CMP).
   sliderEx: "CMPSliderEx",
+  colorPicker: "CMPColorPicker",
   layerItem: "CMPLayerItem",
   layerList: "CMPLayerList",
   layerRenamer: "CMPLayerRenamer",

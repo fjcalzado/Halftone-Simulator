@@ -11,6 +11,7 @@ export const contextStylesheets = {
 
   // Project Components CSS.
   [identifiers.sliderEx]: require("./components/sliderEx.scss"),
+  [identifiers.colorPicker]: require("./components/colorPicker.scss"),
   [identifiers.layerItem]: require("./components/layerItem.scss"),
   [identifiers.layerList]: require("./components/layerList.scss"),
   [identifiers.layerRenamer]: require("./components/layerRenamer.scss"),

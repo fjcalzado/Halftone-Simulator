@@ -7,6 +7,7 @@ import { Dropdown } from "react-toolbox/lib/dropdown";
 
 import { identifiers } from "../../../../identifiers";
 import { SliderExComponent } from "../../../../components/sliderEx";
+import { ColorPickerComponent } from "../../../../components/colorPicker";
 import { LayerParameters } from "../../../../models/layerModel";
 import { GridPatternType, CreateDefaultSpecificParams } from "../../../../models/gridModel";
 import { DotType } from "../../../../models/dotModel";
@@ -93,6 +94,8 @@ class LayerParams extends React.Component<Props, {}> {
             <this.DotSizeMinThreshold />
             <this.DotSizeMaxThreshold />
             <this.DotRotation />
+            <this.DotToggleCustomColor />
+            <this.DotCustomColor />
         </List>
       );
   }
@@ -316,6 +319,27 @@ class LayerParams extends React.Component<Props, {}> {
         label={"Rotation"}
         value={this.props.layerParams.dotParams.rotationAngle}
         onChange={this.handleDotChange.bind(this, "rotationAngle")}
+      />
+    );
+  }
+
+  private DotToggleCustomColor = () => {
+    return (
+      <Switch
+        checked={this.props.layerParams.dotParams.colorCustom}
+        label="Toggle Custom Color"
+        onChange={this.handleDotChange.bind(this, "colorCustom")}
+      />
+    );
+  }
+
+  private DotCustomColor = () => {
+    return (
+      <ColorPickerComponent
+        disabled={!this.props.layerParams.dotParams.colorCustom}
+        color={this.props.layerParams.dotParams.color}
+        disableAlpha={true}
+        onChange={this.handleDotChange.bind(this, "color")}
       />
     );
   }

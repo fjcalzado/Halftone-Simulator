@@ -4,7 +4,6 @@ import * as d3 from "d3";
 import { themr } from "react-css-themr";
 import { Slider } from "react-toolbox/lib/slider";
 
-
 import { identifiers } from "../../identifiers";
 
 
