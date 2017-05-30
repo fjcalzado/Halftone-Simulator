@@ -15,7 +15,8 @@ import { LayerParameters, LayerStack, CloneLayerParams } from "../../../models/l
  */
 
 function sortLayersByZIndex(layers: LayerStack): LayerStack {
-  return layers.sort((a, b) => a.zIndex - b.zIndex);
+  // Inverse order, so that lowest zIndex is the top layer.
+  return layers.sort((a, b) => b.zIndex - a.zIndex);
 }
 
 
