@@ -36,6 +36,12 @@ class LayerAdder extends React.Component<Props, {}> {
     this.props.onAddLayer(this.props.name);
   }
 
+  private handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      this.handleClickAdd(event);
+    }
+  }
+
   private handleNameChange = (event, newValue: string) => {
     this.props.onNameChange(newValue);
   }
@@ -62,6 +68,7 @@ class LayerAdder extends React.Component<Props, {}> {
           value={this.props.name}
           error={this.props.error}
           onChange={this.handleNameChange.bind(this, "addLayer_name")}
+          onKeyPress={this.handleKeyPress}
           maxLength={20}
         />
       </div>

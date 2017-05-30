@@ -44,11 +44,11 @@ export class AppComponent extends React.Component<Props, {}> {
               />
             </div>
             <div className={styles.panelMain}>
-              {/*<HalftoneComponent layerStack={this.props.layerStack}
+              <HalftoneComponent layerStack={this.props.layerStack}
                 imageUrl={this.props.imageUrl}
                 resolution={this.props.resolution}
                 backgroundColor={this.props.backgroundColor}
-              />*/}
+              />
             </div>
           </div>
         </div>
