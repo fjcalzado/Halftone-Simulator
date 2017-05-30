@@ -9,6 +9,8 @@ export const identifiers = {
   layerSetup: "FTLayerSetup",
 
   // Project Components (CMP).
+  simulator: "CMPSimulator",
+  progressBar: "CMPProgressBar",
   sliderEx: "CMPSliderEx",
   colorPicker: "CMPColorPicker",
   layerItem: "CMPLayerItem",

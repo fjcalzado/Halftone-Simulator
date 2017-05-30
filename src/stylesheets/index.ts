@@ -10,6 +10,8 @@ export const contextStylesheets = {
   [identifiers.layerSetup]: require("./components/layerSetup.scss"),
 
   // Project Components CSS.
+  [identifiers.simulator]: require("./components/simulator.scss"),
+  [identifiers.progressBar]: require("./components/progressBar.scss"),
   [identifiers.sliderEx]: require("./components/sliderEx.scss"),
   [identifiers.colorPicker]: require("./components/colorPicker.scss"),
   [identifiers.layerItem]: require("./components/layerItem.scss"),

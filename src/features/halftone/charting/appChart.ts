@@ -31,18 +31,18 @@ let heightRel = "100%";
  * relative units.
  * @public
  * @function initialize
- * @param  {string} parentNode: string {Parent node to append SVG element to.}
+ * @param  {string} parentNode: string {Parent node ID to append SVG element to.}
  * @param  {string} width: string {Width of the SVG element in relative units.}
  * @param  {string} height: string {Height of the SVG element in relative units.}
  * @return {void}
  */
-export function initialize(parentNode: string, width: string = widthRel, height: string = heightRel): void {
+export function initialize(parentNodeId: string, width: string = widthRel, height: string = heightRel): void {
   // Component size.
   if (width) { widthRel = width; }
   if (height) { heightRel = height; }
 
   // Initialize SVG element.
-  svg = d3.select(`.${parentNode}`)
+  svg = d3.select(`#${parentNodeId}`)
     .append("svg")
       .attr("class", "svg")
       .attr("width", widthRel)

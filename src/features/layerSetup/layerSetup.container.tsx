@@ -162,7 +162,7 @@ export class LayerSetupContainer extends React.Component<Props, State> {
     const addErrorMsg = this.exceedNumLayers() ? `Max layers reached (${this.props.maxNumLayers})`
       : this.state.addLayerErrorMessage;
     const addDisabled = this.exceedNumLayers() || this.state.addLayerDisabled;
-    
+
     return(
       <LayerSetupComponent layerStack={this.state.layerStack}
         onClickDrawLayers={this.handleDrawLayers}
