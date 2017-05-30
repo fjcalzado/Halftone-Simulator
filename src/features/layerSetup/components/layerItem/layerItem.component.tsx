@@ -4,6 +4,8 @@ import { themr } from "react-css-themr";
 import { ListItem } from "react-toolbox/lib/list";
 import { IconMenu, MenuItem } from "react-toolbox/lib/menu";
 import { Switch } from "react-toolbox/lib/switch";
+import { FontIcon } from "react-toolbox/lib/font_icon";
+import { SortableHandle } from "react-sortable-hoc";
 
 import { identifiers } from "../../../../identifiers";
 import { LayerParameters } from "../../../../models/layerModel";
@@ -15,11 +17,14 @@ interface Props {
   layerParams: LayerParameters;
   onClickRename: (targetItemName: string) => void;
   onClickDelete: (targetItemName: string) => void;
+  selected: boolean;
   onSelectLayer: (targetItemName: string) => void;
 
   // Context theme API.
   theme?: {
-    item: string;
+    layerItem: string;
+    selected: string;
+    dragHandle: string;
   };
 }
 
@@ -45,7 +50,9 @@ class LayerItem extends React.Component<Props, {}> {
 
   public render() {
     return(
-        <ListItem className={this.props.theme.item}
+        <ListItem className={`${this.props.theme.layerItem} 
+            ${this.props.selected ? this.props.theme.selected : ""}`}
+          leftIcon={<this.DragHandle key="drag-handle"/>}
           caption={this.props.layerParams.name}
           rightActions={this.layerItemMenu}
           onClick={this.handleSelectLayer}
@@ -63,6 +70,13 @@ class LayerItem extends React.Component<Props, {}> {
       <MenuItem icon="delete" caption="Delete" onClick={this.handleClickDelete}/>
     </IconMenu>,
   ]);
+
+  private DragHandle = SortableHandle(() => {
+    return (
+      <FontIcon className={this.props.theme.dragHandle}
+                value="reorder" />
+    );
+  });
 }
 export const LayerItemComponent = themr(identifiers.layerItem)(LayerItem);
 

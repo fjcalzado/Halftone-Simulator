@@ -162,9 +162,7 @@ export class LayerSetupContainer extends React.Component<Props, State> {
     const addErrorMsg = this.exceedNumLayers() ? `Max layers reached (${this.props.maxNumLayers})`
       : this.state.addLayerErrorMessage;
     const addDisabled = this.exceedNumLayers() || this.state.addLayerDisabled;
-    const selectedLayerParams = this.state.layerStack.find((item) =>
-      item.name === this.state.selectedLayer);
-
+    
     return(
       <LayerSetupComponent layerStack={this.state.layerStack}
         onClickDrawLayers={this.handleDrawLayers}
@@ -183,7 +181,7 @@ export class LayerSetupContainer extends React.Component<Props, State> {
         onDeleteLayer={this.handleDeleteLayer}
         onSortList={this.handleSortList}
         onSelectLayer={this.handleSelectLayer}
-        selectedLayerParams={selectedLayerParams}
+        selectedLayer={this.state.selectedLayer}
         onSelectedLayerParamsChanged={this.handleSelectedLayerParamsChanged}
       />
     );

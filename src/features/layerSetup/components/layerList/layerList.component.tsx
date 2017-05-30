@@ -2,7 +2,6 @@
 import * as React from "react";
 import { themr } from "react-css-themr";
 import { SortableContainer, SortableElement, SortableHandle } from "react-sortable-hoc";
-import { FontIcon } from "react-toolbox/lib/font_icon";
 
 import { identifiers } from "../../../../identifiers";
 import { LayerStack } from "../../../../models/layerModel";
@@ -15,15 +14,14 @@ interface Props {
   layerStack: LayerStack;
   onClickRename: (targetItemName: string) => void;
   onClickDelete: (targetItemName: string) => void;
-  onSelectLayer: (targetItemName: string) => void;
   onSort: (oldIndex: number, newIndex: number) => void;
+  selectedLayer: string;
+  onSelectLayer: (targetItemName: string) => void;
 
   // Context theme API.
   theme?: {
-    dragHandle: string;
     sortableList: string;
     sortableItem: string;
-    sortableItemContent: string;
   };
 }
 
@@ -37,12 +35,13 @@ class LayerList extends React.Component<Props, {}> {
 
   public render() {
     // Rebuild each layer item component in the list on each render.
-    const layerList = this.props.layerStack.map((layer) => {
+    const layerList = this.props.layerStack.map((layerParams) => {
       return (
-        <LayerItemComponent layerParams={layer}
+        <LayerItemComponent layerParams={layerParams}
           onClickRename={this.props.onClickRename}
           onClickDelete={this.props.onClickDelete}
           onSelectLayer={this.props.onSelectLayer}
+          selected={(layerParams.name === this.props.selectedLayer) ? true : false}
         />
       );
     });
@@ -58,18 +57,9 @@ class LayerList extends React.Component<Props, {}> {
 
   // These are subcomponents needed from react-sortable-hoc.
   // They are too simple and static to break into new independent components.
-  private DragHandle = SortableHandle(() => {
-    return (
-      <FontIcon className={this.props.theme.dragHandle}
-                value="reorder" />
-    );
-  });
-
   private SortableItem = SortableElement(({value}) => {
     return (
-      <div className={this.props.theme.sortableItem}>
-        <this.DragHandle /> {value}
-      </div>
+      <div className={this.props.theme.sortableItem}>{value}</div>
     );
   });
 
@@ -77,8 +67,7 @@ class LayerList extends React.Component<Props, {}> {
     return (
       <div className={this.props.theme.sortableList}>
         {items.map((value, index) => (
-          <this.SortableItem key={`item-${index}`} index={index} value={
-            <div className={this.props.theme.sortableItemContent}>{value}</div>} />
+          <this.SortableItem key={`item-${index}`} index={index} value={value} />
         ))}
       </div>
     );

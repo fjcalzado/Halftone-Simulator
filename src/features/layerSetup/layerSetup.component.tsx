@@ -35,7 +35,7 @@ interface Props {
   onSortList: (oldIndex: number, newIndex: number) => void;
 
   onSelectLayer: (targetLayerName: string) => void;
-  selectedLayerParams: LayerParameters;
+  selectedLayer: string;
   onSelectedLayerParamsChanged: (lp: LayerParameters) => void;
 
   // Context theme API.
@@ -53,6 +53,9 @@ class LayerSetup extends React.Component<Props, {}> {
   }
 
   public render() {
+    const selectedLayerParams = this.props.layerStack.find((item) =>
+      item.name === this.props.selectedLayer);
+
     return(
       <div className={this.props.theme.layerSetup}>
         {/*// TODO: To be inserted as Card action.*/}
@@ -69,6 +72,7 @@ class LayerSetup extends React.Component<Props, {}> {
           onClickRename={this.props.onClickRenameLayer}
           onClickDelete={this.props.onDeleteLayer}
           onSort={this.props.onSortList}
+          selectedLayer={this.props.selectedLayer}
           onSelectLayer={this.props.onSelectLayer}
         />        
         <LayerRenamerComponent
@@ -82,9 +86,9 @@ class LayerSetup extends React.Component<Props, {}> {
         />
 
         {/*// TODO: To be inserted in Cards, one on top of the other.*/}
-        {this.props.selectedLayerParams ?
+        {selectedLayerParams ?
           (<LayerParamsComponent
-            layerParams={this.props.selectedLayerParams}
+            layerParams={selectedLayerParams}
             onLayerParamsChanged={this.props.onSelectedLayerParamsChanged}
           />) : null
         }

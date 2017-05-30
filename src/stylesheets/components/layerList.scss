@@ -1,12 +1,6 @@
 @import "../theme/autothemer.scss";
 
 
-.dragHandle {
-  @include themify(color, $colorBackgroundDark);
-
-  cursor: move;
-}
-
 .sortableList {
   @include themify(background-color border-color,
   $colorBackgroundDark $colorBackgroundDark);
@@ -21,11 +15,6 @@
 .sortableItem {
   @include themify(background-color, $colorBackground);
 
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding-left: 10px;
-
   // This selects the item to be dragged.
   body > & {
     animation-name: animation-start-drag;
@@ -38,10 +27,6 @@
     // transition-property: transform;
     // transition-duration: 50ms;    
   }
-
-  &Content {
-    width: 100%;
-  }
 }
 
 // Animations.
@@ -49,6 +34,8 @@
   from { box-shadow: 0; }
 
   to {
-    @include themify(box-shadow, $shadow16p);
+    box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14),
+      0 6px 30px 5px rgba(0, 0, 0, 0.12),
+      0 8px 10px -5px rgba(0, 0, 0, 0.2);
   }
 }

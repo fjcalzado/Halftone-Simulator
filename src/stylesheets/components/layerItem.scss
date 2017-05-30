@@ -1,6 +1,16 @@
-//@import "../theme/autothemer.scss";
+@import "../theme/autothemer.scss";
 
-.item {
+.layerItem {
   list-style: none;
 }
 
+.selected [class^=itemText] {
+  // TODO: Style when selected. Color? Bold?
+  @include themify(font-weight color, $fontWeightSemi $colorPrimaryDark);
+}
+
+.dragHandle {
+  @include themify(color, $colorBackgroundDark);
+
+  cursor: move;
+}
