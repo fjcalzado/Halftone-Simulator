@@ -42,7 +42,7 @@ class Halftone extends React.Component <Props, State> {
     super(props);
 
     this.state = {
-      processing: false,
+      processing: true,
     };
   }
 

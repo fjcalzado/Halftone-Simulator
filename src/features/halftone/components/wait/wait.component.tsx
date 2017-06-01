@@ -1,7 +1,7 @@
 /******************* IMPORT *******************/
 import * as React from "react";
 import { themr } from "react-css-themr";
-// import { ProgressBar } from "react-toolbox/lib/progress_bar";
+import { ProgressBar } from "react-toolbox/lib/progress_bar";
 
 import { identifiers } from "../../../../identifiers";
 
@@ -9,11 +9,13 @@ import { identifiers } from "../../../../identifiers";
 /******************* INTERFACE *******************/
 
 interface Props {
+  animated: boolean;
+
   // Context theme API.
   theme?: {
     wait: string;
     waitOverlay: string;
-    waitText: string;
+    waitToken: string;
   };
 }
 
@@ -40,10 +42,10 @@ class Wait extends React.Component<Props, {}> {
   public render() {
     return(
       <div className={this.props.theme.wait}>
-        {/*<ProgressBar
-        type="circular" mode="indeterminate" multicolor /> */}
         <div className={this.props.theme.waitOverlay}>
-          <p className={this.props.theme.waitText}>Rendering</p>
+          {this.props.animated ?
+            <ProgressBar type="circular" mode="indeterminate" multicolor />
+            : <p className={this.props.theme.waitToken}>Rendering</p> }
         </div>
       </div>
     );

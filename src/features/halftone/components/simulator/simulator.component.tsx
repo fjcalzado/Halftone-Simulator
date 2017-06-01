@@ -142,9 +142,15 @@ class Simulator extends React.Component <Props, {}> {
 
   private drawLayers = (props: Props) => {
     this.props.onStartProcessing();
-    appChart.draw(props.layerStack)
+    // WARNING: This is a heavy processing operation implemented
+    // with Promises and not Web Workers due to DOM Access need.
+    // Timeout intended to avoid freezing main thread for just
+    // allowing React to render the 'rendering' component.
+    setTimeout(() => {
+      appChart.draw(props.layerStack)
       .then((ok) => this.props.onStopProcessing())
       .catch((error) => this.handleNotifyError(error));
+    }, 100);
   }
 
   private setBackground = (props: Props) => {
