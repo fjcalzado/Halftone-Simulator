@@ -1,5 +1,6 @@
+//@import "../../theme/autothemer.scss";
 
 // FIX for slider knob on top of dropdown.
-.values {
+ul.values {
   z-index: 300;
 }

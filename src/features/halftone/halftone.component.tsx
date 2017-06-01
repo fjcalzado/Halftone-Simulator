@@ -30,7 +30,6 @@ interface Props {
   // Context theme API.
   theme?: {
     halftoneView: string;
-    progressOverlay: string;
   };
 }
 
@@ -69,16 +68,12 @@ class Halftone extends React.Component <Props, State> {
   }
 
   public render() {
-    const showProgress = true/*this.state.processing*/;
+    const showProgress = this.state.processing;
 
     return (
       <div className={this.props.theme.halftoneView}>
-        { showProgress ?
-        ( <div className={this.props.theme.progressOverlay}>
-          <WaitComponent />
-        </div> ) : null }
-
-        {/*<SimulatorComponent imageUrl={this.props.imageUrl}
+        <WaitComponent />
+        <SimulatorComponent imageUrl={this.props.imageUrl}
           resolution={this.props.resolution}
           layerStack={this.props.layerStack}
           backgroundColor={this.props.backgroundColor}
@@ -87,7 +82,7 @@ class Halftone extends React.Component <Props, State> {
           onNotifyError={this.props.onNotifyError}
           onStartProcessing={this.handleStartProcessing}
           onStopProcessing={this.handleStopProcessing}
-        />*/}
+        />
       </div>
     );
   }
