@@ -11,23 +11,25 @@ import { identifiers } from "../../../../identifiers";
 interface Props {
   // Context theme API.
   theme?: {
-    progressBar: string;
+    wait: string;
   };
 }
 
 
 /******************* COMPONENT *******************/
 
-class Progress extends React.Component<Props, {}> {
+class Wait extends React.Component<Props, {}> {
   constructor(props) {
     super(props);
   }
 
   public render() {
     return(
-     <ProgressBar className={this.props.theme.progressBar}
-      type="circular" mode="indeterminate" multicolor />
+      <div className={this.props.theme.wait}>
+        <ProgressBar 
+        type="circular" mode="indeterminate" multicolor /> 
+      </div>
     );
   }
 }
-export const ProgressBarComponent = themr(identifiers.progressBar)(ProgressBar);
+export const WaitComponent = themr(identifiers.wait)(Wait);

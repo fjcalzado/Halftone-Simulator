@@ -5,7 +5,7 @@ import { themr } from "react-css-themr";
 import { identifiers } from "../../identifiers";
 import { LayerStack } from "../../models/layerModel";
 import { SimulatorComponent } from "./components/simulator";
-import { ProgressBarComponent } from "./components/progressBar";
+import { WaitComponent } from "./components/wait";
 
 
 /******************* INTERFACE *******************/
@@ -73,8 +73,12 @@ class Halftone extends React.Component <Props, State> {
 
     return (
       <div className={this.props.theme.halftoneView}>
-        
-        <SimulatorComponent imageUrl={this.props.imageUrl}
+        { showProgress ?
+        ( <div className={this.props.theme.progressOverlay}>
+          <WaitComponent />
+        </div> ) : null }
+
+        {/*<SimulatorComponent imageUrl={this.props.imageUrl}
           resolution={this.props.resolution}
           layerStack={this.props.layerStack}
           backgroundColor={this.props.backgroundColor}
@@ -83,12 +87,7 @@ class Halftone extends React.Component <Props, State> {
           onNotifyError={this.props.onNotifyError}
           onStartProcessing={this.handleStartProcessing}
           onStopProcessing={this.handleStopProcessing}
-        />
-
-        { showProgress ?
-        ( <div className={this.props.theme.progressOverlay}>
-          <ProgressBarComponent />
-        </div> ) : null }
+        />*/}
       </div>
     );
   }

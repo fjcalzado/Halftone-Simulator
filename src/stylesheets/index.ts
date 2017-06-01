@@ -11,7 +11,7 @@ export const contextStylesheets = {
 
   // Project Components CSS.
   [identifiers.simulator]: require("./components/simulator.scss"),
-  [identifiers.progressBar]: require("./components/progressBar.scss"),
+  [identifiers.wait]: require("./components/wait.scss"),
   [identifiers.sliderEx]: require("./components/sliderEx.scss"),
   [identifiers.colorPicker]: require("./components/colorPicker.scss"),
   [identifiers.layerItem]: require("./components/layerItem.scss"),
