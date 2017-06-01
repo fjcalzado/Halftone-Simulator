@@ -64,30 +64,29 @@ function drawLayer(singleLayerSelection, layerParams: LayerParameters, targetWid
         // order to generate the grid-arranged dots for the layer.
         const dotTopology = CreateDotTopology(layerParams.dotParams);
         CreateGridTopology(layerParams.gridParams, targetWidth, targetHeight, imgFiller)
-        .then((gridTopology) => {
-          const timer = CreateTimer();
+          .then((gridTopology) => {
+            const timer = CreateTimer();
 
-          // Once created the topologies, lets draw the dotted grid.
-          // Merge update and enter dot selections, as we want to redraw every dot.
-          const updateDotSelection = singleLayerSelection.selectAll("path")
-              .data(gridTopology);
-          updateDotSelection.exit().remove();
-          updateDotSelection.enter().append("path")
-            .merge(updateDotSelection)
-            // From this point, we have newly created pahts (enter selection) and
-            // also already existent paths (update selection) to be updated.
-                .attr("d", dotTopology.dotShape)
-                .attr("transform", dotTopology.dotTransform)
-                .attr("fill", dotTopology.dotFill);
+            // Once created the topologies, lets draw the dotted grid.
+            // Merge update and enter dot selections, as we want to redraw every dot.
+            const updateDotSelection = singleLayerSelection.selectAll("path")
+                .data(gridTopology);
+            updateDotSelection.exit().remove();
+            updateDotSelection.enter().append("path")
+              .merge(updateDotSelection)
+              // From this point, we have newly created pahts (enter selection) and
+              // also already existent paths (update selection) to be updated.
+                  .attr("d", dotTopology.dotShape)
+                  .attr("transform", dotTopology.dotTransform)
+                  .attr("fill", dotTopology.dotFill);
 
-          timer.logElapsed(`[Update Layer DOTS] ${layerParams.name}`);
-        })
-        .catch((error) => {
-          console.error(`[ERROR] Creating Grid Topology for Layer ${layerParams.name}: ${error.message}`);
-          throw error;  // Let error bubbles up.
-        });
-        resolve(true);
-
+            timer.logElapsed(`[Update Layer DOTS] ${layerParams.name}`);
+            resolve(true);
+          })
+          .catch((error) => {
+            console.error(`[ERROR] Creating Grid Topology for Layer ${layerParams.name}: ${error.message}`);
+            throw error;  // Let error bubbles up.
+          });
       } catch (error) {
         reject(error);
       }
