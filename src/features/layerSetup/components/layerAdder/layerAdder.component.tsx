@@ -37,7 +37,7 @@ class LayerAdder extends React.Component<Props, {}> {
   }
 
   private handleKeyPress = (event) => {
-    if (event.key === "Enter") {
+    if ((event.key === "Enter") && !this.calculateDisabled()) {
       this.handleClickAdd(event);
     }
   }
@@ -46,11 +46,15 @@ class LayerAdder extends React.Component<Props, {}> {
     this.props.onNameChange(newValue);
   }
 
+  private calculateDisabled = (): boolean => {
+    return (this.props.disabled || Boolean(this.props.error) || !this.props.name);
+  }
+
   // As a function because it must be recalculated on each render().
   private ButtonAdd = () => {
     return (
       <IconButton className={this.props.theme.button}
-        disabled={this.props.disabled || Boolean(this.props.error) || !this.props.name}
+        disabled={this.calculateDisabled()}
         icon="add" accent
         onClick={this.handleClickAdd}
       />

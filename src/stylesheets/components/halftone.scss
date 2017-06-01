@@ -1,15 +1,8 @@
 //@import "../theme/autothemer.scss";
 
 .halftoneView {
+  position: relative; // To allow child behaves as absolute overlay.
   width: 100%;
   height: 100%;
 }
 
-.progressOverlay {
-  // position: relative;
-  // width: 100%;
-  // height: 100%;
-  // z-index: 100;
-  // background: white;
-  // opacity: 0.5;
-}

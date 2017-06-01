@@ -6,6 +6,7 @@ import { identifiers } from "../../identifiers";
 import { LayerStack } from "../../models/layerModel";
 import { SimulatorComponent } from "./components/simulator";
 import { WaitComponent } from "./components/wait";
+import { logDebug } from "../../util/log";
 
 
 /******************* INTERFACE *******************/
@@ -52,7 +53,7 @@ class Halftone extends React.Component <Props, State> {
   };
 
   private handleStartProcessing = () => {
-    console.log("START PROCESS");
+    logDebug("[START RENDERING]");
     this.setState({
       ...this.state,
       processing: true,
@@ -60,7 +61,7 @@ class Halftone extends React.Component <Props, State> {
   }
 
   private handleStopProcessing = () => {
-    console.log("STOP PROCESS");
+    logDebug("[STOP RENDERING]");
     this.setState({
       ...this.state,
       processing: false,
@@ -72,7 +73,7 @@ class Halftone extends React.Component <Props, State> {
 
     return (
       <div className={this.props.theme.halftoneView}>
-        <WaitComponent />
+        {showProgress ? <WaitComponent /> : null }
         <SimulatorComponent imageUrl={this.props.imageUrl}
           resolution={this.props.resolution}
           layerStack={this.props.layerStack}
