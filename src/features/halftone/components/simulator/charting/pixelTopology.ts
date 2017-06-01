@@ -1,7 +1,7 @@
 import * as d3 from "d3";
 
-import { CreateTimer } from "../../../util";
-import { GridPatternType, GridParameters, CreateDefaultGridParams } from "../../../models/gridModel";
+import { CreateTimer } from "../../../../../util";
+import { GridPatternType, GridParameters, CreateDefaultGridParams } from "../../../../../models/gridModel";
 import { CreateGridTopology } from "./gridTopology";
 
 

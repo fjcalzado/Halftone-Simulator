@@ -1,12 +1,12 @@
 import * as d3 from "d3";
 
 import { ImageInterpolator, CreateImageInterpolator, Bilinear, NearestNeighbor } from "../imaging";
-import { CreateTimer, logDebug } from "../../../util";
-import { DotParameters } from "../../../models/dotModel";
-import { GridParameters } from "../../../models/gridModel";
+import { CreateTimer, logDebug } from "../../../../../util";
+import { DotParameters } from "../../../../../models/dotModel";
+import { GridParameters } from "../../../../../models/gridModel";
 import { CreateDotTopology, DotTopology } from "./dotTopology";
 import { CreateGridTopology } from "./gridTopology";
-import { LayerParameters, LayerStack, CloneLayerParams } from "../../../models/layerModel";
+import { LayerParameters, LayerStack, CloneLayerParams } from "../../../../../models/layerModel";
 
 
 /**

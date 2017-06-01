@@ -1,4 +1,4 @@
-import { GridPatternType } from "../../../models/gridModel";
+import { GridPatternType } from "../../../../../models/gridModel";
 
 /**
  * Interface Export. Internal to component.

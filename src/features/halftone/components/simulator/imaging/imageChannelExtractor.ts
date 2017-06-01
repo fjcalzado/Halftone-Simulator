@@ -1,6 +1,6 @@
 import chroma from "chroma-js";
 
-import { Channel } from "../../../models/channelModel";
+import { Channel } from "../../../../../models/channelModel";
 
 /**
  * Helper function to convert from RGB to CMYK color space.

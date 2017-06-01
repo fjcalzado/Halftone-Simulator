@@ -1,8 +1,8 @@
 import * as d3 from "d3";
 
-import { CreateTimer } from "../../../util";
+import { CreateTimer } from "../../../../../util";
 import { AffineTransformer, CreateAffineTransformer } from "./affineTransform";
-import { GridNode, GridPatternType, GridParameters } from "../../../models/gridModel";
+import { GridNode, GridPatternType, GridParameters } from "../../../../../models/gridModel";
 import { CreateGridPattern } from "./gridPatterns";
 
 /**

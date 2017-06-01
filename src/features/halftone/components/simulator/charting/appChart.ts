@@ -1,8 +1,8 @@
 import chroma from "chroma-js";
 import * as d3 from "d3";
 
-import { CreateTimer } from "../../../util";
-import { LayerStack } from "../../../models/layerModel";
+import { CreateTimer } from "../../../../../util";
+import { LayerStack } from "../../../../../models/layerModel";
 import * as layerManager from "./layerManager";
 
 

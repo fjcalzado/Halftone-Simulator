@@ -3,9 +3,9 @@ import * as React from "react";
 import { themr } from "react-css-themr";
 
 import { identifiers } from "../../../../identifiers";
-import { rgbMatrix } from "../../imaging";
+import { rgbMatrix } from "./imaging";
 import { LayerStack } from "../../../../models/layerModel";
-import * as appChart from "../../charting";
+import * as appChart from "./charting";
 import { logDebug } from "../../../../util";
 
 /**

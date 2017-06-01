@@ -9,6 +9,7 @@ module.exports = {
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".jsx", ".css", ".scss"]
   },
+  
   entry: {
     bundle: ["./app/app.tsx"]
     // Why separating vendor into a different bundle creates a heavier result?

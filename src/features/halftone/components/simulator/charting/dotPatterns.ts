@@ -1,6 +1,6 @@
 import * as d3 from "d3";
 
-import { DotType } from "../../../models/dotModel";
+import { DotType } from "../../../../../models/dotModel";
 
 /**
  * Get the max area needed to cover a whole bin of size 1.

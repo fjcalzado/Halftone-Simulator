@@ -3,9 +3,9 @@ import * as d3 from "d3";
 
 import { CreateChExtractorForRGB } from "../imaging";
 import { CreateDotShape, getMaxCoverArea } from "./dotPatterns";
-import { Channel } from "../../../models/channelModel";
-import { DotType, DotParameters } from "../../../models/dotModel";
-import { GridNode } from "../../../models/gridModel";
+import { Channel } from "../../../../../models/channelModel";
+import { DotType, DotParameters } from "../../../../../models/dotModel";
+import { GridNode } from "../../../../../models/gridModel";
 
 /**
  * Interface Export. Internal to component.

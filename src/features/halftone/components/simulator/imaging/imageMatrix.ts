@@ -1,4 +1,4 @@
-import { Channel } from "../../../models/channelModel";
+import { Channel } from "../../../../../models/channelModel";
 import { extractImageChannel } from "./imageChannelExtractor";
 import { extractImageData } from "./imageDataExtractor";
 
