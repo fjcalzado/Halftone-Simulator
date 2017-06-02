@@ -54,12 +54,14 @@
     "d3": "^4.7.4",
     "postcss": "^6.0.1",
     "postcss-cssnext": "^2.11.0",
-    "react": "~15.4.0",
-    "react-addons-css-transition-group": "~15.4.0",
+    "react": "~15.5.0",
+    "react-addons-css-transition-group": "~15.5.0",
     "react-color": "^2.11.7",
     "react-css-themr": "^2.1.2",
-    "react-dom": "~15.4.0",
+    "react-dom": "~15.5.0",
+    "react-faux-dom": "4.0.0",
     "react-sortable-hoc": "^0.6.3",
-    "react-toolbox": "^2.0.0-beta.8"
+    "react-toolbox": "^2.0.0-beta.8",
+    "react-worker-dom": "^2.0.0-alpha.6"
   }
 }

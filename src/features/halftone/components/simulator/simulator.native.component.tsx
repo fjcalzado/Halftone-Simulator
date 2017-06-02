@@ -8,43 +8,6 @@ import { LayerStack } from "../../../../models/layerModel";
 import * as appChart from "./charting";
 import { logDebug } from "../../../../util";
 
-/**
- * D3 handles the DOM natively while React do it virtually.
- * A React component does not expect anybody mutating the
- * DOM outside the render method, which will be the case
- * with a D3 embedded into React. Thus, React will ignore
- * any D3 changes to DOM on each re-render and will follow
- * what the render methods says. We wont see any D3 work in
- * our chart embedded into React.
- * There are several approach to overcome this issue:
- *
- *  - Let React take care of DOM manipulation while D3 is used
- *  only for maths. This must be crafted carefully and requires
- *  a bit of work.
- *    PROS: React virtual DOM performance.
- *    CONS: We loose some D3 features, mainly animations.
- *    Usage: Only for complex charts where we can benefit from
- *           React DOM performance with no animations involved.
- *
- *  - Faux React DOM: a third party library to create a fake DOM
- *  to be manipulated by D3 and then transformed to a React render
- *  phase.
- *    PROS: Cool approach, D3 native code, transparent.
- *    CONS: Not mature enough (as of April 2017).
- *    Usage: Not considered so far.
- *
- *  - Keep React out of the game when necessary. Lets just use React
- *  to render the component root element where our chart will be
- *  attached to while D3 will handle the rest of the DOM from that point
- *  downwards.
- *    PROS: Very easy approach, few lines of code. Native D3 code.
- *    CONS: We have left React of game from the component root element
- *    which means that no React component can be attached as children in
- *    a native way. We can manually control a children React component render
- *    process though.
- *    Usage: as it retains full D3 functionality and it is very easy to
- *           implement, we have picked up this solution.
- */
 
 /******************* INTERFACE *******************/
 
@@ -72,7 +35,7 @@ interface Props {
 
 /******************* COMPONENT *******************/
 
-class Simulator extends React.Component <Props, {}> {
+class SimulatorNativeDOM extends React.Component <Props, {}> {
   constructor(props) {
     super(props);
   }
@@ -83,8 +46,9 @@ class Simulator extends React.Component <Props, {}> {
     this.drawComplete(this.props);
   }
 
-  // Lifecycle: Props changes. Before receiving a prop change.
+  // Lifecycle: Props/State changes. After receiving a prop change.
   // (Only called on re-rendering, not on initial render).
+  // Lets use it to control props changes once the component has been mounted.
   public componentWillReceiveProps(nextProps) {
     // Control props changes once the component has been mounted.
     if ((nextProps.width !== this.props.width) || (nextProps.height !== this.props.height)) {
@@ -123,11 +87,11 @@ class Simulator extends React.Component <Props, {}> {
   private drawComplete = (props: Props) => {
     this.initializeChart(props);
     this.setImage(props);
-    this.setBackground(props.backgroundColor);
+    this.setBackground(props);
   }
 
   private initializeChart = (props: Props) => {
-    appChart.initialize("simulator", props.width, props.height);
+    appChart.initialize("#simulator", props.width, props.height);
   }
 
   private setImage = (props: Props) => {
@@ -164,4 +128,4 @@ class Simulator extends React.Component <Props, {}> {
     );
   }
 };
-export const SimulatorComponent = themr(identifiers.simulator)(Simulator);
+export const SimulatorNativeDOMComponent = themr(identifiers.simulator)(SimulatorNativeDOM);

@@ -31,18 +31,18 @@ let heightRel = "100%";
  * relative units.
  * @public
  * @function initialize
- * @param  {string} parentNode: string {Parent node ID to append SVG element to.}
+ * @param  {any} parentNode: string {Parent node to append SVG element to.}
  * @param  {string} width: string {Width of the SVG element in relative units.}
  * @param  {string} height: string {Height of the SVG element in relative units.}
  * @return {void}
  */
-export function initialize(parentNodeId: string, width: string = widthRel, height: string = heightRel): void {
+export function initialize(parentNode: any, width: string = widthRel, height: string = heightRel): void {
   // Component size.
   if (width) { widthRel = width; }
   if (height) { heightRel = height; }
 
   // Initialize SVG element.
-  svg = d3.select(`#${parentNodeId}`)
+  svg = d3.select(parentNode)
     .append("svg")
       .attr("class", "svg")
       .attr("width", widthRel)
@@ -53,7 +53,7 @@ export function initialize(parentNodeId: string, width: string = widthRel, heigh
       .attr("class", "svg-viewport");
   svgBackground = svgViewport.append("rect")
       .attr("class", "svg-background")
-      .attr("fill", "rgba(255, 255, 255, 0)")
+      .attr("fill", "rgba(255, 255, 255, 1)")
       .attr("x", 1).attr("y", 1);
 }
 
@@ -87,7 +87,7 @@ export function setImage(sourceImage: any[][]): void {
  * @return {void}
  */
 export function setBackgroundColor(color): void {
-  svgViewport.attr("fill", color);
+  svgBackground.attr("fill", color);
 }
 
 /**
@@ -103,7 +103,7 @@ export function draw(layers: LayerStack): Promise<boolean> {
       try {
         layerManager.drawLayers(svgViewport, srcImage, layers)
         .then((result) => {
-          layerManager.reportLayerDOMStatus(svgViewport);
+          // layerManager.reportLayerDOMStatus(svgViewport);
           resolve(result);
         })
         .catch((error) => {

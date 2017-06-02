@@ -4,7 +4,7 @@ import { themr } from "react-css-themr";
 
 import { identifiers } from "../../identifiers";
 import { LayerStack } from "../../models/layerModel";
-import { SimulatorComponent } from "./components/simulator";
+import { SimulatorNativeDOMComponent } from "./components/simulator";
 import { WaitComponent } from "./components/wait";
 import { logDebug } from "../../util/log";
 
@@ -31,6 +31,7 @@ interface Props {
   // Context theme API.
   theme?: {
     halftoneView: string;
+    simulatorView: string;
   };
 }
 
@@ -74,7 +75,8 @@ class Halftone extends React.Component <Props, State> {
     return (
       <div className={this.props.theme.halftoneView}>
         {showProgress ? <WaitComponent /> : null }
-        <SimulatorComponent imageUrl={this.props.imageUrl}
+        <SimulatorNativeDOMComponent
+          imageUrl={this.props.imageUrl}
           resolution={this.props.resolution}
           layerStack={this.props.layerStack}
           backgroundColor={this.props.backgroundColor}
