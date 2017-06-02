@@ -9,14 +9,14 @@ module.exports = {
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".jsx", ".css", ".scss"]
   },
-  
   entry: {
     bundle: ["./app/app.tsx"]
-    // Why separating vendor into a different bundle creates a heavier result?
-    //vendor: ["d3", "chroma-js", "react", "react-dom", "react-css-themr", "react-addons-css-transition-group", 
+    // TODO: Ask why separating vendor into a different bundle creates a heavier result?
+    // vendor: ["d3", "chroma-js", "react", "react-dom", "react-css-themr", "react-addons-css-transition-group", 
     //  "react-sortable-hoc", "react-toolbox", "postcss"]
   },
   module: {
+    // *** Typescript ***
     rules: [{
       test: /\.(ts|tsx)$/,
       exclude: /node_modules/,
@@ -27,11 +27,18 @@ module.exports = {
         }
       }
     },
-    // Just in case of custom fonts being bundled.
+    // *** Images ***
     {
-      test: /\.svg$/,
-      loader: "url-loader?limit=65000&mimetype=image/svg+xml&name=public/fonts/[name].[ext]"
+      test: /\.(png|svg|jpg|gif)$/,
+      exclude: [/node_modules/],
+      use: [{
+        loader: "file-loader",
+        options: {
+          name: "public/images/[name].[ext]"
+        }
+      }]
     },
+    // *** Fonts ***
     {
       test: /\.woff$/,
       loader: "url-loader?limit=65000&mimetype=application/font-woff&name=public/fonts/[name].[ext]"

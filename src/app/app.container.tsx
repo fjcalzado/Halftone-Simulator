@@ -1,6 +1,7 @@
 /******************* IMPORT *******************/
 import * as React from "react";
 
+import { SampleImages } from "./sample-images";
 import { LayerStack, CreateDefaultLayerParams } from "../models/layerModel";
 import { AppComponent } from "./app.component";
 
@@ -28,7 +29,7 @@ export class AppContainer extends React.Component<Props, State> {
     this.state = {
       layerStack: [CreateDefaultLayerParams()],
       maxNumLayers: 4,
-      imageUrl: "../res/img/lu.jpg",
+      imageUrl: SampleImages.ImgLu,
       resolution: 10000,
       backgroundColor: "rgb(255, 255, 255)",
     };
