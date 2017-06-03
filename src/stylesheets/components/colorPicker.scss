@@ -1,13 +1,15 @@
 @import "../theme/autothemer.scss";
 
 .container {
+  display: flex;
+  align-items: center;
 }
 
 .swatch {
   @include themify(box-shadow, $shadow2p);
 
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 2rem;
+  height: 2rem;
   padding: 0.5rem;
   border-radius: 50%;
   display: inline-block;

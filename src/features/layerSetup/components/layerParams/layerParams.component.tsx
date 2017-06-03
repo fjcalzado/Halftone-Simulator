@@ -7,7 +7,7 @@ import { Dropdown } from "react-toolbox/lib/dropdown";
 
 import { identifiers } from "../../../../identifiers";
 import { SliderExComponent } from "../../../../components/sliderEx";
-import { ColorPickerComponent } from "../../../../components/colorPicker";
+import { ColorPickerToggleableComponent } from "../../../../components/colorPickerToggleable";
 import { LayerParameters } from "../../../../models/layerModel";
 import { GridPatternType, CreateDefaultSpecificParams } from "../../../../models/gridModel";
 import { DotType } from "../../../../models/dotModel";
@@ -94,7 +94,6 @@ class LayerParams extends React.Component<Props, {}> {
             <this.DotSizeMinThreshold />
             <this.DotSizeMaxThreshold />
             <this.DotRotation />
-            <this.DotToggleCustomColor />
             <this.DotCustomColor />
         </List>
       );
@@ -323,23 +322,14 @@ class LayerParams extends React.Component<Props, {}> {
     );
   }
 
-  private DotToggleCustomColor = () => {
-    return (
-      <Switch
-        checked={this.props.layerParams.dotParams.colorCustom}
-        label="Toggle Custom Color"
-        onChange={this.handleDotChange.bind(this, "colorCustom")}
-      />
-    );
-  }
-
   private DotCustomColor = () => {
     return (
-      <ColorPickerComponent
-        disabled={!this.props.layerParams.dotParams.colorCustom}
+      <ColorPickerToggleableComponent label="Customize Color"
         color={this.props.layerParams.dotParams.color}
+        toggled={this.props.layerParams.dotParams.colorCustom}
         disableAlpha={true}
-        onChange={this.handleDotChange.bind(this, "color")}
+        onChangeColor={this.handleDotChange.bind(this, "color")}
+        onChangeToggle={this.handleDotChange.bind(this, "colorCustom")}
       />
     );
   }

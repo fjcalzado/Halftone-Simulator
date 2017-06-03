@@ -56,7 +56,7 @@ class ColorPicker extends React.Component<Props, State> {
     const disabled = this.props.disabled;
 
     return(
-      <div>
+      <div className={this.props.theme.container}>
         <div className={`${this.props.theme.swatch} 
                          ${disabled ? this.props.theme.disabled : ""}
                          ${open ? this.props.theme.open : ""}`}

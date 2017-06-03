@@ -24,6 +24,8 @@ interface Props {
 
   theme?: {
     container: string,
+    switch: string,
+    colorPicker: string,
   };
 }
 
@@ -35,20 +37,20 @@ class ColorPickerToggleable extends React.Component<Props, State> {
   }
 
   public render() {
-    const open = Boolean(this.state.displayColorPicker);
-    const disabled = this.props.disabled;
 
     return(
       <div className={this.props.theme.container}>
-        <Switch checked={this.props.toggled}
+        <Switch className={this.props.theme.switch}
+          checked={this.props.toggled}
           label={this.props.label}
           onChange={this.props.onChangeToggle}
           disabled={this.props.disabled}
         />
-        <ColorPickerComponent color={this.props.color}
+        <ColorPickerComponent className={this.props.theme.colorPicker}
+          color={this.props.color}
           disableAlpha={this.props.disableAlpha}
           onChange={this.props.onChangeColor}
-          disabled={this.props.disabled}
+          disabled={this.props.disabled || !this.props.toggled}
         />
       </div>
     );

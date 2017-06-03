@@ -7,3 +7,10 @@
     @include themify(background, $colorPrimary);
   }
 }
+
+// Increase selector specificity intentionally
+// to overwrite original styles.
+// FIX Non-sense botom margin.
+label.field {
+  margin-bottom: 0;
+}
