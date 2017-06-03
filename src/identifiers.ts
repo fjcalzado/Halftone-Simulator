@@ -5,6 +5,7 @@
  */
 export const identifiers = {
   // Project Features (FT).
+  inputPictureSetup: "FTInputPictureSetup",
   halftone: "FTHalftone",
   layerSetup: "FTLayerSetup",
 
@@ -13,11 +14,13 @@ export const identifiers = {
   wait: "CMPWait",
   sliderEx: "CMPSliderEx",
   colorPicker: "CMPColorPicker",
+  colorPickerToggleable: "CMPColorPickerToggleable",
   layerItem: "CMPLayerItem",
   layerList: "CMPLayerList",
   layerRenamer: "CMPLayerRenamer",
   layerAdder: "CMPLayerAdder",
   layerParams: "CMPLayerParams",
+  backgroundColorPicker: "CMPBackgroundColorPicker",
 
   // Vendor/Third-Party Components CSS.
   // RT: React-Toolbox.

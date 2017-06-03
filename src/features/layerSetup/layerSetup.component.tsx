@@ -40,7 +40,7 @@ interface Props {
 
   // Context theme API.
   theme?: {
-    layerSetup: string;
+    container: string;
   };
 }
 
@@ -57,7 +57,7 @@ class LayerSetup extends React.Component<Props, {}> {
       item.name === this.props.selectedLayer);
 
     return(
-      <div className={this.props.theme.layerSetup}>
+      <div className={this.props.theme.container}>
         {/*// TODO: To be inserted as Card action.*/}
         <Button icon="brush" label="Draw" raised accent
           onClick={this.props.onClickDrawLayers} />

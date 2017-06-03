@@ -1,0 +1,36 @@
+/******************* IMPORT *******************/
+import * as React from "react";
+import { themr } from "react-css-themr";
+
+import { identifiers } from "../identifiers";
+
+
+/******************* INTERFACE *******************/
+
+interface Props {
+  whatever: boolean;
+
+  // Context theme API.
+  theme?: {
+    container: string;
+  };
+}
+
+
+/******************* COMPONENT *******************/
+
+class Name extends React.Component<Props, {}> {
+  constructor(props) {
+    super(props);
+  }
+
+  public render() {
+    return(
+      <div className={this.props.theme.container}>
+        
+      </div>
+    );
+  }
+}
+export const NameComponent = themr(identifiers.name)(Name);
+

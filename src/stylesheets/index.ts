@@ -6,6 +6,7 @@ import { identifiers } from "../identifiers";
  */
 export const contextStylesheets = {
   // Project Features CSS.
+  [identifiers.inputPictureSetup]: require("./components/inputPictureSetup.scss"),
   [identifiers.halftone]: require("./components/halftone.scss"),
   [identifiers.layerSetup]: require("./components/layerSetup.scss"),
 
@@ -14,11 +15,13 @@ export const contextStylesheets = {
   [identifiers.wait]: require("./components/wait.scss"),
   [identifiers.sliderEx]: require("./components/sliderEx.scss"),
   [identifiers.colorPicker]: require("./components/colorPicker.scss"),
+  [identifiers.colorPickerToggleable]: require("./components/colorPickerToggleable.scss"),
   [identifiers.layerItem]: require("./components/layerItem.scss"),
   [identifiers.layerList]: require("./components/layerList.scss"),
   [identifiers.layerRenamer]: require("./components/layerRenamer.scss"),
   [identifiers.layerAdder]: require("./components/layerAdder.scss"),
   [identifiers.layerParams]: require("./components/layerParams.scss"),
+  [identifiers.backgroundColorPicker]: require("./components/backgroundColorPicker.scss"),
 
   // Vendor/Third-Party Components CSS.
   [identifiers.vendorButton]: require("./components/react-toolbox/button.scss"),
