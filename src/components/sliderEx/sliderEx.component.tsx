@@ -5,6 +5,7 @@ import { themr } from "react-css-themr";
 import { Slider } from "react-toolbox/lib/slider";
 
 import { identifiers } from "../../identifiers";
+import { debounce } from "../../util";
 
 
 /******************* INTERFACE *******************/
@@ -23,6 +24,7 @@ interface Props {
   displayStep?: number;
   value?: number;
   label?: string;
+  debounce?: boolean;
 
   theme?: {
     container: string,
@@ -31,11 +33,19 @@ interface Props {
   };
 }
 
+interface State {
+  storedValue: number;
+}
+
 /******************* COMPONENT *******************/
 
-class SliderEx extends React.Component<Props, {}> {
+class SliderEx extends React.Component<Props, State> {
   constructor(props) {
     super(props);
+
+    this.state = {
+      storedValue: this.applyScaleForDisplay(this.props),
+    };
   }
 
   public static defaultProps: Partial<Props> = {
@@ -51,16 +61,38 @@ class SliderEx extends React.Component<Props, {}> {
     displayStep: 0.01,
     value: 0,
     label: "",
+    debounce: false,
   };
 
-  private handleOnChange = (value: number): void => {
-    this.props.onChange(this.scale().invert(value));
+  private scale = (props: Props) => {
+    return d3.scaleLinear()
+      .domain([props.min, props.max])
+      .range([props.displayMin, props.displayMax]);
   }
 
-  private scale = () => {
-    return d3.scaleLinear()
-      .domain([this.props.min, this.props.max])
-      .range([this.props.displayMin, this.props.displayMax]);
+  private applyScaleForDisplay = (props: Props): number => {
+    return Math.round(this.scale(props)(props.value) / props.displayStep) * props.displayStep;
+  }
+
+  private notifyValueChange = (value: number): void => {
+    this.props.onChange(this.scale(this.props).invert(value));
+  }
+
+  private notifyValueChangeDebounced = debounce(this.notifyValueChange, 800, false);
+
+  private handleOnChange = (notifyFunc) => (value: number): void => {
+    this.setState({
+      ...this.state,
+      storedValue: value,
+    });
+    notifyFunc(value);
+  }
+
+  public componentWillReceiveProps(nextProps) {
+    this.setState({
+      ...this.state,
+      storedValue: this.applyScaleForDisplay(nextProps),
+    });
   }
 
   public render() {
@@ -76,8 +108,8 @@ class SliderEx extends React.Component<Props, {}> {
           pinned={this.props.pinned}
           snaps={this.props.snaps}
           step={this.props.displayStep}
-          value={Math.round(this.scale()(this.props.value) / this.props.displayStep) * this.props.displayStep}
-          onChange={this.handleOnChange}
+          value={this.state.storedValue}
+          onChange={this.handleOnChange(this.props.debounce ? this.notifyValueChangeDebounced : this.notifyValueChange)}
         />
       </div>
     );

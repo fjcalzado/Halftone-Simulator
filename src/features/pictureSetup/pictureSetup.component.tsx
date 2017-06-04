@@ -4,7 +4,7 @@ import { themr } from "react-css-themr";
 
 import { identifiers } from "../../identifiers";
 import { BackgroundColorPickerComponent } from "./components/backgroundColorPicker";
-
+import { SliderExComponent } from "../../components/sliderEx";
 
 /******************* INTERFACE *******************/
 
@@ -45,6 +45,14 @@ class PictureSetup extends React.Component<Props, {}> {
             onChangeColor={this.props.onBackgroundColorChange}
             onChangeToggle={this.props.onBackgroundToggleChange}
           />
+          <SliderExComponent editable min={1000} max={100000}
+            displayMin={1} displayMax={100} displayStep={0.1}
+            label={"Resolution"}
+            value={this.props.resolution}
+            debounce={true}
+            onChange={this.props.onResolutionChange}
+          />
+
       </div>
     );
   }

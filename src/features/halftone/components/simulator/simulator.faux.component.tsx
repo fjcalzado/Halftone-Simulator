@@ -57,7 +57,8 @@ class SimulatorFauxDOM extends React.Component <Props, State> {
     this.renderD3(this.props);
   }
 
-  // Lifecycle: Props/State changes. After receiving a prop change.
+  // Lifecycle: Props/State changes. Just after updating (render), by that moment,
+  // props or state have been received and set.
   // (Only called on re-rendering, not on initial render).
   // Lets use it to control props changes once the component has been mounted.
   public componentDidUpdate(prevProps, prevState) {
