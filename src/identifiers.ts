@@ -5,7 +5,7 @@
  */
 export const identifiers = {
   // Project Features (FT).
-  inputPictureSetup: "FTInputPictureSetup",
+  pictureSetup: "FTInputPictureSetup",
   halftone: "FTHalftone",
   layerSetup: "FTLayerSetup",
 

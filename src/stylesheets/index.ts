@@ -6,7 +6,7 @@ import { identifiers } from "../identifiers";
  */
 export const contextStylesheets = {
   // Project Features CSS.
-  [identifiers.inputPictureSetup]: require("./components/inputPictureSetup.scss"),
+  [identifiers.pictureSetup]: require("./components/pictureSetup.scss"),
   [identifiers.halftone]: require("./components/halftone.scss"),
   [identifiers.layerSetup]: require("./components/layerSetup.scss"),
 
