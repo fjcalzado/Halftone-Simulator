@@ -26,7 +26,7 @@ interface Props {
 
 /******************* COMPONENT *******************/
 
-class pictureSetup extends React.Component<Props, {}> {
+class PictureSetup extends React.Component<Props, {}> {
   constructor(props) {
     super(props);
   }
@@ -39,4 +39,4 @@ class pictureSetup extends React.Component<Props, {}> {
     );
   }
 }
-export const pictureSetupComponent = themr(identifiers.pictureSetup)(pictureSetup);
+export const pictureSetupComponent = themr(identifiers.pictureSetup)(PictureSetup);
