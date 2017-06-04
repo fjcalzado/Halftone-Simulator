@@ -20,11 +20,11 @@ interface Props {
   resolution: number;
   layerStack: LayerStack;
   onNotifyError?: (error: string) => void;
+  customBackgroundColor: boolean;
+  backgroundColor: any;
 
   // Optionals.
-  // Background color. White by default.
   // Size. Fit the container by default.
-  backgroundColor?: any;
   width?: string;
   height?: string;
 
@@ -80,6 +80,7 @@ class Halftone extends React.Component <Props, State> {
           resolution={this.props.resolution}
           layerStack={this.props.layerStack}
           backgroundColor={this.props.backgroundColor}
+          customBackgroundColor={this.props.customBackgroundColor}
           width={this.props.width}
           height={this.props.height}
           onNotifyError={this.props.onNotifyError}

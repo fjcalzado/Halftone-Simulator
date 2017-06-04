@@ -54,7 +54,8 @@ export function initialize(parentNode: any, width: string = widthRel, height: st
   svgBackground = svgViewport.append("rect")
       .attr("class", "svg-background")
       .attr("fill", "rgba(255, 255, 255, 1)")
-      .attr("x", 1).attr("y", 1);
+      .attr("opacity", 0)
+      .attr("x", 0).attr("y", 0);
 }
 
 /**
@@ -77,17 +78,18 @@ export function setImage(sourceImage: any[][]): void {
   // Configure SVG Viewport adn SVG Background based on
   // new image dimensions.
   svg.attr("viewBox", `-1 -1 ${srcImgWidth + 2} ${srcImgHeight + 2}`);
-  svgBackground.attr("width", srcImgWidth - 2).attr("height", srcImgHeight - 2);
+  svgBackground.attr("width", srcImgWidth).attr("height", srcImgHeight);
 }
 
 /**
  * Set a background color for our viewport.
  * @function setBackgroundColor
+ * @param  {boolean} enable {Enable/Disable background color}
  * @param  {any} color {Color in CSS or number format}
  * @return {void}
  */
-export function setBackgroundColor(color): void {
-  svgBackground.attr("fill", color);
+export function setBackgroundColor(enable: boolean, color: any): void {
+  svgBackground.attr("fill", color).attr("opacity", enable ? 1 : 0);
 }
 
 /**

@@ -6,6 +6,7 @@ import { contextStylesheets } from "../stylesheets";
 import { LayerStack } from "../models/layerModel";
 import { HalftoneComponent } from "../features/halftone";
 import { LayerSetupContainer } from "../features/layerSetup";
+import { PictureSetupComponent } from "../features/pictureSetup";
 const styles = require("../stylesheets/base/app.scss");
 
 // TODO: To be deleted **************************************
@@ -19,7 +20,15 @@ interface Props {
   maxNumLayers: number;
   imageUrl: string;
   resolution: number;
+  autoResolution: boolean;
   backgroundColor: any;
+  customBackgroundColor: boolean;
+
+  onImageURLChange: (newImageURL: string) => void;
+  onResolutionChange: (newResolution: number) => void;
+  onAutoResolutionChange: (newAuto: boolean) => void;
+  onBackgroundColorChange: (newColor: any) => void;
+  onBackgroundToggleChange: (newToggled: boolean) => void;
   onDrawLayersChange: (layerStack: LayerStack) => void;
 }
 
@@ -36,6 +45,18 @@ export class AppComponent extends React.Component<Props, {}> {
       <ThemeProvider theme={contextStylesheets}>
         <div className={styles.layoutContainerColumn}>
           <IntroComponent fakeProperty={true} />
+          <PictureSetupComponent className={"TODO"}
+            imageUrl={this.props.imageUrl}
+            resolution={this.props.resolution}
+            autoResolution={this.props.autoResolution}
+            customBackgroundColor={this.props.customBackgroundColor}
+            backgroundColor={this.props.backgroundColor}
+            onImageURLChange={this.props.onImageURLChange}
+            onResolutionChange={this.props.onResolutionChange}
+            onAutoResolutionChange={this.props.onAutoResolutionChange}
+            onBackgroundColorChange={this.props.onBackgroundColorChange}
+            onBackgroundToggleChange={this.props.onBackgroundToggleChange}
+          />
           <div className={styles.layoutContainerRow}>
             <div className={styles.panelLeft}>
               <LayerSetupContainer layerStack={this.props.layerStack}
@@ -48,6 +69,7 @@ export class AppComponent extends React.Component<Props, {}> {
                 imageUrl={this.props.imageUrl}
                 resolution={this.props.resolution}
                 backgroundColor={this.props.backgroundColor}
+                customBackgroundColor={this.props.customBackgroundColor}
               />
             </div>
           </div>

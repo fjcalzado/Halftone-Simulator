@@ -1,16 +1,18 @@
 /******************* IMPORT *******************/
 import * as React from "react";
 import { themr } from "react-css-themr";
-import { Switch } from "react-toolbox/lib/switch";
 
 import { identifiers } from "../../../../identifiers";
-import { ColorPickerComponent } from "../../../../components/colorPicker";
+import { ColorPickerToggleableComponent } from "../../../../components/colorPickerToggleable";
 
 
 /******************* INTERFACE *******************/
 
 interface Props {
-  animated: boolean;
+  customColor: boolean;
+  color: any;
+  onChangeColor: (newColor: any) => void;
+  onChangeToggle: (newToggled: boolean) => void;
 
   // Context theme API.
   theme?: {
@@ -28,9 +30,15 @@ class BackgroundColorPicker extends React.Component<Props, {}> {
 
   public render() {
     return(
-      <div className={this.props.theme.container}>
-        
-      </div>
+      <ColorPickerToggleableComponent className={this.props.theme.container}
+        label={"Background Color"}
+        color={this.props.color}
+        toggled={this.props.customColor}
+        disableAlpha={false}
+        onChangeColor={this.props.onChangeColor}
+        onChangeToggle={this.props.onChangeToggle}
+        disabled={false}
+      />
     );
   }
 }

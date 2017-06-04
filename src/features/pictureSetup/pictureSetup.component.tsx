@@ -3,6 +3,7 @@ import * as React from "react";
 import { themr } from "react-css-themr";
 
 import { identifiers } from "../../identifiers";
+import { BackgroundColorPickerComponent } from "./components/backgroundColorPicker";
 
 
 /******************* INTERFACE *******************/
@@ -10,12 +11,15 @@ import { identifiers } from "../../identifiers";
 interface Props {
   imageUrl: string;
   resolution: number;
-  autoResolution: number;
+  autoResolution: boolean;
+  customBackgroundColor: boolean;
   backgroundColor: any;
 
   onImageURLChange: (newImageURL: string) => void;
   onResolutionChange: (newResolution: number) => void;
-  onBackgroundColorChange: (newColor: string) => void;
+  onAutoResolutionChange: (newAuto: boolean) => void;
+  onBackgroundColorChange: (newColor: any) => void;
+  onBackgroundToggleChange: (newToggled: boolean) => void;
 
   // Context theme API.
   theme?: {
@@ -35,8 +39,14 @@ class PictureSetup extends React.Component<Props, {}> {
 
     return(
       <div className={this.props.theme.container}>
+          <BackgroundColorPickerComponent className={""}
+            customColor={this.props.customBackgroundColor}
+            color={this.props.backgroundColor}
+            onChangeColor={this.props.onBackgroundColorChange}
+            onChangeToggle={this.props.onBackgroundToggleChange}
+          />
       </div>
     );
   }
 }
-export const pictureSetupComponent = themr(identifiers.pictureSetup)(PictureSetup);
+export const PictureSetupComponent = themr(identifiers.pictureSetup)(PictureSetup);

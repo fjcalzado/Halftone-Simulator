@@ -15,14 +15,14 @@ interface Props {
   imageUrl: string;
   resolution: number;
   layerStack: LayerStack;
+  backgroundColor: any;
+  customBackgroundColor: boolean;
   onStartProcessing: () => void;
   onStopProcessing: () => void;
   onNotifyError?: (error: string) => void;
 
   // Optionals.
-  // Background color. White by default.
   // Size. Fit the container by default.
-  backgroundColor?: any;
   width?: string;
   height?: string;
 
@@ -66,7 +66,8 @@ class SimulatorNativeDOM extends React.Component <Props, {}> {
       this.drawLayers(nextProps);
     }
 
-    if (nextProps.backgroundColor !== this.props.backgroundColor) {
+    if ((nextProps.backgroundColor !== this.props.backgroundColor) ||
+        (nextProps.customBackgroundColor !== this.props.customBackgroundColor)) {
       this.setBackground(nextProps);
     }
   }
@@ -118,7 +119,7 @@ class SimulatorNativeDOM extends React.Component <Props, {}> {
   }
 
   private setBackground = (props: Props) => {
-    appChart.setBackgroundColor(props.backgroundColor);
+    appChart.setBackgroundColor(props.customBackgroundColor, props.backgroundColor);
   }
 
   public render() {

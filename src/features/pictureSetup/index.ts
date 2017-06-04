@@ -1,1 +1,1 @@
-export { pictureSetupComponent } from "./pictureSetup.component";
+export { PictureSetupComponent } from "./pictureSetup.component";

@@ -16,14 +16,14 @@ interface Props {
   imageUrl: string;
   resolution: number;
   layerStack: LayerStack;
+  backgroundColor: any;
+  customBackgroundColor: boolean;
   onStartProcessing: () => void;
   onStopProcessing: () => void;
   onNotifyError?: (error: string) => void;
 
   // Optionals.
-  // Background color. White by default.
   // Size. Fit the container by default.
-  backgroundColor?: any;
   width?: string;
   height?: string;
 
@@ -66,7 +66,8 @@ class SimulatorFauxDOM extends React.Component <Props, State> {
         (prevProps.imageUrl !== this.props.imageUrl) ||
         (prevProps.resolution !== this.props.resolution) ||
         (prevProps.layerStack !== this.props.layerStack) ||
-        (prevProps.backgroundColor !== this.props.backgroundColor)) {
+        (prevProps.backgroundColor !== this.props.backgroundColor) ||
+        (prevProps.customBackgroundColor !== this.props.customBackgroundColor)) {
       this.renderD3(this.props);
     }
   }
@@ -85,7 +86,7 @@ class SimulatorFauxDOM extends React.Component <Props, State> {
 
     // Initialize Chart and set Background color.
     appChart.initialize(fauxNode, props.width, props.height);
-    appChart.setBackgroundColor(props.backgroundColor);
+    appChart.setBackgroundColor(props.customBackgroundColor, props.backgroundColor);
 
     // Extract image matrix and set it.
     rgbMatrix.getMatrix(props.imageUrl, props.resolution)

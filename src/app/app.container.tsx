@@ -12,7 +12,9 @@ interface State {
   maxNumLayers: number;
   imageUrl: string;
   resolution: number;
+  autoResolution: boolean;
   backgroundColor: any;
+  customBackgroundColor: boolean;
 }
 
 interface Props {
@@ -31,22 +33,35 @@ export class AppContainer extends React.Component<Props, State> {
       maxNumLayers: 4,
       imageUrl: SampleImages.ImgLu,
       resolution: 10000,
+      autoResolution: true,
       backgroundColor: "rgb(255, 255, 255)",
+      customBackgroundColor: false,
     };
   }
 
-  private handleDrawLayersChange = (layerStack: LayerStack) => {
-    this.setState({...this.state, layerStack} as State);
+  private handleGenericStateChange = (field, value): void => {
+    this.setState({
+      ...this.state,
+      [field]: value,
+    });
   }
 
   public render() {
     return(
-      <AppComponent layerStack={this.state.layerStack}
+      <AppComponent
+        layerStack={this.state.layerStack}
         maxNumLayers={this.state.maxNumLayers}
         imageUrl={this.state.imageUrl}
         resolution={this.state.resolution}
+        autoResolution={this.state.autoResolution}
         backgroundColor={this.state.backgroundColor}
-        onDrawLayersChange={this.handleDrawLayersChange}
+        customBackgroundColor={this.state.customBackgroundColor}
+        onImageURLChange={this.handleGenericStateChange.bind(this, "imageUrl")}
+        onResolutionChange={this.handleGenericStateChange.bind(this, "resolution")}
+        onAutoResolutionChange={this.handleGenericStateChange.bind(this, "autoResolution")}
+        onBackgroundColorChange={this.handleGenericStateChange.bind(this, "backgroundColor")}
+        onBackgroundToggleChange={this.handleGenericStateChange.bind(this, "customBackgroundColor")}
+        onDrawLayersChange={this.handleGenericStateChange.bind(this, "layerStack")}
       />
     );
   }
