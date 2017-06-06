@@ -1,4 +1,3 @@
-import chroma from "chroma-js";
 import * as d3 from "d3";
 
 import { CreateChExtractorForRGB } from "../imaging";
@@ -48,8 +47,11 @@ const getRange = (dotParams: DotParameters) => {
   // Size = Area.
   // Lets determine which max area to cover a whole bin for each shape.
   const maxArea = getMaxCoverArea(dotParams.shape);
-  const inverted = ((dotParams.sizeBinding === Channel.Lightness) ||
-                    (dotParams.sizeBinding === Channel.Luminance)) ? true : false;
+  const inverted = (dotParams.sizeBinding !== Channel.Cyan) ||
+                   (dotParams.sizeBinding !== Channel.Magenta) ||
+                   (dotParams.sizeBinding !== Channel.Yellow) ||
+                   (dotParams.sizeBinding !== Channel.Black);
+
   // Apply size thresholds.
   const maxRange = maxArea * dotParams.sizeMaxThreshold;
   const minRange = 0 + dotParams.sizeMinThreshold;
@@ -86,7 +88,7 @@ function CreateFillColor(dotParams: DotParameters) {
   if (dotParams.colorCustom) {
     return dotParams.color;
   } else {
-    return (node: GridNode) => chroma(...node.rgb, "rgb").css("rgb");
+    return (node: GridNode) => `rgb(${node.rgb.join(",")})`;
   }
 }
 

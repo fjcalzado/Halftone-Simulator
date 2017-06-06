@@ -12,7 +12,7 @@ module.exports = {
   entry: {
     bundle: ["./app/app.tsx"]
     // TODO: Ask why separating vendor into a different bundle creates a heavier result?
-    // vendor: ["d3", "chroma-js", "react", "react-dom", "react-css-themr", "react-addons-css-transition-group", 
+    // vendor: ["d3", "react", "react-dom", "react-css-themr", "react-addons-css-transition-group", 
     //  "react-sortable-hoc", "react-toolbox", "postcss"]
   },
   module: {
