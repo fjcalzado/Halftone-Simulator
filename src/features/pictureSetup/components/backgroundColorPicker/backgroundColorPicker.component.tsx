@@ -14,6 +14,9 @@ interface Props {
   onChangeColor: (newColor: any) => void;
   onChangeToggle: (newToggled: boolean) => void;
 
+  // Add class name from parent.
+  className?: string;
+
   // Context theme API.
   theme?: {
     container: string;
@@ -30,7 +33,8 @@ class BackgroundColorPicker extends React.Component<Props, {}> {
 
   public render() {
     return(
-      <ColorPickerToggleableComponent className={this.props.theme.container}
+      <ColorPickerToggleableComponent className={`${this.props.className || ""}
+                                                  ${this.props.theme.container || ""}`.trim()}
         label={"Background Color"}
         color={this.props.color}
         toggled={this.props.customColor}

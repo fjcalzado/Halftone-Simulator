@@ -12,7 +12,6 @@ import { debounce } from "../../util";
 
 interface Props {
   onChange: (value: number) => void;
-  className?: string;
   disabled?: boolean;
   editable?: boolean;
   max?: number;
@@ -26,6 +25,10 @@ interface Props {
   label?: string;
   debounce?: boolean;
 
+  // Add class name from parent.
+  className?: string;
+
+  // Context theme API.
   theme?: {
     container: string,
     label: string,
@@ -97,7 +100,7 @@ class SliderEx extends React.Component<Props, State> {
 
   public render() {
     return(
-      <div className={this.props.theme.container}>
+      <div className={`${this.props.className || ""} ${this.props.theme.container}`.trim()}>
         <p className={this.props.theme.label}>{this.props.label}</p>
         <Slider
           className={`${this.props.className} ${this.props.theme.slider}`}

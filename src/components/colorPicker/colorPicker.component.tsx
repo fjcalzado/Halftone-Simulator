@@ -18,6 +18,10 @@ interface Props {
   onChange: (color) => void;
   disabled?: boolean;
 
+  // Add class name from parent.
+  className?: string;
+
+  // Context theme API.
   theme?: {
     container: string,
     swatch: string,
@@ -56,7 +60,7 @@ class ColorPicker extends React.Component<Props, State> {
     const disabled = this.props.disabled;
 
     return(
-      <div className={this.props.theme.container}>
+      <div className={`${this.props.className || ""} ${this.props.theme.container}`.trim()}>
         <div className={`${this.props.theme.swatch} 
                          ${disabled ? this.props.theme.disabled : ""}
                          ${open ? this.props.theme.open : ""}`}

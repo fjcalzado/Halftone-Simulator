@@ -14,6 +14,9 @@ interface Props {
   sampleImageList: SampleImageItem[];
   onImageUrlChange: (newImageUrl: string) => void;
 
+  // Add class name from parent.
+  className?: string;
+
   // Context theme API.
   theme?: {
     container: string;
@@ -65,7 +68,7 @@ class PictureSelector extends React.Component<Props, {}> {
       </div>);
 
     return(
-      <div className={this.props.theme.container}>
+      <div className={`${this.props.className || ""} ${this.props.theme.container}`.trim()}>
         <Dropdown className={this.props.theme.dropdown}
           source={this.props.sampleImageList}
           template={customItem}

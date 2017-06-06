@@ -22,6 +22,10 @@ interface Props {
   onChangeToggle: (newToggled: boolean) => void;
   disabled?: boolean;
 
+  // Add class name from parent.
+  className?: string;
+
+  // Context theme API.
   theme?: {
     container: string,
     switch: string,
@@ -39,7 +43,7 @@ class ColorPickerToggleable extends React.Component<Props, State> {
   public render() {
 
     return(
-      <div className={this.props.theme.container}>
+      <div className={`${this.props.className || ""} ${this.props.theme.container}`.trim()}>
         <Switch className={this.props.theme.switch}
           checked={this.props.toggled}
           label={this.props.label}

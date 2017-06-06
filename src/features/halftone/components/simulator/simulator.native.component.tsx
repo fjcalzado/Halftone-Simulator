@@ -124,7 +124,8 @@ class SimulatorNativeDOM extends React.Component <Props, {}> {
 
   public render() {
     return (
-      <div className={this.props.theme.simulatorView} id="simulator" >
+      <div className={this.props.theme.simulatorView}
+        id="simulator" >
       </div>
     );
   }

@@ -28,7 +28,7 @@ interface Props {
   width?: string;
   height?: string;
 
-  // Context theme API.
+  // Context theme API.;
   theme?: {
     halftoneView: string;
     simulatorView: string;
