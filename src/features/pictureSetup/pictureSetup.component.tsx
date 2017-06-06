@@ -30,7 +30,7 @@ interface Props {
     container: string;
     backgroundColorPicker: string;
     resolutionPicker: string;
-    picturePicker: string;
+    pictureSelector: string;
   };
 }
 
@@ -60,7 +60,7 @@ class PictureSetup extends React.Component<Props, {}> {
             debounce={true}
             onChange={this.props.onResolutionChange}
           />
-          <PictureSelectorComponent className={this.props.theme.picturePicker}
+          <PictureSelectorComponent className={this.props.theme.pictureSelector}
             imageUrl={this.props.imageUrl}
             sampleImageList={this.props.sampleImageList}
             onImageUrlChange={this.props.onImageUrlChange}
