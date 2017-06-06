@@ -21,11 +21,7 @@
     animation-duration: 0.2s;
     animation-timing-function: ease-out;
     animation-fill-mode: forwards;
-
-    // Experimental smooth drag. It will
-    // depend on browser. 
-    // transition-property: transform;
-    // transition-duration: 50ms;    
+    z-index: 900; // Hight z-index when dragged, it should be on top of everything.
   }
 }
 

@@ -1,17 +1,21 @@
 //@import "../theme/autothemer.scss";
 
 .container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  width: 100%;
 
 }
 
 .backgroundColorPicker {
-
+  margin: 0 1rem;
 }
 
 .resolutionPicker {
-
+  margin: 0 1rem;
 }
 
 .picturePicker {
-
+  margin: 0 1rem;
 }

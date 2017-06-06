@@ -65,7 +65,7 @@ class LayerItem extends React.Component<Props, {}> {
   // TODO: Think if it is better to show a menu or maybe just a delete button and
   // the rest of layer properties in a layer panel along with dot and grid panels.
   private layerItemMenu = ([
-    <IconMenu key="first-action" icon="more_vert" position="topLeft" menuRipple>
+    <IconMenu key="first-action" icon="more_horiz" position="topLeft" menuRipple>
       <MenuItem icon="mode_edit" caption="Rename" onClick={this.handleClickRename}/>
       <MenuItem icon="delete" caption="Delete" onClick={this.handleClickDelete}/>
     </IconMenu>,

@@ -11,7 +11,7 @@ import { SampleImageItem } from "../../../../models/sampleImageModel";
 
 interface Props {
   imageUrl: string;
-  sampleImageList: Array<SampleImageItem>;
+  sampleImageList: SampleImageItem[];
   onImageUrlChange: (newImageUrl: string) => void;
 
   // Context theme API.
@@ -19,7 +19,7 @@ interface Props {
     container: string;
     dropdown: string;
     item: string;
-    itemPictureContainer: string;    
+    itemPictureContainer: string;
     itemPicture: string;
     itemCaption: string;
   };
@@ -35,7 +35,7 @@ class PictureSelector extends React.Component<Props, {}> {
 
   private handleImageChange = (newValue): void => {
     const url = this.valueToUrl(newValue);
-    if(url) {
+    if (url) {
       this.props.onImageUrlChange(url);
     }
   }
@@ -48,12 +48,12 @@ class PictureSelector extends React.Component<Props, {}> {
 
   private urlToValue = (url: string): string => {
     const sampleImage = this.props.sampleImageList.find((item) => item.url === url);
-    if(sampleImage) { return sampleImage.value; }
+    if (sampleImage) { return sampleImage.value; }
     else { return ""; }
   }
 
   public render() {
-    const customItem = (item) =>  
+    const customItem = (item) =>
       (<div className={this.props.theme.item}>
         <div className={this.props.theme.itemPictureContainer} >
           <img className={this.props.theme.itemPicture} src={item.url} />

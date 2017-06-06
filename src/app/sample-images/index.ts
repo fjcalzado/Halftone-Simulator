@@ -7,7 +7,7 @@ const ImgMall = require("./mall.jpg");
 const ImgMota = require("./mota.jpg");
 const ImgNyc = require("./nyc.jpg");
 
-export const SampleImages: Array<SampleImageItem> = [
+export const SampleImages: SampleImageItem[] = [
   {
     value: "lu",
     label: "Fashion",

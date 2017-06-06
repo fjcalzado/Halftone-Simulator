@@ -20,7 +20,7 @@ interface Props {
   layerStack: LayerStack;
   maxNumLayers: number;
   imageUrl: string;
-  sampleImageList: Array<SampleImageItem>;
+  sampleImageList: SampleImageItem[];
   resolution: number;
   autoResolution: boolean;
   backgroundColor: any;

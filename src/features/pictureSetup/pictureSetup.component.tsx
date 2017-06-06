@@ -13,7 +13,7 @@ import { PictureSelectorComponent } from "./components/pictureSelector";
 
 interface Props {
   imageUrl: string;
-  sampleImageList: Array<SampleImageItem>;
+  sampleImageList: SampleImageItem[];
   resolution: number;
   autoResolution: boolean;
   customBackgroundColor: boolean;
@@ -70,3 +70,5 @@ class PictureSetup extends React.Component<Props, {}> {
   }
 }
 export const PictureSetupComponent = themr(identifiers.pictureSetup)(PictureSetup);
+
+
