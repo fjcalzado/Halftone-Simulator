@@ -22,6 +22,7 @@ export const contextStylesheets = {
   [identifiers.layerAdder]: require("./components/layerAdder.scss"),
   [identifiers.layerParams]: require("./components/layerParams.scss"),
   [identifiers.backgroundColorPicker]: require("./components/backgroundColorPicker.scss"),
+  [identifiers.pictureSelector]: require("./components/pictureSelector.scss"),
 
   // Vendor/Third-Party Components CSS.
   [identifiers.vendorButton]: require("./components/react-toolbox/button.scss"),

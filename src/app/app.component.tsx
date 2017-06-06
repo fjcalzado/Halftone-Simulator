@@ -4,6 +4,7 @@ import { ThemeProvider } from "react-css-themr";
 
 import { contextStylesheets } from "../stylesheets";
 import { LayerStack } from "../models/layerModel";
+import { SampleImageItem } from "../models/sampleImageModel";
 import { HalftoneComponent } from "../features/halftone";
 import { LayerSetupContainer } from "../features/layerSetup";
 import { PictureSetupComponent } from "../features/pictureSetup";
@@ -19,12 +20,13 @@ interface Props {
   layerStack: LayerStack;
   maxNumLayers: number;
   imageUrl: string;
+  sampleImageList: Array<SampleImageItem>;
   resolution: number;
   autoResolution: boolean;
   backgroundColor: any;
   customBackgroundColor: boolean;
 
-  onImageURLChange: (newImageURL: string) => void;
+  onImageUrlChange: (newImageURL: string) => void;
   onResolutionChange: (newResolution: number) => void;
   onAutoResolutionChange: (newAuto: boolean) => void;
   onBackgroundColorChange: (newColor: any) => void;
@@ -47,11 +49,12 @@ export class AppComponent extends React.Component<Props, {}> {
           <IntroComponent fakeProperty={true} />
           <PictureSetupComponent className={"TODO"}
             imageUrl={this.props.imageUrl}
+            sampleImageList={this.props.sampleImageList}
             resolution={this.props.resolution}
             autoResolution={this.props.autoResolution}
             customBackgroundColor={this.props.customBackgroundColor}
             backgroundColor={this.props.backgroundColor}
-            onImageURLChange={this.props.onImageURLChange}
+            onImageUrlChange={this.props.onImageUrlChange}
             onResolutionChange={this.props.onResolutionChange}
             onAutoResolutionChange={this.props.onAutoResolutionChange}
             onBackgroundColorChange={this.props.onBackgroundColorChange}

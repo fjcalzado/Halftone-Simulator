@@ -2,6 +2,7 @@
 import * as React from "react";
 
 import { SampleImages } from "./sample-images";
+import { SampleImageItem } from "../models/sampleImageModel";
 import { LayerStack, CreateDefaultLayerParams } from "../models/layerModel";
 import { AppComponent } from "./app.component";
 
@@ -11,6 +12,7 @@ interface State {
   layerStack: LayerStack;
   maxNumLayers: number;
   imageUrl: string;
+  sampleImageList: Array<SampleImageItem>; 
   resolution: number;
   autoResolution: boolean;
   backgroundColor: any;
@@ -31,7 +33,8 @@ export class AppContainer extends React.Component<Props, State> {
     this.state = {
       layerStack: [CreateDefaultLayerParams()],
       maxNumLayers: 4,
-      imageUrl: SampleImages.ImgLu,
+      imageUrl: SampleImages.find((item) => item.value === "lu").url,
+      sampleImageList: SampleImages,
       resolution: 10000,
       autoResolution: true,
       backgroundColor: "rgb(255, 255, 255)",
@@ -52,11 +55,12 @@ export class AppContainer extends React.Component<Props, State> {
         layerStack={this.state.layerStack}
         maxNumLayers={this.state.maxNumLayers}
         imageUrl={this.state.imageUrl}
+        sampleImageList={this.state.sampleImageList}
         resolution={this.state.resolution}
         autoResolution={this.state.autoResolution}
         backgroundColor={this.state.backgroundColor}
         customBackgroundColor={this.state.customBackgroundColor}
-        onImageURLChange={this.handleGenericStateChange.bind(this, "imageUrl")}
+        onImageUrlChange={this.handleGenericStateChange.bind(this, "imageUrl")}
         onResolutionChange={this.handleGenericStateChange.bind(this, "resolution")}
         onAutoResolutionChange={this.handleGenericStateChange.bind(this, "autoResolution")}
         onBackgroundColorChange={this.handleGenericStateChange.bind(this, "backgroundColor")}
