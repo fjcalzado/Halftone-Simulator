@@ -1,4 +1,3 @@
-import chroma from "chroma-js";
 import * as d3 from "d3";
 
 import { Channel } from "../../../../../models/channelModel";
