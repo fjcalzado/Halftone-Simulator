@@ -32,11 +32,12 @@ const getDomain = (ch: Channel) => {
         return [0, 255];
       case Channel.Saturation:
       case Channel.Lightness:
+        return [0, 1];
       case Channel.Cyan:
       case Channel.Magenta:
       case Channel.Yellow:
       case Channel.Black:
-        return [0, 1];
+        return [0, 100];
       default:
         return [0, 1];
     }
@@ -47,21 +48,36 @@ const getRange = (dotParams: DotParameters) => {
   // Size = Area.
   // Lets determine which max area to cover a whole bin for each shape.
   const maxArea = getMaxCoverArea(dotParams.shape);
-  const inverted = (dotParams.sizeBinding !== Channel.Cyan) ||
-                   (dotParams.sizeBinding !== Channel.Magenta) ||
-                   (dotParams.sizeBinding !== Channel.Yellow) ||
-                   (dotParams.sizeBinding !== Channel.Black);
+  const inverted = (dotParams.sizeBinding === Channel.Lightness);
+                    //(dotParams.sizeBinding === Channel.Red) ||
+                    // (dotParams.sizeBinding === Channel.Green) ||
+                    // (dotParams.sizeBinding === Channel.Blue));
 
   // Apply size thresholds.
   const maxRange = maxArea * dotParams.sizeMaxThreshold;
   const minRange = 0 + dotParams.sizeMinThreshold;
 
-  return inverted ? [maxRange, minRange] : [maxRange, maxArea];
+  return inverted ? [maxRange, minRange] : [minRange, maxRange];
 };
 
 // Scale for Dot size adjustment.
 function CreateSizeScale(dotParams: DotParameters) {
-  return d3.scaleSqrt()
+  let scale;
+  switch (dotParams.sizeBinding) {
+    case Channel.Lightness:
+      scale = d3.scaleSqrt(); break;
+    case Channel.Red:
+    case Channel.Green:
+    case Channel.Blue:
+    case Channel.Saturation:
+    case Channel.Cyan:
+    case Channel.Magenta:
+    case Channel.Yellow:
+    case Channel.Black:
+    default:
+      scale = d3.scalePow().exponent(2); break;
+  }
+  return scale
     .domain(getDomain(dotParams.sizeBinding))
     .range(getRange(dotParams));
 }

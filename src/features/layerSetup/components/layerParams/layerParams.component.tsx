@@ -268,7 +268,10 @@ class LayerParams extends React.Component<Props, {}> {
     );
   }
 
-  private dotSizeBindings = Object.keys(Channel).map((item) => ({value: item, label: item}));
+  // Prefilter size binding combo by removing composite channels (RGB, HSL, etc) and Hue.
+  private dotSizeBindings = Object.keys(Channel).map((item) => ({value: item, label: item}))
+                            .filter((item) => (item.value !== "RGB") && (item.value !== "HSL")
+                            && (item.value !== "CMYK") && (item.value !== "Hue"));
 
   private DotSizeBinding = () => {
      return (

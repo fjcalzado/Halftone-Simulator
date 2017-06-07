@@ -1,4 +1,5 @@
 import chroma from "chroma-js";
+import * as d3 from "d3";
 
 import { Channel } from "../../../../../models/channelModel";
 
@@ -17,6 +18,7 @@ function RGBToCMYK(r: number, g: number, b: number): number[] {
   const bn = b / 255;
 
   const k = Math.min( 1 - rn, 1 - gn, 1 - bn );
+  if (k === 1) { return [0, 0, 0, 100]; }
   const c = ( 1 - rn - k ) / ( 1 - k );
   const m = ( 1 - gn - k ) / ( 1 - k );
   const y = ( 1 - bn - k ) / ( 1 - k );
@@ -28,6 +30,15 @@ function RGBToCMYK(r: number, g: number, b: number): number[] {
 }
 
 /**
+ * Helper function to extract every object attribute value into an array.
+ * @private
+ * @function extractAttributeArray
+ * @param  {type} obj {Input object}
+ * @return {type} {Output Array}
+ */
+const extractAttributeArray = (obj) => Object.keys(obj).map((key) => obj[key]);
+
+/**
  * Get a function to extract the value of a pixel's channel given its RGB components.
  * @private
  * @function CreateChFromRGBCalculator
@@ -37,21 +48,20 @@ function RGBToCMYK(r: number, g: number, b: number): number[] {
 export function CreateChExtractorForRGB(ch: Channel) {
   return (r: number, g: number, b: number): any => {
     switch (ch) {
-      case Channel.RGB:         return chroma(r, g, b).rgb();
+      case Channel.RGB:         return [r, g, b];
       case Channel.Red:         return r;
       case Channel.Green:       return g;
       case Channel.Blue:        return b;
-      case Channel.HSL:         return chroma(r, g, b).hsl();
-      case Channel.Hue:         return chroma(r, g, b).hsl()[0];
-      case Channel.Saturation:  return chroma(r, g, b).hsl()[1];
-      case Channel.Lightness:   return chroma(r, g, b).hsl()[2];
+      case Channel.HSL:         return extractAttributeArray(d3.hsl(d3.rgb(r, g, b)));
+      case Channel.Hue:         return d3.hsl(d3.rgb(r, g, b)).h;
+      case Channel.Saturation:  return d3.hsl(d3.rgb(r, g, b)).s;
+      case Channel.Lightness:   return d3.hsl(d3.rgb(r, g, b)).l;
       case Channel.CMYK:        return RGBToCMYK(r, g, b);
       case Channel.Cyan:        return RGBToCMYK(r, g, b)[0];
       case Channel.Magenta:     return RGBToCMYK(r, g, b)[1];
       case Channel.Yellow:      return RGBToCMYK(r, g, b)[2];
       case Channel.Black:       return RGBToCMYK(r, g, b)[3];
-      case Channel.Luminance:   return chroma(r, g, b).luminance();
-      default:                  return chroma(r, g, b).rgb();
+      default:                  return [r, g, b];
     }
   };
 }
@@ -63,14 +73,14 @@ export function CreateChExtractorForRGB(ch: Channel) {
  * @function extractImageChannel
  * @param  {ImageData} imgData: ImageData {Image Data containing pixel values and size.}
  * @param  {type} ch: Channel {Target channel type.}
- * @return {number[][]} {Channel matrix in 2D array format.}
+ * @return {any[][]} {Channel matrix in 2D array format.}
  */
-export function extractImageChannel(imgData: ImageData, ch: Channel): Promise<number[][]> {
-  return new Promise<number[][]> (
+export function extractImageChannel(imgData: ImageData, ch: Channel): Promise<any[][]> {
+  return new Promise<any[][]> (
     (resolve, reject) => {
       try {
         const chExtractor = CreateChExtractorForRGB(ch);
-        const chMatrix: number[][] = [];
+        const chMatrix: any[][] = [];
         const px = imgData.data;
         for (let i = 0; i < px.length; i += 4) {
           // Calculate Matrix coordinates.

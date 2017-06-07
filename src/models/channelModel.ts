@@ -17,5 +17,4 @@ export enum Channel {
     Magenta = "Magenta" as any,
     Yellow = "Yellow" as any,
     Black = "Black" as any,
-    Luminance = "Luminance" as any,
 }

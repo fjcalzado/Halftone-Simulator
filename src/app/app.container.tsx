@@ -2,6 +2,7 @@
 import * as React from "react";
 
 import { SampleImages } from "./sample-images";
+import { TestImages } from "./test-images";
 import { SampleImageItem } from "../models/sampleImageModel";
 import { LayerStack, CreateDefaultLayerParams } from "../models/layerModel";
 import { AppComponent } from "./app.component";
