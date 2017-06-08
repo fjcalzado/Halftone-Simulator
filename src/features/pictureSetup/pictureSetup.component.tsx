@@ -7,6 +7,7 @@ import { SampleImageItem } from "../../models/sampleImageModel";
 import { BackgroundColorPickerComponent } from "./components/backgroundColorPicker";
 import { SliderExComponent } from "../../components/sliderEx";
 import { PictureSelectorComponent } from "./components/pictureSelector";
+import { PictureUploadComponent } from "../../components/pictureUpload";
 
 
 /******************* INTERFACE *******************/
@@ -31,6 +32,7 @@ interface Props {
     backgroundColorPicker: string;
     resolutionPicker: string;
     pictureSelector: string;
+    pictureUpload: string;
   };
 }
 
@@ -63,6 +65,10 @@ class PictureSetup extends React.Component<Props, {}> {
           <PictureSelectorComponent className={this.props.theme.pictureSelector}
             imageUrl={this.props.imageUrl}
             sampleImageList={this.props.sampleImageList}
+            onImageUrlChange={this.props.onImageUrlChange}
+          />
+          <PictureUploadComponent className={this.props.theme.pictureUpload}
+            imageUrl={""}
             onImageUrlChange={this.props.onImageUrlChange}
           />
       </div>

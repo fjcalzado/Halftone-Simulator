@@ -22,6 +22,7 @@ export const identifiers = {
   layerParams: "CMPLayerParams",
   backgroundColorPicker: "CMPBackgroundColorPicker",
   pictureSelector: "CMPPictureSelector",
+  pictureUpload: "CMPPictureUpload",
 
   // Vendor/Third-Party Components CSS.
   // RT: React-Toolbox.
