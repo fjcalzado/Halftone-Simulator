@@ -169,7 +169,7 @@ export function drawLayers(masterNodeSelection, sourceImage: any[][], layers: La
           // topology modifications. We must compare with the previous layer params
           // locally stored.
           if (layerNeedsRedraw(currentLayers.get(this), layerParams)) {
-            promiseList.push(drawLayer(d3.select(this), layerParams, 
+            promiseList.push(drawLayer(d3.select(this), layerParams,
                                        sourceImage[0].length, sourceImage.length,
                                        imgFiller));
           }

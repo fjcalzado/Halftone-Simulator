@@ -30,7 +30,7 @@ export const CreateImageInterpolator = (imgMatrix: number[][][],
     try {
       return interpolate(point).reduce((avg, pixel) => {
         return imgMatrix[pixel.y][pixel.x].map((ch, i) => ch * pixel.weight + avg[i]);
-      }, [0, 0, 0]);
+      }, [0, 0, 0]).map((finalAggCh) => Math.round(finalAggCh));
     } catch (error) {
       console.error(`[ERROR] Image Interpolator: ${error.message}`);
       throw error;
