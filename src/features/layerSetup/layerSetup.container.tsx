@@ -9,10 +9,12 @@ import * as layerUtil from "./layerSetup.utils";
 /******************* INTERFACE *******************/
 
 interface State {
+  // External.
   layerStack: LayerStack;
   maxNumLayers: number;
+  
+  // Internal.
   selectedLayer: string;
-
   addLayerEditingName: string;
   addLayerErrorMessage: string;
   addLayerDisabled: false;
@@ -49,6 +51,15 @@ export class LayerSetupContainer extends React.Component<Props, State> {
 
   private handleDrawLayers = (event) => {
     this.props.onDrawLayersChange(this.state.layerStack);
+  }
+
+  private handleResetLayers = (event) => {
+    // Reset state by cloning the received props layerStack into state.
+    this.setState({
+      ...this.state,
+      layerStack: layerUtil.cloneLayerStack(this.props.layerStack),
+      maxNumLayers: this.props.maxNumLayers,
+    } as State);
   }
 
   private handleAddLayerNameChange = (editingName: string) => {
@@ -166,6 +177,7 @@ export class LayerSetupContainer extends React.Component<Props, State> {
     return(
       <LayerSetupComponent layerStack={this.state.layerStack}
         onClickDrawLayers={this.handleDrawLayers}
+        onClickResetLayers={this.handleResetLayers}
         addLayerDisabled={addDisabled}
         onAddLayerNameChange={this.handleAddLayerNameChange}
         onAddLayer={this.handleAddLayer}

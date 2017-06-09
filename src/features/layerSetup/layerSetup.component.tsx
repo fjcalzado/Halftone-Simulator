@@ -16,6 +16,7 @@ import { LayerParamsComponent } from "./components/layerParams";
 interface Props {
   layerStack: LayerStack;
   onClickDrawLayers: (event) => void;
+  onClickResetLayers: (event) => void;
 
   addLayerDisabled: boolean;
   onAddLayerNameChange: (editingName: string) => void;
@@ -61,6 +62,8 @@ class LayerSetup extends React.Component<Props, {}> {
         {/*// TODO: To be inserted as Card action.*/}
         <Button icon="brush" label="Draw" raised accent
           onClick={this.props.onClickDrawLayers} />
+        <Button icon="undo" label="Reset"
+          onClick={this.props.onClickResetLayers} />
 
         <LayerAdderComponent disabled={this.props.addLayerDisabled}
           name={this.props.addLayerEditingName}
