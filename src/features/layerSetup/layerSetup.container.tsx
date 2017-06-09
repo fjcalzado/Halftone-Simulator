@@ -141,10 +141,11 @@ export class LayerSetupContainer extends React.Component<Props, State> {
   }
 
   private handleSelectLayer = (targetLayerName: string): void => {
-    // Fired on click on layer item.
+    // Fired on click on layer item. Lets simulate a toggle. If layer was already
+    // selected, just unselect it. 
     this.setState({
       ...this.state,
-      selectedLayer: targetLayerName,
+      selectedLayer: this.state.selectedLayer === targetLayerName ? "" : targetLayerName,
     } as State);
   }
 
