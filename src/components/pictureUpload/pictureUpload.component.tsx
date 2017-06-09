@@ -5,7 +5,7 @@ import { Input } from "react-toolbox/lib/input";
 import { Button } from "react-toolbox/lib/button";
 
 import { identifiers } from "../../identifiers";
-import { localFileFetcher } from "../../rest-api/localFileFetcher";
+import { localFileReader } from "../../rest-api/localFileReader";
 import { logDebug } from "../../util";
 
 
@@ -45,7 +45,7 @@ class PictureUpload extends React.Component<Props, {}> {
   private handleFileChange = (event) => {
     if (event.target.files) {
       const file = event.target.files[0];
-      localFileFetcher.getLocalFileAsURL(file)
+      localFileReader.getLocalFileAsURL(file)
       .then((url) => this.props.onImageUrlChange(url))
       .catch((error) => logDebug(`[ERROR] Loading Local File: ${error}`));
     }
