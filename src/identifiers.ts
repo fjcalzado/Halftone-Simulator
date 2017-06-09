@@ -16,6 +16,7 @@ export const identifiers = {
   colorPicker: "CMPColorPicker",
   colorPickerToggleable: "CMPColorPickerToggleable",
   filePicker: "CMPFilePicker",
+  jsonExporter: "CMPJsonExporter",
   layerItem: "CMPLayerItem",
   layerList: "CMPLayerList",
   layerRenamer: "CMPLayerRenamer",

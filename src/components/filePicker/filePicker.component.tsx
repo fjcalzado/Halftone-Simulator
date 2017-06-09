@@ -63,4 +63,4 @@ class FilePicker extends React.Component<Props, {}> {
     );
   }
 }
-export const FilePickerComponent = themr(identifiers.pictureUpload)(FilePicker);
+export const FilePickerComponent = themr(identifiers.filePicker)(FilePicker);

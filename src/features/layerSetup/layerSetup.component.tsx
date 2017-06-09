@@ -9,6 +9,7 @@ import { LayerAdderComponent } from "./components/layerAdder";
 import { LayerListComponent } from "./components/layerList";
 import { LayerRenamerComponent } from "./components/layerRenamer";
 import { LayerParamsComponent } from "./components/layerParams";
+import { JSONExporterComponent } from "../../components/jsonExporter";
 
 
 /******************* INTERFACE *******************/
@@ -60,7 +61,7 @@ class LayerSetup extends React.Component<Props, {}> {
     return(
       <div className={this.props.theme.container}>
         {/*// TODO: To be inserted as Card action.*/}
-        <Button icon="brush" label="Draw" raised accent
+        <Button icon="done" label="Apply" raised accent
           onClick={this.props.onClickDrawLayers} />
         <Button icon="undo" label="Reset"
           onClick={this.props.onClickResetLayers} />
@@ -95,6 +96,8 @@ class LayerSetup extends React.Component<Props, {}> {
             onLayerParamsChanged={this.props.onSelectedLayerParamsChanged}
           />) : null
         }
+
+        <JSONExporterComponent object={this.props.layerStack}/>
       </div>
     );
   }
