@@ -15,6 +15,7 @@ export const identifiers = {
   sliderEx: "CMPSliderEx",
   colorPicker: "CMPColorPicker",
   colorPickerToggleable: "CMPColorPickerToggleable",
+  filePicker: "CMPFilePicker",
   layerItem: "CMPLayerItem",
   layerList: "CMPLayerList",
   layerRenamer: "CMPLayerRenamer",

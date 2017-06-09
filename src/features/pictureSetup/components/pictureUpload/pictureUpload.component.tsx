@@ -1,18 +1,17 @@
 /******************* IMPORT *******************/
 import * as React from "react";
 import { themr } from "react-css-themr";
-import { Input } from "react-toolbox/lib/input";
 import { Button } from "react-toolbox/lib/button";
 
-import { identifiers } from "../../identifiers";
-import { localFileReader } from "../../rest-api/localFileReader";
-import { logDebug } from "../../util";
+import { identifiers } from "../../../../identifiers";
+import { FilePickerComponent } from "../../../../components/filePicker";
+import { localFileReader } from "../../../../rest-api/localFileReader";
+import { logDebug } from "../../../../util/log";
 
 
 /******************* INTERFACE *******************/
 
 interface Props {
-  imageUrl: string;
   onImageUrlChange: (newImgUrl: string) => void;
 
   // Add class name from parent.
@@ -21,8 +20,6 @@ interface Props {
   // Context theme API.
   theme?: {
     container: string;
-    inputFile: string;
-    uploadButton: string;
   };
 }
 
@@ -42,9 +39,8 @@ class PictureUpload extends React.Component<Props, {}> {
     this.fileInput.click();
   }
 
-  private handleFileChange = (event) => {
-    if (event.target.files) {
-      const file = event.target.files[0];
+  private handleFileChange = (file: File) => {
+    if (file) {
       localFileReader.getLocalFileAsURL(file)
       .then((url) => this.props.onImageUrlChange(url))
       .catch((error) => logDebug(`[ERROR] Loading Local File: ${error}`));
@@ -53,21 +49,16 @@ class PictureUpload extends React.Component<Props, {}> {
 
   public render() {
     return(
-      <div className={`${this.props.className || ""} ${this.props.theme.container || ""}`.trim()}>
-        <Button className={this.props.theme.uploadButton}
-          icon="file_upload"
-          label="Upload"
-          accent raised
-          onClick={this.handleUploadClick}
-        />
-        <input className={this.props.theme.inputFile}
-          ref={(input) => this.fileInput = input }
-          type="file"
-          name="pictureUpload"
-          value={this.props.imageUrl}
-          onChange={this.handleFileChange}
-        />
-      </div>
+      <FilePickerComponent className={`${this.props.className || ""} ${this.props.theme.container || ""}`.trim()}
+        onFileChange={this.handleFileChange}
+        button={(
+          <Button
+            icon="file_upload"
+            label="Upload"
+            raised          
+          />
+        )}
+      />
     );
   }
 }
