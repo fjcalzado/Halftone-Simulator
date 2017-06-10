@@ -10,12 +10,14 @@ import { LayerListComponent } from "./components/layerList";
 import { LayerRenamerComponent } from "./components/layerRenamer";
 import { LayerParamsComponent } from "./components/layerParams";
 import { JSONExporterComponent } from "../../components/jsonExporter";
+import { JSONImporterComponent } from "../../components/jsonImporter";
 
 
 /******************* INTERFACE *******************/
 
 interface Props {
   layerStack: LayerStack;
+  onImportLayerStack: (newLayerStack: any) => void;
   onClickDrawLayers: (event) => void;
   onClickResetLayers: (event) => void;
 
@@ -61,6 +63,7 @@ class LayerSetup extends React.Component<Props, {}> {
     return(
       <div className={this.props.theme.container}>
         {/*// TODO: To be inserted as Card action.*/}
+        
         <Button icon="done" label="Apply" raised accent
           onClick={this.props.onClickDrawLayers} />
         <Button icon="undo" label="Reset"
@@ -98,6 +101,8 @@ class LayerSetup extends React.Component<Props, {}> {
         }
 
         <JSONExporterComponent object={this.props.layerStack}/>
+        <JSONImporterComponent onImport={this.props.onImportLayerStack}/>
+
       </div>
     );
   }

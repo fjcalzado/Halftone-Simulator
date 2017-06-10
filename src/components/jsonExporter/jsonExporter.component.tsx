@@ -34,7 +34,7 @@ class JSONExporter extends React.Component<Props, {}> {
       <Link className={this.props.theme.link} 
         href={`data:${this.encodeObject(this.props.object)}`}
         label="Export"
-        icon="file_download"
+        icon="vertical_align_bottom"
         download="halftone_preset.json"
       />
     );

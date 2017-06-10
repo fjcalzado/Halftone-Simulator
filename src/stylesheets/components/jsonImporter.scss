@@ -1,0 +1,10 @@
+@import "../theme/autothemer.scss";
+
+.link {
+  @include themify(color, $colorPrimary);
+
+  text-decoration: none;
+}
+
+.filePicker {
+}

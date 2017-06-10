@@ -4,6 +4,7 @@ import * as React from "react";
 import { LayerParameters, LayerStack, CloneLayerParams } from "../../models/layerModel";
 import { LayerSetupComponent } from "./layerSetup.component";
 import * as layerUtil from "./layerSetup.utils";
+import { logDebug } from "../../util/log";
 
 
 /******************* INTERFACE *******************/
@@ -51,6 +52,23 @@ export class LayerSetupContainer extends React.Component<Props, State> {
 
   private handleDrawLayers = (event) => {
     this.props.onDrawLayersChange(this.state.layerStack);
+  }
+
+  private handleImportLayerStack = (newLayerStack: any) => {
+    // Duck typing to ensure it is a layer stack.
+    try {
+      if (newLayerStack[0].hasOwnProperty("gridParams") && 
+          newLayerStack[0].hasOwnProperty("dotParams")) {
+        this.setState({
+          ...this.state,
+          layerStack: newLayerStack as LayerStack,
+        } as State);
+      } else {
+        throw newLayerStack.toString();
+      }   
+    } catch (error) {
+      logDebug(`[ERROR] Importing wrong layer stack: ${error}`)
+    } 
   }
 
   private handleResetLayers = (event) => {
@@ -177,6 +195,7 @@ export class LayerSetupContainer extends React.Component<Props, State> {
 
     return(
       <LayerSetupComponent layerStack={this.state.layerStack}
+        onImportLayerStack={this.handleImportLayerStack}
         onClickDrawLayers={this.handleDrawLayers}
         onClickResetLayers={this.handleResetLayers}
         addLayerDisabled={addDisabled}
