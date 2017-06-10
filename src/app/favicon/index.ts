@@ -1,0 +1,17 @@
+export const faviconFiles = [
+  require("./android-chrome-192x192.png"),
+  require("./android-chrome-512x512.png"),
+  require("./apple-touch-icon.png"),
+  require("./browserconfig.xml"),
+  require("./favicon-16x16.png"),
+  require("./favicon-32x32.png"),
+  require("./favicon.ico"),
+  require("./index"),
+  require("./manifest.json"),
+  require("./mstile-144x144.png"),
+  require("./mstile-150x150.png"),
+  require("./mstile-310x150.png"),
+  require("./mstile-70x70.png"),
+  require("./mstile-310x310.png"),
+  require("./safari-pinned-tab.svg"),
+];

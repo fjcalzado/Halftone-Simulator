@@ -1,6 +1,7 @@
 let webpack = require("webpack");
 let path = require("path");
 let HtmlWebpackPlugin = require("html-webpack-plugin");
+let CopyWebpackPlugin = require('copy-webpack-plugin');
 
 let basePath = __dirname;
 
@@ -65,7 +66,10 @@ module.exports = {
     }),
     new webpack.optimize.CommonsChunkPlugin({
       names: ["vendor", "manifest"]
-    })
+    }),
+    new CopyWebpackPlugin([
+      {context: "app/favicon", from: "**/*", to: "public/favicon"}
+    ])
   ]
 };
 
