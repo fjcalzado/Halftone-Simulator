@@ -1,3 +1,8 @@
+// DEPRECATED . Performance was not as expected. 
+// I will leave the code just because is interesting in case anyone
+// needs to integrate react-faux-dom.
+// It will not be included in webpack to save some weight.
+
 /******************* IMPORT *******************/
 import * as React from "react";
 import * as ReactFauxDOM from "react-faux-dom";

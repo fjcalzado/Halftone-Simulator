@@ -13,6 +13,7 @@ export const contextStylesheets = {
   // Project Components CSS.
   [identifiers.simulator]: require("./components/simulator.scss"),
   [identifiers.wait]: require("./components/wait.scss"),
+  [identifiers.downloader]: require("./components/downloader.scss"),
   [identifiers.sliderEx]: require("./components/sliderEx.scss"),
   [identifiers.colorPicker]: require("./components/colorPicker.scss"),
   [identifiers.colorPickerToggleable]: require("./components/colorPickerToggleable.scss"),

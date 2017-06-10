@@ -12,6 +12,7 @@ export const identifiers = {
   // Project Components (CMP).
   simulator: "CMPSimulator",
   wait: "CMPWait",
+  downloader: "CMPDownloader",
   sliderEx: "CMPSliderEx",
   colorPicker: "CMPColorPicker",
   colorPickerToggleable: "CMPColorPickerToggleable",

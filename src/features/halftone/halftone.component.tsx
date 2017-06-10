@@ -6,6 +6,7 @@ import { identifiers } from "../../identifiers";
 import { LayerStack } from "../../models/layerModel";
 import { SimulatorNativeDOMComponent } from "./components/simulator";
 import { WaitComponent } from "./components/wait";
+import { DownloaderComponent } from "./components/downloader";
 import { logDebug } from "../../util/log";
 
 
@@ -75,6 +76,7 @@ class Halftone extends React.Component <Props, State> {
     return (
       <div className={this.props.theme.halftoneView}>
         {showProgress ? <WaitComponent /> : null }
+        <DownloaderComponent />
         <SimulatorNativeDOMComponent
           imageUrl={this.props.imageUrl}
           resolution={this.props.resolution}

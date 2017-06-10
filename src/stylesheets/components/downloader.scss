@@ -1,0 +1,14 @@
+//@import "../theme/autothemer.scss";
+
+.container {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  right: 25px;
+  bottom: 25px;
+}
+
+.button {
+  position: absolute;
+}

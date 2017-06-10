@@ -43,11 +43,15 @@ export function initialize(parentNode: any, width: string = widthRel, height: st
   // Initialize SVG element.
   svg = d3.select(parentNode)
     .append("svg")
-      .attr("class", "svg")
+      .attr("id", "svg-node")
+      .attr("class", "svg")      
       .attr("width", widthRel)
       .attr("height", heightRel)
       .attr("viewBox", `0 0 0 0`)
-      .attr("preserveAspectRatio", "xMidYMid meet");
+      .attr("preserveAspectRatio", "xMidYMid meet")
+      .attr("version", "1.1")
+      .attr("xmlns", "http://www.w3.org/2000/svg")
+      .attr("xmlns:xlink", "http://www.w3.org/1999/xlink")
   svgViewport = svg.append("g")
       .attr("class", "svg-viewport");
   svgBackground = svgViewport.append("rect")
