@@ -51,6 +51,7 @@ class PictureUpload extends React.Component<Props, {}> {
     return(
       <FilePickerComponent className={`${this.props.className || ""} ${this.props.theme.container || ""}`.trim()}
         onFileChange={this.handleFileChange}
+        filter=".jpg,.jpeg,.png,.bmp,.gif"
         button={(
           <Button
             icon="file_upload"

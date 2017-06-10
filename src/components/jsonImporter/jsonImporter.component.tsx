@@ -49,6 +49,7 @@ class JSONImporter extends React.Component<Props, {}> {
     return(
       <FilePickerComponent className={`${this.props.theme.filePicker || ""}`.trim()}
         onFileChange={this.handleFileChange}
+        filter=".json"
         button={(
           <Link className={this.props.theme.link} 
             href="#"

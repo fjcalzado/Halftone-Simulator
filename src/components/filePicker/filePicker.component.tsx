@@ -13,6 +13,7 @@ interface Props {
   onFileChange: (newFile: File) => void;
   button: JSX.Element;
   file?: string;
+  filter?: string;
 
   // Add class name from parent.
   className?: string;
@@ -55,6 +56,7 @@ class FilePicker extends React.Component<Props, {}> {
         <input className={this.props.theme.inputFile}
           ref={(input) => this.fileInput = input }
           type="file"
+          accept={this.props.filter}
           name="filePicker"
           value={this.props.file || ""}
           onChange={this.handleFileChange}
