@@ -18,7 +18,9 @@ import { JSONImporterComponent } from "../../components/jsonImporter";
 interface Props {
   layerStack: LayerStack;
   onImportLayerStack: (newLayerStack: any) => void;
-  onClickDrawLayers: (event) => void;
+  applyDisabled: boolean;
+  resetDisabled: boolean;
+  onClickApplyLayers: (event) => void;  
   onClickResetLayers: (event) => void;
 
   addLayerDisabled: boolean;
@@ -65,8 +67,10 @@ class LayerSetup extends React.Component<Props, {}> {
         {/*// TODO: To be inserted as Card action.*/}
         
         <Button icon="done" label="Apply" raised accent
-          onClick={this.props.onClickDrawLayers} />
+          disabled={this.props.applyDisabled}
+          onClick={this.props.onClickApplyLayers} />
         <Button icon="undo" label="Reset"
+          disabled={this.props.resetDisabled}
           onClick={this.props.onClickResetLayers} />
 
         <LayerAdderComponent disabled={this.props.addLayerDisabled}

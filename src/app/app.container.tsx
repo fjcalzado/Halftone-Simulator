@@ -66,7 +66,7 @@ export class AppContainer extends React.Component<Props, State> {
         onAutoResolutionChange={this.handleGenericStateChange.bind(this, "autoResolution")}
         onBackgroundColorChange={this.handleGenericStateChange.bind(this, "backgroundColor")}
         onBackgroundToggleChange={this.handleGenericStateChange.bind(this, "customBackgroundColor")}
-        onDrawLayersChange={this.handleGenericStateChange.bind(this, "layerStack")}
+        onLayersChange={this.handleGenericStateChange.bind(this, "layerStack")}
       />
     );
   }

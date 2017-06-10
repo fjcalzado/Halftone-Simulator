@@ -27,7 +27,7 @@ interface State {
 interface Props {
   layerStack: LayerStack;
   maxNumLayers: number;
-  onDrawLayersChange: (layerStack: LayerStack) => void;
+  onApplyLayersChange: (layerStack: LayerStack) => void;
 }
 
 
@@ -50,8 +50,8 @@ export class LayerSetupContainer extends React.Component<Props, State> {
     };
   }
 
-  private handleDrawLayers = (event) => {
-    this.props.onDrawLayersChange(this.state.layerStack);
+  private handleApplyLayers = (event) => {
+    this.props.onApplyLayersChange(this.state.layerStack);
   }
 
   private handleImportLayerStack = (newLayerStack: any) => {
@@ -192,11 +192,15 @@ export class LayerSetupContainer extends React.Component<Props, State> {
     const addErrorMsg = this.exceedNumLayers() ? `Max layers reached (${this.props.maxNumLayers})`
       : this.state.addLayerErrorMessage;
     const addDisabled = this.exceedNumLayers() || this.state.addLayerDisabled;
+    const layerStackModified = JSON.stringify(this.props.layerStack) !== 
+                               JSON.stringify(this.state.layerStack);
 
     return(
       <LayerSetupComponent layerStack={this.state.layerStack}
         onImportLayerStack={this.handleImportLayerStack}
-        onClickDrawLayers={this.handleDrawLayers}
+        applyDisabled={!layerStackModified}
+        resetDisabled={!layerStackModified}
+        onClickApplyLayers={this.handleApplyLayers}        
         onClickResetLayers={this.handleResetLayers}
         addLayerDisabled={addDisabled}
         onAddLayerNameChange={this.handleAddLayerNameChange}

@@ -31,7 +31,7 @@ interface Props {
   onAutoResolutionChange: (newAuto: boolean) => void;
   onBackgroundColorChange: (newColor: any) => void;
   onBackgroundToggleChange: (newToggled: boolean) => void;
-  onDrawLayersChange: (layerStack: LayerStack) => void;
+  onLayersChange: (layerStack: LayerStack) => void;
 }
 
 
@@ -64,7 +64,7 @@ export class AppComponent extends React.Component<Props, {}> {
             <div className={styles.panelLeft}>
               <LayerSetupContainer layerStack={this.props.layerStack}
                 maxNumLayers={this.props.maxNumLayers}
-                onDrawLayersChange={this.props.onDrawLayersChange}
+                onApplyLayersChange={this.props.onLayersChange}
               />
             </div>
             <div className={styles.panelMain}>
