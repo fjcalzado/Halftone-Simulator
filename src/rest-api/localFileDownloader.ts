@@ -1,3 +1,5 @@
+import { convertDataToURL } from "../util";
+
 /**
  * LocalFileDownloader Interface export.
  */
@@ -18,8 +20,7 @@ function CreateLocalFileDownloader() {
     link: null,
 
     downloadContent: (filename: string, content: string, type: string): void => {
-      const url = window.URL.createObjectURL(new Blob([content], { "type" : type }));
-      return downloader.downloadURL(filename, url);
+      return downloader.downloadURL(filename, convertDataToURL(content, type));
     },
 
     downloadURL: (filename: string, URL: string): void => {

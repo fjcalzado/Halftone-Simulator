@@ -33,7 +33,7 @@ export function convertURLToPNG(URL: string, width: number, height: number): Pro
         resolve(pngURL);
       };
       img.onerror = () => {
-        reject("Error while converting URL to PNG Image");
+        reject(new Error("Error while converting URL to PNG Image"));
       };
       img.src = URL;
     } catch (error) {
