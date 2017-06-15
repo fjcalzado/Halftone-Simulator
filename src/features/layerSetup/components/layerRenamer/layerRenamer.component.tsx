@@ -74,8 +74,8 @@ class LayerRenamer extends React.Component<Props, {}> {
   }
 
   private dialogActions = () => [
-      {label: "Cancel", onClick: this.handleClickCancel},
-      {label: "Ok", onClick: this.handleClickRename, disabled: this.okDisabled()},
-    ]
+    {label: "Cancel", onClick: this.handleClickCancel},
+    {label: "Ok", onClick: this.handleClickRename, disabled: this.okDisabled()},
+  ]
 }
 export const LayerRenamerComponent = themr(identifiers.layerRenamer)(LayerRenamer);

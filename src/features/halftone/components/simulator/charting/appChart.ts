@@ -1,5 +1,6 @@
 import * as d3 from "d3";
 
+import { identifiers } from "../../../../../identifiers";
 import { CreateTimer } from "../../../../../util";
 import { LayerStack } from "../../../../../models/layerModel";
 import * as layerManager from "./layerManager";
@@ -43,7 +44,7 @@ export function initialize(parentNode: any, width: string = widthRel, height: st
   // Initialize SVG element.
   svg = d3.select(parentNode)
     .append("svg")
-      .attr("id", "svg-node")
+      .attr("id", identifiers.svgNodeId)
       .attr("class", "svg")      
       .attr("width", widthRel)
       .attr("height", heightRel)
@@ -53,7 +54,8 @@ export function initialize(parentNode: any, width: string = widthRel, height: st
       .attr("xmlns", "http://www.w3.org/2000/svg")
       .attr("xmlns:xlink", "http://www.w3.org/1999/xlink")
   svgViewport = svg.append("g")
-      .attr("class", "svg-viewport");
+      .attr("id", identifiers.svgViewportId)
+      .attr("class", "viewport");
   svgBackground = svgViewport.append("rect")
       .attr("class", "svg-background")
       .attr("fill", "rgba(255, 255, 255, 1)")

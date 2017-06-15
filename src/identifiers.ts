@@ -4,6 +4,13 @@
  * @public
  */
 export const identifiers = {
+  // *** DOM ***
+  svgNodeId: "svg-node",
+  svgViewportId: "svg-viewport",
+
+
+  // *** REACT ***
+
   // Project Features (FT).
   pictureSetup: "FTInputPictureSetup",
   halftone: "FTHalftone",
