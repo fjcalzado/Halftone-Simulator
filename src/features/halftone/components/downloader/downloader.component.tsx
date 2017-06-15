@@ -36,7 +36,7 @@ class Downloader extends React.Component<Props, {}> {
   private handleDownloadPNG = () => {
     const content = (new XMLSerializer()).serializeToString(document.getElementById("svg-node"));
     const inputUrl = convertDataToURL(content, "image/svg+xml;charset=utf-8");
-    convertURLToPNG(inputUrl, 600, 800)
+    convertURLToPNG(inputUrl, 800, 800)
       .then((outputUrl) => {
         localFileDownloader.downloadURL("halftone.png", outputUrl);
         localFileDownloader.clean();

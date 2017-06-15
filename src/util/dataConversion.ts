@@ -28,7 +28,7 @@ export function convertURLToPNG(URL: string, width: number, height: number): Pro
         canvas.width = width;
         canvas.height = height;
         const context = canvas.getContext("2d");        
-        context.drawImage(img, 0, 0);
+        context.drawImage(img, 0, 0, width, height);
         const pngURL = canvas.toDataURL("image/png");
         resolve(pngURL);
       };
