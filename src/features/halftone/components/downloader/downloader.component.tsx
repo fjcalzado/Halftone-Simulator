@@ -3,6 +3,7 @@ import * as React from "react";
 import { themr } from "react-css-themr";
 import { Button } from "react-toolbox/lib/button";
 import { Dialog } from "react-toolbox/lib/dialog";
+import { Input } from "react-toolbox/lib/input";
 import { Tab, Tabs } from "react-toolbox";
 
 import { identifiers } from "../../../../identifiers";
@@ -20,6 +21,7 @@ interface Props {
     downloadButton: string;
     dialog: string;
     tabs: string;
+    sizeInput: string;
   };
 }
 
@@ -28,6 +30,7 @@ interface State {
   outWidth: number;
   outHeight: number;
   outAspectRatio: number;
+  validationError: string;
   tabIndex: number;
 }
 
@@ -43,6 +46,7 @@ class Downloader extends React.Component<Props, State> {
       outWidth: 800,
       outHeight: 600,
       outAspectRatio: 4 / 3,
+      validationError: "",
       tabIndex: 0,
     };
   }
@@ -71,7 +75,7 @@ class Downloader extends React.Component<Props, State> {
       ...this.state,
       openDialog: true,
       outWidth: size.width,
-      outerHeight: size.height,
+      outHeight: size.height,
       outAspectRatio: size.ar,
     });
   }
@@ -92,7 +96,7 @@ class Downloader extends React.Component<Props, State> {
   private handleClickDownloadPNG = () => {
     const content = (new XMLSerializer()).serializeToString(document.getElementById(identifiers.svgNodeId));
     const inputUrl = convertDataToURL(content, "image/svg+xml;charset=utf-8");
-    convertURLToPNG(inputUrl, 800, 800)
+    convertURLToPNG(inputUrl, this.state.outWidth, this.state.outHeight)
       .then((outputUrl) => {
         localFileDownloader.downloadURL("halftone.png", outputUrl);
         localFileDownloader.clean();
@@ -101,6 +105,44 @@ class Downloader extends React.Component<Props, State> {
         console.error(`[ERROR] Downloading PNG: ${error.message}`);
         throw error;  // Let error bubbles up.
       });
+  }
+
+  private validateSize = (value: string): boolean => {
+    return /^\d+$/.test(value) && (Number(value) > 0);
+  }
+
+  private handlePNGWidthChange = (newValue: string) => {
+    if (this.validateSize(newValue)) {
+      const width = Number(newValue);
+      this.setState({
+        ...this.state,
+        outWidth: width,
+        outHeight: Math.round(width / this.state.outAspectRatio),
+        validationError: "",
+      });
+    } else {
+      this.setState({
+        ...this.state,
+        validationError: "Invalid value",
+      });
+    }
+  }
+
+  private handlePNGHeightChange = (newValue) => {
+    if (this.validateSize(newValue)) {
+      const height = Number(newValue);
+      this.setState({
+        ...this.state,
+        outWidth: Math.round(height * this.state.outAspectRatio),
+        outHeight: height,
+        validationError: "",
+      });
+    } else {
+      this.setState({
+        ...this.state,
+        validationError: "Invalid value",
+      });
+    }
   }
 
   public render() {
@@ -124,7 +166,25 @@ class Downloader extends React.Component<Props, State> {
           >
             <Tab label="PNG">
               <p>Download as PNG image. Please set the output size in pixels:</p>
-              
+              <Input className={this.props.theme.sizeInput}
+                type="text"
+                name="png_width"
+                label={"Width in Pixels"}
+                value={this.state.outWidth}
+                error={this.state.validationError}
+                onChange={this.handlePNGWidthChange}
+                maxLength={5}
+              />
+              <Input className={this.props.theme.sizeInput}
+                type="text"
+                name="png_height"
+                label={"Height in Pixels"}
+                value={this.state.outHeight}
+                error={this.state.validationError}
+                onChange={this.handlePNGHeightChange}
+                maxLength={5}
+              />
+              <br/>
               <span>
                 <Button className={this.props.theme.downloadButton}
                   icon="file_download"
@@ -136,6 +196,7 @@ class Downloader extends React.Component<Props, State> {
             </Tab>
             <Tab label="SVG">
               <p>Download as vector graphics.</p>
+              <br/>
               <span>
                 <Button className={this.props.theme.downloadButton}
                   icon="file_download"
