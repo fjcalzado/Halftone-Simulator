@@ -2,7 +2,8 @@
  * LocalFileDownloader Interface export.
  */
 export interface LocalFileDownloader {
-  readonly download: (filename: string, content: string, type: string) => void;
+  readonly downloadContent: (filename: string, content: string, type: string) => void;
+  readonly downloadURL: (filename: string, URL: string) => void;
   readonly clean: () => void;
   link: any;
 }
@@ -16,19 +17,22 @@ function CreateLocalFileDownloader() {
   const downloader: LocalFileDownloader = {
     link: null,
 
-    download: (filename: string, content: string, type: string): void => {
+    downloadContent: (filename: string, content: string, type: string): void => {
       const url = window.URL.createObjectURL(new Blob([content], { "type" : type }));
-      
+      return downloader.downloadURL(filename, url);
+    },
+
+    downloadURL: (filename: string, URL: string): void => {
       downloader.link = document.createElement("a");
       document.body.appendChild(downloader.link);
       downloader.link.setAttribute("id", "fileDownloaderLink");
       downloader.link.setAttribute("download", filename);
-      downloader.link.setAttribute("href", url);
+      downloader.link.setAttribute("href", URL);
       downloader.link.style["display"] = "none";
       downloader.link.click();
 
       setTimeout(() => {
-        window.URL.revokeObjectURL(url);
+        window.URL.revokeObjectURL(URL);
       }, 10);
     },
 

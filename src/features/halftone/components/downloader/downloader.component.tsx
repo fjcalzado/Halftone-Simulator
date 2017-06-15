@@ -28,7 +28,7 @@ class Downloader extends React.Component<Props, {}> {
 
   private handleDownloadSVG = () => {
     const content = (new XMLSerializer()).serializeToString(document.getElementById("svg-node"));
-    localFileDownloader.download("halftone.svg", content, "text\/xml");
+    localFileDownloader.downloadContent("halftone.svg", content, "text\/xml");
     localFileDownloader.clean();
   }
 
