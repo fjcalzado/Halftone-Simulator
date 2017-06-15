@@ -53,7 +53,7 @@ class Downloader extends React.Component<Props, {}> {
         <Button className={this.props.theme.button}
           icon="file_download"
           primary floating
-          onClick={this.handleDownloadPNG} 
+          onClick={this.handleDownloadSVG} 
         />
       </div>
     );
