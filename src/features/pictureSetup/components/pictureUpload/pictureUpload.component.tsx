@@ -56,7 +56,7 @@ class PictureUpload extends React.Component<Props, {}> {
           <Button
             icon="file_upload"
             label="Upload"
-            raised          
+            raised
           />
         )}
       />

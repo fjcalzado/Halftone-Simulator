@@ -169,7 +169,8 @@ class Downloader extends React.Component<Props, State> {
             onChange={this.handleTabChange}
           >
             <Tab label="PNG">
-              <p>Download as PNG image. Please set the output size in pixels:</p>
+              <p>Download as PNG image. Please, set the output size in pixels:</p>
+              <br/>
               <Input className={this.props.theme.sizeInput}
                 type="text"
                 name="png_width"
