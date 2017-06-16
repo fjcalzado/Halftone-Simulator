@@ -42,7 +42,7 @@ class SetupLayout extends React.Component<Props, State> {
 
   public render() {
     const tabItems = this.props.tabsContent.map((item, index) => (
-      <Tab label={item.title} key={index}>
+      <Tab label={item.title} key={index} ripple={false}>
         {item.content}
       </Tab>
     ));

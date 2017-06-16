@@ -168,7 +168,7 @@ class Downloader extends React.Component<Props, State> {
             index={this.state.tabIndex}
             onChange={this.handleTabChange}
           >
-            <Tab label="PNG">
+            <Tab label="PNG" ripple={false}>
               <p>Download as PNG image. Please, set the output size in pixels:</p>
               <br/>
               <Input className={this.props.theme.sizeInput}
@@ -199,7 +199,7 @@ class Downloader extends React.Component<Props, State> {
                 />
               </span>
             </Tab>
-            <Tab label="SVG">
+            <Tab label="SVG" ripple={false}>
               <p>Download as vector graphics.</p>
               <br/>
               <span>

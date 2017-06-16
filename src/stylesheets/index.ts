@@ -40,6 +40,7 @@ export const contextStylesheets = {
   [identifiers.vendorSwitch]: require("./components/react-toolbox/switch.scss"),
   [identifiers.vendorSlider]: require("./components/react-toolbox/slider.scss"),
   [identifiers.vendorDropdown]: require("./components/react-toolbox/dropdown.scss"),
+  [identifiers.vendorTabs]: require("./components/react-toolbox/tabs.scss"),
 
   // TODO: Remove, just for testing ************************
   CMPIntroMock: require("./components/introMock.scss"),

@@ -47,4 +47,5 @@ export const identifiers = {
   vendorSwitch: "RTSwitch",
   vendorSlider: "RTSlider",
   vendorDropdown: "RTDropdown",
+  vendorTabs: "RTTabs",
 };

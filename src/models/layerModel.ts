@@ -19,7 +19,7 @@ export type LayerStack = LayerParameters[];
 
 export const CreateDefaultLayerParams = () => {
   return {
-    name: "NewLayer",
+    name: "SingleLayer",
     visible: true,
     opacity: 1,
     zIndex: 0,
