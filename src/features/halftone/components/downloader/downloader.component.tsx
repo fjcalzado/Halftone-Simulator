@@ -87,14 +87,18 @@ class Downloader extends React.Component<Props, State> {
     });
   }
 
+  private getContentToDownload = (): string => {
+    return  (new XMLSerializer()).serializeToString(document.getElementById(identifiers.svgNodeId));
+  }
+
   private handleClickDownloadSVG = () => {
-    const content = (new XMLSerializer()).serializeToString(document.getElementById(identifiers.svgNodeId));
+    const content = this.getContentToDownload();
     localFileDownloader.downloadContent("halftone.svg", content, "image/svg+xml;charset=utf-8");
     localFileDownloader.clean();
   }
 
   private handleClickDownloadPNG = () => {
-    const content = (new XMLSerializer()).serializeToString(document.getElementById(identifiers.svgNodeId));
+    const content = this.getContentToDownload();
     const inputUrl = convertDataToURL(content, "image/svg+xml;charset=utf-8");
     convertURLToPNG(inputUrl, this.state.outWidth, this.state.outHeight)
       .then((outputUrl) => {
