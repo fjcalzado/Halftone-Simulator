@@ -1,10 +1,12 @@
 /******************* IMPORT *******************/
 import * as React from "react";
 
+import { LayerStack, CreateDefaultLayerParams } from "../models/layerModel";
+import { SampleImageItem } from "../models/sampleImageModel";
+import { PresetCollection } from "../models/presetModel";
 import { SampleImages } from "./sample-images";
 import { TestImages } from "./test-images";
-import { SampleImageItem } from "../models/sampleImageModel";
-import { LayerStack, CreateDefaultLayerParams } from "../models/layerModel";
+import { PresetList } from "./presets";
 import { AppComponent } from "./app.component";
 
 /******************* INTERFACE *******************/
@@ -12,16 +14,16 @@ import { AppComponent } from "./app.component";
 interface State {
   layerStack: LayerStack;
   maxNumLayers: number;
-  imageUrl: string;
   sampleImageList: SampleImageItem[];
+  imageUrl: string;
   resolution: number;
   autoResolution: boolean;
   backgroundColor: any;
   customBackgroundColor: boolean;
+  presetList: PresetCollection;
 }
 
 interface Props {
-
 }
 
 
@@ -33,13 +35,14 @@ export class AppContainer extends React.Component<Props, State> {
 
     this.state = {
       layerStack: [CreateDefaultLayerParams()],
-      maxNumLayers: 4,
-      imageUrl: SampleImages.find((item) => item.value === "lu").url,
+      maxNumLayers: 5,
       sampleImageList: SampleImages,
+      imageUrl: SampleImages.find((item) => item.value === "lu").url,
       resolution: 10000,
       autoResolution: true,
       backgroundColor: "rgb(255, 255, 255)",
       customBackgroundColor: false,
+      presetList: PresetList,
     };
   }
 
@@ -61,6 +64,7 @@ export class AppContainer extends React.Component<Props, State> {
         autoResolution={this.state.autoResolution}
         backgroundColor={this.state.backgroundColor}
         customBackgroundColor={this.state.customBackgroundColor}
+        presetList={this.state.presetList}
         onImageUrlChange={this.handleGenericStateChange.bind(this, "imageUrl")}
         onResolutionChange={this.handleGenericStateChange.bind(this, "resolution")}
         onAutoResolutionChange={this.handleGenericStateChange.bind(this, "autoResolution")}

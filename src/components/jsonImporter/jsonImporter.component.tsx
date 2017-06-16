@@ -34,7 +34,7 @@ class JSONImporter extends React.Component<Props, {}> {
     if (!object) {
       logDebug(`[ERROR] Parsing Local JSON: ${text}`);
     }
-    return object; 
+    return object;
   }
 
   private handleFileChange = (file: File) => {
@@ -51,7 +51,7 @@ class JSONImporter extends React.Component<Props, {}> {
         onFileChange={this.handleFileChange}
         filter=".json"
         button={(
-          <Link className={this.props.theme.link} 
+          <Link className={this.props.theme.link}
             href="#"
             label="Import"
             icon="vertical_align_top"

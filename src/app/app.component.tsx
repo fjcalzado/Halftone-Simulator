@@ -5,9 +5,11 @@ import { ThemeProvider } from "react-css-themr";
 import { contextStylesheets } from "../stylesheets";
 import { LayerStack } from "../models/layerModel";
 import { SampleImageItem } from "../models/sampleImageModel";
+import { PresetCollection } from "../models/presetModel";
 import { HalftoneComponent } from "../features/halftone";
 import { LayerSetupContainer } from "../features/layerSetup";
 import { PictureSetupComponent } from "../features/pictureSetup";
+import { PresetSelectorComponent } from "../features/presetSelector";
 const styles = require("../stylesheets/base/app.scss");
 
 // TODO: To be deleted **************************************
@@ -25,6 +27,7 @@ interface Props {
   autoResolution: boolean;
   backgroundColor: any;
   customBackgroundColor: boolean;
+  presetList: PresetCollection;
 
   onImageUrlChange: (newImageURL: string) => void;
   onResolutionChange: (newResolution: number) => void;
@@ -65,6 +68,10 @@ export class AppComponent extends React.Component<Props, {}> {
               <LayerSetupContainer layerStack={this.props.layerStack}
                 maxNumLayers={this.props.maxNumLayers}
                 onApplyLayersChange={this.props.onLayersChange}
+              />
+              <PresetSelectorComponent
+                presetList={this.props.presetList}
+                onSelectPreset={this.props.onLayersChange}
               />
             </div>
             <div className={styles.panelMain}>

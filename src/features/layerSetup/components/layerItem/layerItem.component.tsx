@@ -50,7 +50,7 @@ class LayerItem extends React.Component<Props, {}> {
 
   public render() {
     return(
-        <ListItem className={`${this.props.theme.layerItem} 
+        <ListItem className={`${this.props.theme.layerItem}
             ${this.props.selected ? this.props.theme.selected : ""}`}
           leftIcon={<this.DragHandle key="drag-handle"/>}
           caption={this.props.layerParams.name}

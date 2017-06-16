@@ -9,6 +9,7 @@ export const contextStylesheets = {
   [identifiers.pictureSetup]: require("./components/pictureSetup.scss"),
   [identifiers.halftone]: require("./components/halftone.scss"),
   [identifiers.layerSetup]: require("./components/layerSetup.scss"),
+  [identifiers.presetSelector]: require("./components/presetSelector.scss"),
 
   // Project Components CSS.
   [identifiers.simulator]: require("./components/simulator.scss"),
