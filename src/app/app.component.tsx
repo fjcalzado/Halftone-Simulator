@@ -10,6 +10,7 @@ import { HalftoneComponent } from "../features/halftone";
 import { LayerSetupContainer } from "../features/layerSetup";
 import { PictureSetupComponent } from "../features/pictureSetup";
 import { PresetSelectorComponent } from "../features/presetSelector";
+import { SetupLayoutComponent } from "../features/setupLayout";
 const styles = require("../stylesheets/base/app.scss");
 
 // TODO: To be deleted **************************************
@@ -51,29 +52,46 @@ export class AppComponent extends React.Component<Props, {}> {
       <ThemeProvider theme={contextStylesheets}>
         <div className={styles.layoutContainerColumn}>
           <IntroComponent fakeProperty={true} />
-          <PictureSetupComponent className={"TODO"}
-            imageUrl={this.props.imageUrl}
-            sampleImageList={this.props.sampleImageList}
-            resolution={this.props.resolution}
-            autoResolution={this.props.autoResolution}
-            customBackgroundColor={this.props.customBackgroundColor}
-            backgroundColor={this.props.backgroundColor}
-            onImageUrlChange={this.props.onImageUrlChange}
-            onResolutionChange={this.props.onResolutionChange}
-            onAutoResolutionChange={this.props.onAutoResolutionChange}
-            onBackgroundColorChange={this.props.onBackgroundColorChange}
-            onBackgroundToggleChange={this.props.onBackgroundToggleChange}
-          />
           <div className={styles.layoutContainerRow}>
             <div className={styles.panelLeft}>
-              <LayerSetupContainer layerStack={this.props.layerStack}
-                maxNumLayers={this.props.maxNumLayers}
-                onApplyLayersChange={this.props.onLayersChange}
-              />
-              <PresetSelectorComponent
-                presetList={this.props.presetList}
-                onPresetChange={this.props.onPresetChange}
-              />
+              <SetupLayoutComponent tabsContent={[
+                {
+                  title: "Picture",
+                  content: (
+                    <PictureSetupComponent className={"TODO"}
+                      imageUrl={this.props.imageUrl}
+                      sampleImageList={this.props.sampleImageList}
+                      resolution={this.props.resolution}
+                      autoResolution={this.props.autoResolution}
+                      customBackgroundColor={this.props.customBackgroundColor}
+                      backgroundColor={this.props.backgroundColor}
+                      onImageUrlChange={this.props.onImageUrlChange}
+                      onResolutionChange={this.props.onResolutionChange}
+                      onAutoResolutionChange={this.props.onAutoResolutionChange}
+                      onBackgroundColorChange={this.props.onBackgroundColorChange}
+                      onBackgroundToggleChange={this.props.onBackgroundToggleChange}
+                    />
+                  ),
+                },
+                {
+                  title: "Presets",
+                  content: (
+                    <PresetSelectorComponent
+                      presetList={this.props.presetList}
+                      onPresetChange={this.props.onPresetChange}
+                    />
+                  ),
+                },
+                {
+                  title: "Configuration",
+                  content: (
+                    <LayerSetupContainer layerStack={this.props.layerStack}
+                      maxNumLayers={this.props.maxNumLayers}
+                      onApplyLayersChange={this.props.onLayersChange}
+                    />
+                  ),
+                },
+              ]} />
             </div>
             <div className={styles.panelMain}>
               <HalftoneComponent layerStack={this.props.layerStack}
