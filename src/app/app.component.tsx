@@ -88,4 +88,6 @@ export class AppComponent extends React.Component<Props, {}> {
       </ThemeProvider>
     );
   }
-};
+}
+
+

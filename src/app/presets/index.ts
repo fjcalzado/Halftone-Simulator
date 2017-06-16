@@ -11,7 +11,7 @@ export const PresetList: PresetCollection = [
   },
   {
     name: "CMYK",
-    description: "Simulates CMYK print pattern",
+    description: "Simulates CMYK printing",
     thumbnailUrl: require("./CMYKPrintSprite.svg"),
     layerStackJSON: require("./CMYKPrint.json"),
     customBackgroundColor: false,

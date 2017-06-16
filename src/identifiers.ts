@@ -16,6 +16,7 @@ export const identifiers = {
   halftone: "FTHalftone",
   layerSetup: "FTLayerSetup",
   presetSelector: "FTPresetSelector",
+  setupLayout: "FTSetupLayout",
 
   // Project Components (CMP).
   simulator: "CMPSimulator",

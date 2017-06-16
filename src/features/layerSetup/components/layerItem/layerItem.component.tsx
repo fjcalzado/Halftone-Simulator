@@ -79,8 +79,3 @@ class LayerItem extends React.Component<Props, {}> {
   });
 }
 export const LayerItemComponent = themr(identifiers.layerItem)(LayerItem);
-
-
-
-
-
