@@ -3,7 +3,7 @@ import * as React from "react";
 
 import { LayerStack, CreateDefaultLayerParams } from "../models/layerModel";
 import { SampleImageItem } from "../models/sampleImageModel";
-import { PresetCollection } from "../models/presetModel";
+import { Preset, PresetCollection } from "../models/presetModel";
 import { SampleImages } from "./sample-images";
 import { TestImages } from "./test-images";
 import { PresetList } from "./presets";
@@ -53,6 +53,15 @@ export class AppContainer extends React.Component<Props, State> {
     });
   }
 
+  private handlePresetChange = (preset: Preset) => {
+    this.setState({
+      ...this.state,
+      layerStack: preset.layerStackJSON as LayerStack,
+      backgroundColor: preset.backgroundColor,
+      customBackgroundColor: preset.customBackgroundColor,
+    });
+  }
+
   public render() {
     return(
       <AppComponent
@@ -71,6 +80,7 @@ export class AppContainer extends React.Component<Props, State> {
         onBackgroundColorChange={this.handleGenericStateChange.bind(this, "backgroundColor")}
         onBackgroundToggleChange={this.handleGenericStateChange.bind(this, "customBackgroundColor")}
         onLayersChange={this.handleGenericStateChange.bind(this, "layerStack")}
+        onPresetChange={this.handlePresetChange}
       />
     );
   }

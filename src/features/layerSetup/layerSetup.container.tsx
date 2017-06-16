@@ -65,10 +65,10 @@ export class LayerSetupContainer extends React.Component<Props, State> {
         } as State);
       } else {
         throw newLayerStack.toString();
-      }   
+      }
     } catch (error) {
       logDebug(`[ERROR] Importing wrong layer stack: ${error}`)
-    } 
+    }
   }
 
   private handleResetLayers = (event) => {
@@ -192,7 +192,7 @@ export class LayerSetupContainer extends React.Component<Props, State> {
     const addErrorMsg = this.exceedNumLayers() ? `Max layers reached (${this.props.maxNumLayers})`
       : this.state.addLayerErrorMessage;
     const addDisabled = this.exceedNumLayers() || this.state.addLayerDisabled;
-    const layerStackModified = JSON.stringify(this.props.layerStack) !== 
+    const layerStackModified = JSON.stringify(this.props.layerStack) !==
                                JSON.stringify(this.state.layerStack);
 
     return(
@@ -200,7 +200,7 @@ export class LayerSetupContainer extends React.Component<Props, State> {
         onImportLayerStack={this.handleImportLayerStack}
         applyDisabled={!layerStackModified}
         resetDisabled={!layerStackModified}
-        onClickApplyLayers={this.handleApplyLayers}        
+        onClickApplyLayers={this.handleApplyLayers}
         onClickResetLayers={this.handleResetLayers}
         addLayerDisabled={addDisabled}
         onAddLayerNameChange={this.handleAddLayerNameChange}

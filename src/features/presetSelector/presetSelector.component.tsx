@@ -11,7 +11,7 @@ import { LayerStack } from "../../models/layerModel";
 
 interface Props {
   presetList: PresetCollection;
-  onSelectPreset: (layerStack: LayerStack) => void;
+  onPresetChange: (preset: Preset) => void;
 
   // Context theme API.
   theme?: {
@@ -29,8 +29,8 @@ class PresetSelector extends React.Component<Props, {}> {
     super(props);
   }
 
-  private handleClick = (json: any) => {
-    this.props.onSelectPreset(json as LayerStack);
+  private handleClick = (preset: Preset) => {
+    this.props.onPresetChange(preset);
   }
 
   public render() {
@@ -39,7 +39,7 @@ class PresetSelector extends React.Component<Props, {}> {
         caption={item.name}
         legend={item.description}
         avatar={item.thumbnailUrl}
-        onClick={(event) => this.handleClick(item.json)}
+        onClick={(event) => this.handleClick(item)}
       />
     ));
 

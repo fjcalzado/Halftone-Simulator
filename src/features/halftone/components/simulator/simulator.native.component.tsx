@@ -58,7 +58,6 @@ class SimulatorNativeDOM extends React.Component <Props, {}> {
 
     if ((nextProps.imageUrl !== this.props.imageUrl) || (nextProps.resolution !== this.props.resolution) ) {
       this.setImage(nextProps);
-      this.setBackground(nextProps);
       return;
     }
 

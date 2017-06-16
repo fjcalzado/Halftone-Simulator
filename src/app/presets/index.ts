@@ -5,12 +5,16 @@ export const PresetList: PresetCollection = [
     name: "Default",
     description: "Simplest pattern",
     thumbnailUrl: "",
-    json: require("./Default.json"),
+    layerStackJSON: require("./Default.json"),
+    customBackgroundColor: false,
+    backgroundColor: "rgb(255, 255, 255)",
   },
   {
     name: "CMYK",
     description: "Simulates CMYK print pattern",
     thumbnailUrl: "",
-    json: require("./CMYK_Print.json"),
+    layerStackJSON: require("./CMYK_Print.json"),
+    customBackgroundColor: false,
+    backgroundColor: "rgb(255, 255, 255)",
   },
 ];

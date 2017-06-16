@@ -5,7 +5,7 @@ import { ThemeProvider } from "react-css-themr";
 import { contextStylesheets } from "../stylesheets";
 import { LayerStack } from "../models/layerModel";
 import { SampleImageItem } from "../models/sampleImageModel";
-import { PresetCollection } from "../models/presetModel";
+import { Preset, PresetCollection } from "../models/presetModel";
 import { HalftoneComponent } from "../features/halftone";
 import { LayerSetupContainer } from "../features/layerSetup";
 import { PictureSetupComponent } from "../features/pictureSetup";
@@ -35,6 +35,7 @@ interface Props {
   onBackgroundColorChange: (newColor: any) => void;
   onBackgroundToggleChange: (newToggled: boolean) => void;
   onLayersChange: (layerStack: LayerStack) => void;
+  onPresetChange: (preset: Preset) => void;
 }
 
 
@@ -71,7 +72,7 @@ export class AppComponent extends React.Component<Props, {}> {
               />
               <PresetSelectorComponent
                 presetList={this.props.presetList}
-                onSelectPreset={this.props.onLayersChange}
+                onPresetChange={this.props.onPresetChange}
               />
             </div>
             <div className={styles.panelMain}>

@@ -9,7 +9,9 @@ export interface Preset {
   name: string;
   description: string;
   thumbnailUrl: string;
-  json: any;
+  layerStackJSON: any;
+  customBackgroundColor: boolean;
+  backgroundColor: any;
 }
 
 export type PresetCollection = Preset[];
