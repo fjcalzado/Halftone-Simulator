@@ -103,12 +103,12 @@ class LayerSetup extends React.Component<Props, {}> {
           </div>
         </div>
         <div className={this.props.theme.fixedBottom}>
-          <Button icon="done" label="Apply" raised accent
-            disabled={this.props.applyDisabled}
-            onClick={this.props.onClickApplyLayers} />
           <Button icon="undo" label="Reset"
             disabled={this.props.resetDisabled}
             onClick={this.props.onClickResetLayers} />
+          <Button icon="done" label="Apply" raised accent
+            disabled={this.props.applyDisabled}
+            onClick={this.props.onClickApplyLayers} />
         </div>
       </div>
     );

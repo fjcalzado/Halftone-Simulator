@@ -9,7 +9,7 @@ import { identifiers } from "../../identifiers";
 /******************* INTERFACE *******************/
 
 interface Props {
-  tabsContent: Array<{title: string, content: JSX.Element}>;
+  tabsContent: Array<{title: string, icon: string, content: JSX.Element}>;
 
   // Context theme API.
   theme?: {
@@ -29,7 +29,7 @@ class SetupLayout extends React.Component<Props, State> {
     super(props);
 
     this.state = {
-      tabIndex: 2,
+      tabIndex: 0,
     };
   }
 
@@ -42,7 +42,7 @@ class SetupLayout extends React.Component<Props, State> {
 
   public render() {
     const tabItems = this.props.tabsContent.map((item, index) => (
-      <Tab label={item.title} key={index} ripple={false}>
+      <Tab label={item.title} key={index} icon={item.icon} ripple={false}>
         {item.content}
       </Tab>
     ));

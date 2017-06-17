@@ -1,8 +1,16 @@
 @import "../../theme/autothemer.scss";
 
-// FIX. Left icon not properly vertical centered.
+.listItem {
+  & [class^="dropdown"] {
+    // FIX. Give some padding to a dropdown inside a list item
+    // regarding its left icon.
+    padding-left: 16px;
+  }
+}
+
 .left {
   & [data-react-toolbox='font-icon'] {
+    // FIX. Left icon not properly vertical centered.
     display: flex;
     align-items: center;
     width: auto !important;

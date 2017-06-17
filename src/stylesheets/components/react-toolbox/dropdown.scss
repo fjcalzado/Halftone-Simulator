@@ -1,14 +1,24 @@
 @import "../../theme/autothemer.scss";
 
-// FIX for slider knob on top of dropdown.
 ul.values {
+  // FIX for slider knob on top of dropdown.
   z-index: 300;
 }
 
-.values {
-  & > * {
-    &.selected {
-      @include themify(color font-weight, $colorTextPrimary $fontWeightNormal);
+.dropdown {
+  .values {
+    & > * {
+      &.selected {
+        @include themify(color font-weight, $colorTextPrimary $fontWeightNormal);
+      }
     }
+
+    width: 95%;
+  }
+}
+
+.value {
+  &::after {
+    @include themify(border-top-color, $colorPrimary);
   }
 }

@@ -57,6 +57,7 @@ export class AppComponent extends React.Component<Props, {}> {
               <SetupLayoutComponent tabsContent={[
                 {
                   title: "Picture",
+                  icon: "image",
                   content: (
                     <PictureSetupComponent className={"TODO"}
                       imageUrl={this.props.imageUrl}
@@ -75,6 +76,7 @@ export class AppComponent extends React.Component<Props, {}> {
                 },
                 {
                   title: "Presets",
+                  icon: "group_work",
                   content: (
                     <PresetSelectorComponent
                       presetList={this.props.presetList}
@@ -83,7 +85,8 @@ export class AppComponent extends React.Component<Props, {}> {
                   ),
                 },
                 {
-                  title: "Configuration",
+                  title: "Editor",
+                  icon: "tune",
                   content: (
                     <LayerSetupContainer layerStack={this.props.layerStack}
                       maxNumLayers={this.props.maxNumLayers}

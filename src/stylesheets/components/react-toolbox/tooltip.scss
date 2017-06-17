@@ -1,0 +1,7 @@
+@import "../../theme/autothemer.scss";
+
+.tooltip {
+  @include themify(font-weight, $fontWeightThin);
+
+  font-size: 1rem !important;
+}

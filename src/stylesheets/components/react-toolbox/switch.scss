@@ -18,3 +18,7 @@ label.field {
 .text {
   @include themify(color, $colorTextPrimary);
 }
+
+.input {
+  margin: 0;
+}

@@ -23,6 +23,10 @@
 
     opacity: 1;
   }
+
+  & [data-react-toolbox="font-icon"] {
+    display: block;
+  }
 }
 
 .pointer {

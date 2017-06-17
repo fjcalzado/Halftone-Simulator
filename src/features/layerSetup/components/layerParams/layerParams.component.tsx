@@ -83,25 +83,35 @@ class LayerParams extends React.Component<Props, {}> {
         <ListSubHeader caption="Layer Properties" />
           <ListItem itemContent={<this.Visibility />}/>
           <ListItem itemContent={<this.Opacity />}
-            leftIcon={<TooltipIcon value="gradient" tooltip="Opacity"/>}/>
+            leftIcon={<TooltipIcon value="texture" tooltip="Layer Opacity"/>}/>
         <ListSubHeader caption="Grid Configuration" />
-          <ListItem itemContent={<this.GridPattern />}/>
-          <ListItem itemContent={<this.GridScale />}/>
-          <ListItem itemContent={<this.GridRotation />}/>
+          <ListItem itemContent={<this.GridPattern />}
+            leftIcon={<TooltipIcon value="grain" tooltip="Grid Pattern"/>}/>
+          <ListItem itemContent={<this.GridScale />}
+            leftIcon={<TooltipIcon value="settings_overscan" tooltip="Grid Scale"/>}/>
+          <ListItem itemContent={<this.GridRotation />}
+            leftIcon={<TooltipIcon value="rotate_left" tooltip="Grid Rotation"/>}/>
           {this.GridSpecificParams() ? <this.GridSpecificParams /> : null}
         <ListSubHeader caption="Dot Configuration" />
-          <ListItem itemContent={<this.DotShape />}/>
-          <ListItem itemContent={<this.DotSizeBinding />}/>
-          <ListItem itemContent={<this.DotSizeMinThreshold />}/>
-          <ListItem itemContent={<this.DotSizeMaxThreshold />}/>
-          <ListItem itemContent={<this.DotRotation />}/>
           <ListItem itemContent={<this.DotCustomColor />}/>
+          <ListItem itemContent={<this.DotShape />}
+            leftIcon={<TooltipIcon value="star" tooltip="Dot Shape"/>}/>
+          <ListItem itemContent={<this.DotSizeBinding />}
+            leftIcon={<TooltipIcon value="center_focus_strong" tooltip="Dot Size Binding"/>}/>
+          <ListItem itemContent={<this.DotSizeMinThreshold />}
+            leftIcon={<TooltipIcon value="hdr_weak" tooltip="Dot Minimum Size"/>}/>
+          <ListItem itemContent={<this.DotSizeMaxThreshold />}
+            leftIcon={<TooltipIcon value="hdr_strong" tooltip="Dot Maximum Size"/>}/>
+          <ListItem itemContent={<this.DotRotation />}
+            leftIcon={<TooltipIcon value="rotate_90_degrees_ccw" tooltip="Dot Rotation"/>}/>
       </List>
     );
   }
 
+
   /******************* SUB-COMPONENTS *******************/
 
+  // TODO: Move subcomponents to independent files.
 
   // LAYER PARAMS.
 
@@ -133,7 +143,6 @@ class LayerParams extends React.Component<Props, {}> {
   private GridPattern = () => {
      return (
       <Dropdown className={this.props.theme.listInnerItem}
-        label={"Pattern"}
         source={this.gridPatterns}
         value={this.props.layerParams.gridParams.pattern}
         onChange={this.handleGridChange.bind(this, "pattern")}
@@ -146,7 +155,6 @@ class LayerParams extends React.Component<Props, {}> {
       <SliderExComponent className={this.props.theme.listInnerItem}
         editable min={0} max={2}
         displayMin={0} displayMax={200} displayStep={1}
-        label={"Scale"}
         value={this.props.layerParams.gridParams.scaleFactor}
         onChange={this.handleGridChange.bind(this, "scaleFactor")}
       />
@@ -158,7 +166,6 @@ class LayerParams extends React.Component<Props, {}> {
       <SliderExComponent className={this.props.theme.listInnerItem}
         editable min={-180} max={180}
         displayMin={-180} displayMax={180} displayStep={1}
-        label={"Rotation"}
         value={this.props.layerParams.gridParams.rotationAngle}
         onChange={this.handleGridChange.bind(this, "rotationAngle")}
       />
@@ -175,13 +182,14 @@ class LayerParams extends React.Component<Props, {}> {
           sp = CreateDefaultSpecificParams(GridPatternType.Hex);
         }
         return (
-          <SliderExComponent className={this.props.theme.listInnerItem}
-            editable min={0.5} max={2}
-            displayMin={0.5} displayMax={2} displayStep={0.05}
-            label={"Radius"}
-            value={sp.radius}
-            onChange={this.handleGridSpecificParamsChange.bind(this, "radius")}
-          />
+          <ListItem itemContent={
+            <SliderExComponent className={this.props.theme.listInnerItem}
+              editable min={0.5} max={2}
+              displayMin={0.5} displayMax={2} displayStep={0.05}
+              value={sp.radius}
+              onChange={this.handleGridSpecificParamsChange.bind(this, "radius")}
+            />
+          } leftIcon={<TooltipIcon value="call_made" tooltip="Radius"/>}/>
         );
 
       case GridPatternType.Random:
@@ -189,13 +197,14 @@ class LayerParams extends React.Component<Props, {}> {
           sp = CreateDefaultSpecificParams(GridPatternType.Random);
         }
         return (
-          <SliderExComponent className={this.props.theme.listInnerItem}
-            editable min={0.5} max={5}
-            displayMin={0.5} displayMax={5} displayStep={0.05}
-            label={"Limit"}
-            value={sp.limit}
-            onChange={this.handleGridSpecificParamsChange.bind(this, "limit")}
-          />
+          <ListItem itemContent={
+            <SliderExComponent className={this.props.theme.listInnerItem}
+              editable min={0.5} max={5}
+              displayMin={0.5} displayMax={5} displayStep={0.05}
+              value={sp.limit}
+              onChange={this.handleGridSpecificParamsChange.bind(this, "limit")}
+            />
+          } leftIcon={<TooltipIcon value="casino" tooltip="Randomness"/>}/>
         );
 
       case GridPatternType.Wave:
@@ -211,20 +220,22 @@ class LayerParams extends React.Component<Props, {}> {
         }
         return (
           <div>
-            <SliderExComponent className={this.props.theme.listInnerItem}
-              editable min={4} max={50}
-              displayMin={4} displayMax={50} displayStep={1}
-              label={"Wavelength"}
-              value={sp.wavelength}
-              onChange={this.handleGridSpecificParamsChange.bind(this, "wavelength")}
-            />
-            <SliderExComponent className={this.props.theme.listInnerItem}
-              editable min={1} max={20}
-              displayMin={1} displayMax={20} displayStep={1}
-              label={"Amplitude"}
-              value={sp.amplitude}
-              onChange={this.handleGridSpecificParamsChange.bind(this, "amplitude")}
-            />
+            <ListItem itemContent={
+              <SliderExComponent className={this.props.theme.listInnerItem}
+                editable min={4} max={50}
+                displayMin={4} displayMax={50} displayStep={1}
+                value={sp.wavelength}
+                onChange={this.handleGridSpecificParamsChange.bind(this, "wavelength")}
+              />
+            } leftIcon={<TooltipIcon value="settings_ethernet" tooltip="Wave Length"/>}/>
+            <ListItem itemContent={
+              <SliderExComponent className={this.props.theme.listInnerItem}
+                editable min={1} max={20}
+                displayMin={1} displayMax={20} displayStep={1}
+                value={sp.amplitude}
+                onChange={this.handleGridSpecificParamsChange.bind(this, "amplitude")}
+              />
+            } leftIcon={<TooltipIcon value="swap_vert" tooltip="Wave Amplitude"/>}/>
           </div>
         );
 
@@ -241,20 +252,22 @@ class LayerParams extends React.Component<Props, {}> {
         }
         return (
           <div>
-            <SliderExComponent className={this.props.theme.listInnerItem}
-              editable min={4} max={50}
-              displayMin={4} displayMax={50} displayStep={1}
-              label={"Length"}
-              value={sp.length}
-              onChange={this.handleGridSpecificParamsChange.bind(this, "length")}
-            />
-            <SliderExComponent className={this.props.theme.listInnerItem}
-              editable min={1} max={20}
-              displayMin={1} displayMax={20} displayStep={1}
-              label={"Amplitude"}
-              value={sp.amplitude}
-              onChange={this.handleGridSpecificParamsChange.bind(this, "amplitude")}
-            />
+            <ListItem itemContent={
+              <SliderExComponent className={this.props.theme.listInnerItem}
+                editable min={4} max={50}
+                displayMin={4} displayMax={50} displayStep={1}
+                value={sp.length}
+                onChange={this.handleGridSpecificParamsChange.bind(this, "length")}
+              />
+            } leftIcon={<TooltipIcon value="settings_ethernet" tooltip="Chevron Length"/>}/>
+            <ListItem itemContent={
+              <SliderExComponent className={this.props.theme.listInnerItem}
+                editable min={1} max={20}
+                displayMin={1} displayMax={20} displayStep={1}
+                value={sp.amplitude}
+                onChange={this.handleGridSpecificParamsChange.bind(this, "amplitude")}
+              />
+            } leftIcon={<TooltipIcon value="swap_vert" tooltip="Chevron Amplitude"/>}/>
           </div>
         );
 
@@ -270,7 +283,6 @@ class LayerParams extends React.Component<Props, {}> {
   private DotShape = () => {
      return (
       <Dropdown className={this.props.theme.listInnerItem}
-        label={"Shape"}
         source={this.dotShapes}
         value={this.props.layerParams.dotParams.shape}
         onChange={this.handleDotChange.bind(this, "shape")}
@@ -286,7 +298,6 @@ class LayerParams extends React.Component<Props, {}> {
   private DotSizeBinding = () => {
      return (
       <Dropdown className={this.props.theme.listInnerItem}
-        label={"Size Binding"}
         source={this.dotSizeBindings}
         value={this.props.layerParams.dotParams.sizeBinding}
         onChange={this.handleDotChange.bind(this, "sizeBinding")}
@@ -299,7 +310,6 @@ class LayerParams extends React.Component<Props, {}> {
       <SliderExComponent className={this.props.theme.listInnerItem}
         editable min={0} max={2}
         displayMin={0} displayMax={200} displayStep={1}
-        label={"Min"}
         value={this.props.layerParams.dotParams.sizeMinThreshold}
         onChange={ (value) => {
           const max = this.props.layerParams.dotParams.sizeMaxThreshold;
@@ -315,7 +325,6 @@ class LayerParams extends React.Component<Props, {}> {
       <SliderExComponent className={this.props.theme.listInnerItem}
         editable min={0} max={2}
         displayMin={0} displayMax={200} displayStep={1}
-        label={"Max"}
         value={this.props.layerParams.dotParams.sizeMaxThreshold}
         onChange={ (value) => {
           const min = this.props.layerParams.dotParams.sizeMinThreshold;
@@ -331,7 +340,6 @@ class LayerParams extends React.Component<Props, {}> {
       <SliderExComponent className={this.props.theme.listInnerItem}
         editable min={-180} max={180}
         displayMin={-180} displayMax={180} displayStep={1}
-        label={"Rotation"}
         value={this.props.layerParams.dotParams.rotationAngle}
         onChange={this.handleDotChange.bind(this, "rotationAngle")}
       />
