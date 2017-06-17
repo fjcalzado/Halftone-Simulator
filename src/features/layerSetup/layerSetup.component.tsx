@@ -20,7 +20,7 @@ interface Props {
   onImportLayerStack: (newLayerStack: any) => void;
   applyDisabled: boolean;
   resetDisabled: boolean;
-  onClickApplyLayers: (event) => void;  
+  onClickApplyLayers: (event) => void;
   onClickResetLayers: (event) => void;
 
   addLayerDisabled: boolean;
@@ -47,6 +47,9 @@ interface Props {
   // Context theme API.
   theme?: {
     container: string;
+    scrollable: string;
+    fixedBottom: string;
+    importExport: string;
   };
 }
 
@@ -64,49 +67,49 @@ class LayerSetup extends React.Component<Props, {}> {
 
     return(
       <div className={this.props.theme.container}>
-        {/*// TODO: To be inserted as Card action.*/}
-        
-        <Button icon="done" label="Apply" raised accent
-          disabled={this.props.applyDisabled}
-          onClick={this.props.onClickApplyLayers} />
-        <Button icon="undo" label="Reset"
-          disabled={this.props.resetDisabled}
-          onClick={this.props.onClickResetLayers} />
-
-        <LayerAdderComponent disabled={this.props.addLayerDisabled}
-          name={this.props.addLayerEditingName}
-          onNameChange={this.props.onAddLayerNameChange}
-          onAddLayer={this.props.onAddLayer}
-          error={this.props.addLayerErrorMessage}
-        />
-        <LayerListComponent layerStack={this.props.layerStack}
-          onClickRename={this.props.onClickRenameLayer}
-          onClickDelete={this.props.onDeleteLayer}
-          onSort={this.props.onSortList}
-          selectedLayer={this.props.selectedLayer}
-          onSelectLayer={this.props.onSelectLayer}
-        />        
-        <LayerRenamerComponent
-            currentName={this.props.renameLayerCurrentName}
-            newName={this.props.renameLayerEditingName}
-            openDialog={Boolean(this.props.renameLayerCurrentName)}
-            onNameChange={this.props.onRenameLayerNameChange}
-            onRenameLayer={this.props.onRenameLayer}
-            onCloseDialog={this.props.onCloseRenameLayerDialog}
-            error={this.props.renameLayerErrorMessage}
-        />
-
-        {/*// TODO: To be inserted in Cards, one on top of the other.*/}
-        {selectedLayerParams ?
-          (<LayerParamsComponent
-            layerParams={selectedLayerParams}
-            onLayerParamsChanged={this.props.onSelectedLayerParamsChanged}
-          />) : null
-        }
-
-        <JSONExporterComponent object={this.props.layerStack}/>
-        <JSONImporterComponent onImport={this.props.onImportLayerStack}/>
-
+        <div className={this.props.theme.scrollable}>
+          <LayerAdderComponent disabled={this.props.addLayerDisabled}
+            name={this.props.addLayerEditingName}
+            onNameChange={this.props.onAddLayerNameChange}
+            onAddLayer={this.props.onAddLayer}
+            error={this.props.addLayerErrorMessage}
+          />
+          <LayerListComponent layerStack={this.props.layerStack}
+            onClickRename={this.props.onClickRenameLayer}
+            onClickDelete={this.props.onDeleteLayer}
+            onSort={this.props.onSortList}
+            selectedLayer={this.props.selectedLayer}
+            onSelectLayer={this.props.onSelectLayer}
+          />
+          <LayerRenamerComponent
+              currentName={this.props.renameLayerCurrentName}
+              newName={this.props.renameLayerEditingName}
+              openDialog={Boolean(this.props.renameLayerCurrentName)}
+              onNameChange={this.props.onRenameLayerNameChange}
+              onRenameLayer={this.props.onRenameLayer}
+              onCloseDialog={this.props.onCloseRenameLayerDialog}
+              error={this.props.renameLayerErrorMessage}
+          />
+          {selectedLayerParams ?
+            (<LayerParamsComponent
+              layerParams={selectedLayerParams}
+              onLayerParamsChanged={this.props.onSelectedLayerParamsChanged}
+            />) : null
+          }
+          <br />
+          <div className={this.props.theme.importExport}>
+            <JSONExporterComponent object={this.props.layerStack}/>
+            <JSONImporterComponent onImport={this.props.onImportLayerStack}/>
+          </div>
+        </div>
+        <div className={this.props.theme.fixedBottom}>
+          <Button icon="done" label="Apply" raised accent
+            disabled={this.props.applyDisabled}
+            onClick={this.props.onClickApplyLayers} />
+          <Button icon="undo" label="Reset"
+            disabled={this.props.resetDisabled}
+            onClick={this.props.onClickResetLayers} />
+        </div>
       </div>
     );
   }

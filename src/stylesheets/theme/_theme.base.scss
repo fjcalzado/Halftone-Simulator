@@ -8,12 +8,21 @@ $themeBase: (
   $colorDarkContrast: hsl(0, 0%, 100%),
   $colorLightContrast: hsl(0, 0, 0%),
 
-  $colorPrimary: hsla(186.8, 100%, 50%, 1),
-  $colorPrimaryDark: hsla(186.8, 100%, 35%, 1),
-  $colorPrimaryContrast: hsla(186.8, 100%, 90%, 1),
+  $colorPrimary: hsla(187, 100%, 40%, 1),
+  $colorPrimarySemi: hsla(187, 100%, 40%, 0.2),
+  $colorPrimaryDark: hsla(187, 100%, 20%, 1),
+  $colorPrimaryContrast: hsla(187, 100%, 60%, 1),
+  $colorAccent: hsla(340, 100%, 60%, 1),
+  $colorAccentSemi: hsla(340, 100%, 60%, 0.2),
+  $colorAccentDark: hsla(340, 100%, 40%, 1),
+  $colorAccentContrast: hsla(340, 100%, 80%, 1),
 
-  $colorBackground: hsl(0, 0%, 100%),
-  $colorBackgroundDark: hsl(0, 0%, 85%),
+  $colorTextPrimary: hsla(0, 0%, 30%, 1),
+  $colorTextSecondary: hsla(0, 0%, 100%, 1),
+  $colorTextAccent: hsla(187, 100%, 40%, 1),
+
+  $colorBackgroundPrimary: hsl(0, 0%, 100%),
+  $colorBackgroundAccent: hsl(0, 0%, 95%),
 
   $fontPrimary: Roboto,
   $fontWeightThin: 300,

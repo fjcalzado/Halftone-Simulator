@@ -6,11 +6,21 @@
 
 .selected [class^=itemText] {
   // TODO: Style when selected. Color? Bold?
-  @include themify(font-weight color, $fontWeightSemi $colorPrimaryDark);
+  @include themify(font-weight color, $fontWeightSemi $colorTextAccent);
 }
 
 .dragHandle {
-  @include themify(color, $colorBackgroundDark);
+  @include themify(color, $colorTextPrimary);
 
   cursor: move;
+
+  &:hover {
+    @include themify(color, $colorPrimary);
+  }
 }
+
+.rightMenu {
+
+}
+
+

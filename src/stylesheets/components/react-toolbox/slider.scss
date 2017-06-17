@@ -1,0 +1,47 @@
+@import "../../theme/autothemer.scss";
+
+.innerknob {
+  @include themify(background, $colorPrimary);
+}
+
+.snaps {
+  &::after {
+    @include themify(background, $colorPrimaryDark);
+  }
+}
+
+.snap {
+  &::after {
+    @include themify(background, $colorPrimaryDark);
+  }
+}
+
+.slider {
+  &:focus .knob::before {
+    @include themify(background, $colorPrimary);
+  }
+
+  &.pinned .innerknob {
+    &::before {
+      @include themify(background, $colorPrimary);
+    }
+
+    &::after {
+      @include themify(color, $colorBackgroundPrimary);
+    }
+  }
+
+  &.ring {
+    & .innerknob {
+      &::before {
+        @include themify(background, $colorPrimary);
+      }
+    }
+
+    &.pinned {
+      & .innerknob {
+        @include themify(background, $colorBackgroundPrimary);
+      }
+    }
+  }
+}

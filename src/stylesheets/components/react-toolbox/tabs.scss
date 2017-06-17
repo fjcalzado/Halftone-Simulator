@@ -1,6 +1,25 @@
 @import "../../theme/autothemer.scss";
 
-// FIX. Blue outline when focus.
+
 .tab {
+  // FIX. Blue outline when focus.
   outline: none;
+  // FIX. Occupy whole space.
+  flex-grow: 1;
+}
+
+.label {
+  @include themify(color, $colorTextPrimary);
+
+  opacity: 0.8;
+
+  &.active {
+    @include themify(color, $colorTextPrimary);
+
+    opacity: 1;
+  }
+}
+
+.pointer {
+  @include themify(background-color, $colorPrimary);
 }

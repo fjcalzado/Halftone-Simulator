@@ -3,9 +3,9 @@
 
 .sortableList {
   @include themify(background-color border-color,
-  $colorBackgroundDark $colorBackgroundDark);
+  $colorBackgroundAccent $colorBackgroundAccent);
 
-  border-width: 0.5px;
+  border-width: 1px;
   border-style: solid;
 }
 
@@ -13,7 +13,7 @@
 // Sortable-items are copied at the bottom of <body>
 // when are dragged from the list.
 .sortableItem {
-  @include themify(background-color, $colorBackground);
+  @include themify(background-color, $colorBackgroundPrimary);
 
   // This selects the item to be dragged.
   body > & {

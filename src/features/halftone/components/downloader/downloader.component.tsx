@@ -154,7 +154,7 @@ class Downloader extends React.Component<Props, State> {
       <div className={this.props.theme.container}>
         <Button className={this.props.theme.floatButton}
           icon="file_download"
-          primary floating
+          accent floating
           onClick={this.handleClickDownload}
         />
         <Dialog className={this.props.theme.dialog}
@@ -194,7 +194,7 @@ class Downloader extends React.Component<Props, State> {
                 <Button className={this.props.theme.downloadButton}
                   icon="file_download"
                   label="PNG"
-                  raised primary
+                  raised accent
                   onClick={this.handleClickDownloadPNG}
                 />
               </span>
@@ -206,7 +206,7 @@ class Downloader extends React.Component<Props, State> {
                 <Button className={this.props.theme.downloadButton}
                   icon="file_download"
                   label="SVG"
-                  raised primary
+                  raised accent
                   onClick={this.handleClickDownloadSVG}
                 />
               </span>

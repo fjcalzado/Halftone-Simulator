@@ -25,6 +25,7 @@ interface Props {
     layerItem: string;
     selected: string;
     dragHandle: string;
+    rightMenu: string;
   };
 }
 
@@ -61,11 +62,10 @@ class LayerItem extends React.Component<Props, {}> {
     );
   }
 
-  // TODO: Model enable/disable toggle and layer property.
-  // TODO: Think if it is better to show a menu or maybe just a delete button and
-  // the rest of layer properties in a layer panel along with dot and grid panels.
   private layerItemMenu = ([
-    <IconMenu key="first-action" icon="more_horiz" position="topLeft" menuRipple>
+    <IconMenu className={this.props.theme.rightMenu}
+      key="first-action" icon="more_horiz" position="topRight" menuRipple
+    >
       <MenuItem icon="mode_edit" caption="Rename" onClick={this.handleClickRename}/>
       <MenuItem icon="delete" caption="Delete" onClick={this.handleClickDelete}/>
     </IconMenu>,

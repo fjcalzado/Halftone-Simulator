@@ -1,3 +1,5 @@
+@import "../../theme/autothemer.scss";
+
 // FIX. Left icon not properly vertical centered.
 .left {
   & [data-react-toolbox='font-icon'] {
@@ -8,5 +10,11 @@
 
 // FIX. Item action margin adding some inconsistent shifting.
 .itemAction {
-  margin: 0 !important;
-} 
+  // margin: 0 !important;
+}
+
+.itemText {
+  &.primary {
+    @include themify(color, $colorTextPrimary);
+  }
+}

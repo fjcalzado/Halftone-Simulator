@@ -1,13 +1,61 @@
 @import "../../theme/autothemer.scss";
 
-// .primary:not([disabled]) {
-//   &.raised,
-//   &.floating {
-//     @include themify(background color, $colorPrimary $colorPrimaryContrast);
-//   }
+.primary:not([disabled]) {
+  &.raised,
+  &.floating {
+    @include themify(background color, $colorPrimary $colorTextSecondary);
+  }
 
-//   &.flat,
-//   &.toggle {
-//     @include themify(color, $colorPrimary);
-//   }
-// }
+  &.flat,
+  &.toggle {
+    @include themify(color, $colorPrimary);
+
+    &:focus:not(:active) {
+      @include themify(background, $colorPrimarySemi);
+    }
+  }
+
+  &.flat:hover {
+    @include themify(background, $colorPrimarySemi);
+  }
+}
+
+.accent:not([disabled]) {
+  &.raised,
+  &.floating {
+    @include themify(background color, $colorAccent $colorTextSecondary);
+  }
+
+  &.flat,
+  &.toggle {
+    @include themify(color, $colorAccent);
+
+    &:focus:not(:active) {
+      @include themify(background, $colorAccentSemi);
+    }
+  }
+
+  &.flat:hover {
+    @include themify(background, $colorAccentSemi);
+  }
+}
+
+.neutral:not([disabled]) {
+  &.raised,
+  &.floating {
+    @include themify(background color, $colorBackgroundPrimary $colorTextPrimary);
+  }
+
+  &.flat,
+  &.toggle {
+    @include themify(color, $colorTextPrimary);
+
+    &:focus:not(:active) {
+      @include themify(background, $colorBackgroundAccent);
+    }
+  }
+
+  &.flat:hover {
+    @include themify(background, $colorBackgroundAccent);
+  }
+}

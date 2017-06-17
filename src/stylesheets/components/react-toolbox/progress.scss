@@ -1,0 +1,9 @@
+@import "../../theme/autothemer.scss";
+
+.value {
+  @include themify(background, $colorPrimary);
+}
+
+.path {
+  @include themify(stroke, $colorPrimary);
+}

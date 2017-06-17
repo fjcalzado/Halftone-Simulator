@@ -1,7 +1,7 @@
 @import "../theme/autothemer.scss";
 
 .link {
-  @include themify(color, $colorPrimary);
+  @include themify(color, $colorAccent);
 
   text-decoration: none;
 }

@@ -1,0 +1,34 @@
+@import "../../theme/autothemer.scss";
+
+.label {
+  @include themify(color, $colorPrimary);
+}
+
+.hint {
+  @include themify(color, $colorPrimary);
+}
+
+.inputElement {
+  @include themify(color, $colorTextPrimary);
+
+  &:focus:not([disabled]):not([readonly]) {
+    & ~ .label:not(.fixed) {
+      @include themify(color, $colorPrimary);
+    }
+
+    & ~ .label > .required {
+      @include themify(color, $colorPrimary);
+    }
+
+    & ~ .icon {
+      @include themify(color, $colorPrimary);
+    }
+  }
+}
+
+.bar {
+  &::before,
+  &::after {
+    @include themify(background-color, $colorPrimary);
+  }
+}

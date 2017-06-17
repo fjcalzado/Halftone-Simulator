@@ -1,4 +1,4 @@
-//@import "../theme/autothemer.scss";
+@import "../theme/autothemer.scss";
 
 .container {
   display: flex;
@@ -7,6 +7,8 @@
 }
 
 .label {
+  @include themify(color, $colorTextPrimary);
+
   flex-grow: 0;
 }
 
