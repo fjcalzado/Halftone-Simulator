@@ -45,7 +45,7 @@ export function initialize(parentNode: any, width: string = widthRel, height: st
   svg = d3.select(parentNode)
     .append("svg")
       .attr("id", identifiers.svgNodeId)
-      .attr("class", "svg")      
+      .attr("class", "svg")
       .attr("width", widthRel)
       .attr("height", heightRel)
       .attr("viewBox", `0 0 0 0`)

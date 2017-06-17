@@ -51,4 +51,5 @@ export const identifiers = {
   vendorTabs: "RTTabs",
   vendorProgress: "RTProgressBar",
   vendorTooltip: "RTTooltip",
+  vendorAvatar: "RTAvatar",
 };

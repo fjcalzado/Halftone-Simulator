@@ -1,7 +1,8 @@
 /******************* IMPORT *******************/
 import * as React from "react";
 import { themr } from "react-css-themr";
-import { SketchPicker } from "react-color";
+import { ChromePicker  } from "react-color";
+import { Dialog } from "react-toolbox/lib/dialog";
 
 import { identifiers } from "../../identifiers";
 
@@ -27,8 +28,8 @@ interface Props {
     swatch: string,
     open: string,
     disabled: string,
-    popover: string,
-    cover: string,
+    dialog: string,
+    palette: string,
   };
 }
 
@@ -58,20 +59,24 @@ class ColorPicker extends React.Component<Props, State> {
   public render() {
     const open = Boolean(this.state.displayColorPicker);
     const disabled = this.props.disabled;
-
     return(
       <div className={`${this.props.className || ""} ${this.props.theme.container}`.trim()}>
         <div className={`${this.props.theme.swatch}
                          ${disabled ? this.props.theme.disabled : ""}
                          ${open ? this.props.theme.open : ""}`}
           onClick={this.handleClick}
-          style={{background: this.props.color}} />
-        { open ?
-          <div className={this.props.theme.popover}>
-            <div className={this.props.theme.cover} onClick={this.handleClose} />
-            <SketchPicker color={this.props.color} onChange={this.handleChange}
-              disableAlpha={this.props.disableAlpha} />
-          </div> : null }
+          style={{background: this.props.color}}
+        />
+        <Dialog className={this.props.theme.dialog}
+          title="Pick Color"
+          actions={[{label: "Ok", onClick: this.handleClose}]}
+          onEscKeyDown={this.handleClose}
+          onOverlayClick={this.handleClose}
+          active={this.state.displayColorPicker}
+        >
+          <ChromePicker color={this.props.color} onChange={this.handleChange}
+            disableAlpha={this.props.disableAlpha} />
+        </Dialog>
       </div>
     );
   }
