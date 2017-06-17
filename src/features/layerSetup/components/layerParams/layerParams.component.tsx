@@ -22,6 +22,7 @@ interface Props {
   // Context theme API.
   theme?: {
     list: string;
+    listInnerItem: string;
   };
 }
 
@@ -78,23 +79,22 @@ class LayerParams extends React.Component<Props, {}> {
       return(
         <List className={this.props.theme.list}>
           <ListSubHeader caption="Layer Properties" />
-          <ListDivider />
-            <this.Visibility />
-            <this.Opacity />
+            <ListItem itemContent={<this.Visibility />}/>
+            <ListItem itemContent={<this.Opacity />}/>
           <ListSubHeader caption="Grid Configuration" />
-          <ListDivider />
-            <this.GridPattern />
-            <this.GridScale />
-            <this.GridRotation />
-            <this.GridSpecificParams />
+            <ListItem itemContent={<this.GridPattern />}/>
+            <ListItem itemContent={<this.GridScale />}/>
+            <ListItem itemContent={<this.GridRotation />}/>
+            {this.GridSpecificParams() ?
+              (<ListItem itemContent={<this.GridSpecificParams />}/>) : null
+            }
           <ListSubHeader caption="Dot Configuration" />
-          <ListDivider />
-            <this.DotShape />
-            <this.DotSizeBinding />
-            <this.DotSizeMinThreshold />
-            <this.DotSizeMaxThreshold />
-            <this.DotRotation />
-            <this.DotCustomColor />
+            <ListItem itemContent={<this.DotShape />}/>
+            <ListItem itemContent={<this.DotSizeBinding />}/>
+            <ListItem itemContent={<this.DotSizeMinThreshold />}/>
+            <ListItem itemContent={<this.DotSizeMaxThreshold />}/>
+            <ListItem itemContent={<this.DotRotation />}/>
+            <ListItem itemContent={<this.DotCustomColor />}/>
         </List>
       );
   }
@@ -105,7 +105,7 @@ class LayerParams extends React.Component<Props, {}> {
 
   private Visibility = () => {
     return (
-      <Switch
+      <Switch className={this.props.theme.listInnerItem}
         checked={this.props.layerParams.visible}
         label="Toggle Visibility"
         onChange={this.handleLayerChange.bind(this, "visible")}
@@ -115,7 +115,8 @@ class LayerParams extends React.Component<Props, {}> {
 
   private Opacity = () => {
     return (
-      <SliderExComponent editable min={0} max={1}
+      <SliderExComponent className={this.props.theme.listInnerItem}
+        editable min={0} max={1}
         displayMin={0} displayMax={100} displayStep={1}
         label={"Opacity"}
         value={this.props.layerParams.opacity}
@@ -130,7 +131,7 @@ class LayerParams extends React.Component<Props, {}> {
 
   private GridPattern = () => {
      return (
-      <Dropdown
+      <Dropdown className={this.props.theme.listInnerItem}
         label={"Pattern"}
         source={this.gridPatterns}
         value={this.props.layerParams.gridParams.pattern}
@@ -141,7 +142,8 @@ class LayerParams extends React.Component<Props, {}> {
 
   private GridScale = () => {
     return (
-      <SliderExComponent editable min={0} max={2}
+      <SliderExComponent className={this.props.theme.listInnerItem}
+        editable min={0} max={2}
         displayMin={0} displayMax={200} displayStep={1}
         label={"Scale"}
         value={this.props.layerParams.gridParams.scaleFactor}
@@ -152,7 +154,8 @@ class LayerParams extends React.Component<Props, {}> {
 
   private GridRotation = () => {
     return (
-      <SliderExComponent editable min={-180} max={180}
+      <SliderExComponent className={this.props.theme.listInnerItem}
+        editable min={-180} max={180}
         displayMin={-180} displayMax={180} displayStep={1}
         label={"Rotation"}
         value={this.props.layerParams.gridParams.rotationAngle}
@@ -171,7 +174,8 @@ class LayerParams extends React.Component<Props, {}> {
           sp = CreateDefaultSpecificParams(GridPatternType.Hex);
         }
         return (
-          <SliderExComponent editable min={0.5} max={2}
+          <SliderExComponent className={this.props.theme.listInnerItem}
+            editable min={0.5} max={2}
             displayMin={0.5} displayMax={2} displayStep={0.05}
             label={"Radius"}
             value={sp.radius}
@@ -184,7 +188,8 @@ class LayerParams extends React.Component<Props, {}> {
           sp = CreateDefaultSpecificParams(GridPatternType.Random);
         }
         return (
-          <SliderExComponent editable min={0.5} max={5}
+          <SliderExComponent className={this.props.theme.listInnerItem}
+            editable min={0.5} max={5}
             displayMin={0.5} displayMax={5} displayStep={0.05}
             label={"Limit"}
             value={sp.limit}
@@ -205,13 +210,15 @@ class LayerParams extends React.Component<Props, {}> {
         }
         return (
           <div>
-            <SliderExComponent editable min={4} max={50}
+            <SliderExComponent className={this.props.theme.listInnerItem}
+              editable min={4} max={50}
               displayMin={4} displayMax={50} displayStep={1}
               label={"Wavelength"}
               value={sp.wavelength}
               onChange={this.handleGridSpecificParamsChange.bind(this, "wavelength")}
             />
-            <SliderExComponent editable min={1} max={20}
+            <SliderExComponent className={this.props.theme.listInnerItem}
+              editable min={1} max={20}
               displayMin={1} displayMax={20} displayStep={1}
               label={"Amplitude"}
               value={sp.amplitude}
@@ -233,13 +240,15 @@ class LayerParams extends React.Component<Props, {}> {
         }
         return (
           <div>
-            <SliderExComponent editable min={4} max={50}
+            <SliderExComponent className={this.props.theme.listInnerItem}
+              editable min={4} max={50}
               displayMin={4} displayMax={50} displayStep={1}
               label={"Length"}
               value={sp.length}
               onChange={this.handleGridSpecificParamsChange.bind(this, "length")}
             />
-            <SliderExComponent editable min={1} max={20}
+            <SliderExComponent className={this.props.theme.listInnerItem}
+              editable min={1} max={20}
               displayMin={1} displayMax={20} displayStep={1}
               label={"Amplitude"}
               value={sp.amplitude}
@@ -259,7 +268,7 @@ class LayerParams extends React.Component<Props, {}> {
 
   private DotShape = () => {
      return (
-      <Dropdown
+      <Dropdown className={this.props.theme.listInnerItem}
         label={"Shape"}
         source={this.dotShapes}
         value={this.props.layerParams.dotParams.shape}
@@ -275,7 +284,7 @@ class LayerParams extends React.Component<Props, {}> {
 
   private DotSizeBinding = () => {
      return (
-      <Dropdown
+      <Dropdown className={this.props.theme.listInnerItem}
         label={"Size Binding"}
         source={this.dotSizeBindings}
         value={this.props.layerParams.dotParams.sizeBinding}
@@ -286,7 +295,8 @@ class LayerParams extends React.Component<Props, {}> {
 
   private DotSizeMinThreshold = () => {
     return (
-      <SliderExComponent editable min={0} max={2}
+      <SliderExComponent className={this.props.theme.listInnerItem}
+        editable min={0} max={2}
         displayMin={0} displayMax={200} displayStep={1}
         label={"Min"}
         value={this.props.layerParams.dotParams.sizeMinThreshold}
@@ -301,7 +311,8 @@ class LayerParams extends React.Component<Props, {}> {
 
   private DotSizeMaxThreshold = () => {
     return (
-      <SliderExComponent editable min={0} max={2}
+      <SliderExComponent className={this.props.theme.listInnerItem}
+        editable min={0} max={2}
         displayMin={0} displayMax={200} displayStep={1}
         label={"Max"}
         value={this.props.layerParams.dotParams.sizeMaxThreshold}
@@ -316,7 +327,8 @@ class LayerParams extends React.Component<Props, {}> {
 
   private DotRotation = () => {
     return (
-      <SliderExComponent editable min={-180} max={180}
+      <SliderExComponent className={this.props.theme.listInnerItem}
+        editable min={-180} max={180}
         displayMin={-180} displayMax={180} displayStep={1}
         label={"Rotation"}
         value={this.props.layerParams.dotParams.rotationAngle}
@@ -327,7 +339,8 @@ class LayerParams extends React.Component<Props, {}> {
 
   private DotCustomColor = () => {
     return (
-      <ColorPickerToggleableComponent label="Customize Color"
+      <ColorPickerToggleableComponent className={this.props.theme.listInnerItem}
+        label="Customize Color"
         color={this.props.layerParams.dotParams.color}
         toggled={this.props.layerParams.dotParams.colorCustom}
         disableAlpha={true}

@@ -18,3 +18,13 @@
     @include themify(color, $colorTextPrimary);
   }
 }
+
+h5.subheader {
+  @include themify(color background-color,
+  $colorTextPrimary $colorBackgroundAccent);
+
+  margin: 15px 0 5px 0;
+  padding-left: 8px;
+  line-height: 1.5rem;
+}
+

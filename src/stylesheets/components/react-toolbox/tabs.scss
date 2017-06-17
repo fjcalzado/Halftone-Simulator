@@ -1,11 +1,16 @@
 @import "../../theme/autothemer.scss";
 
-
 .tab {
   // FIX. Blue outline when focus.
   outline: none;
   // FIX. Occupy whole space.
   flex-grow: 1;
+}
+
+.navigation {
+  // FIX. Avoid showing scroll bars.
+  overflow: hidden;
+  height: 100%;
 }
 
 .label {
