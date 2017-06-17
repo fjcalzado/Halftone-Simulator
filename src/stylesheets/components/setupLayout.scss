@@ -1,15 +1,18 @@
 @import "../theme/autothemer.scss";
 
 .container {
-  height: 100%;
-  padding: 25px 0 25px 25px;
+  display: flex;
+  flex-grow: 1;
+  padding: 25px;
   box-sizing: border-box;
+  height: 100%;
 }
 
 .tabs {
   @include themify(color background-color box-shadow,
   $colorTextPrimary $colorBackgroundPrimary $shadow6p);
 
+  flex-grow: 1;
   height: 100%;
   // border-radius: 5px;
 }

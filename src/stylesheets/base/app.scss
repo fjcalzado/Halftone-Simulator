@@ -17,6 +17,8 @@ body {
   @include themify(font-family font-weight background-color color,
   $fontPrimary $fontWeightThin $colorBackgroundAccent $colorTextPrimary,
   true);
+
+  height: 100%;
 }
 
 // Use selector 'starts with' to avoid 
@@ -27,8 +29,8 @@ div[id^="appContainer"] {
 
 .layoutContainerColumn {
   display: flex;
-  height: 100%;
   flex-direction: column;
+  height: 100%;
 }
 
 .layoutContainerRow {
@@ -36,17 +38,21 @@ div[id^="appContainer"] {
   flex-direction: row;
   flex-grow: 1;
   align-items: stretch;
+  height: 100%;
 }
 
 .panelLeft {
+  display: flex;
   flex-basis: 25%;
-  max-width: 400px;
+  max-width: 450px;
   padding: 0;
   flex-grow: 0;
+  height: 100%;
 }
 
 .panelMain {
   flex-grow: 1;
+  height: 100%;
 }
 
 

@@ -5,12 +5,27 @@
   & [data-react-toolbox='font-icon'] {
     display: flex;
     align-items: center;
+    width: auto !important;
   }
 }
 
-// FIX. Item action margin adding some inconsistent shifting.
+
 .itemAction {
-  // margin: 0 !important;
+  // FIX. Item action margin adding some inconsistent shifting.
+  margin-right: 0 !important;
+}
+
+.left {
+  & :last-child {
+    & > [data-react-toolbox="font-icon"] {
+      &:not([class*="dragHandle"]) {
+        // Non dragHandle left icon in list items.
+        // FIX. Excessive left icon margin with respect the content.
+        margin-right: 0;
+        cursor: help;
+      }
+    }
+  }
 }
 
 .itemText {
@@ -23,8 +38,9 @@ h5.subheader {
   @include themify(color background-color,
   $colorTextPrimary $colorBackgroundAccent);
 
-  margin: 15px 0 5px 0;
+  margin: 20px 0 10px 0;
   padding-left: 8px;
   line-height: 1.5rem;
 }
+
 

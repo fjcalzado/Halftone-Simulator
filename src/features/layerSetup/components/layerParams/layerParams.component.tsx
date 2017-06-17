@@ -4,6 +4,9 @@ import { themr } from "react-css-themr";
 import { List, ListItem, ListSubHeader, ListDivider, ListCheckbox } from "react-toolbox/lib/list";
 import { Switch } from "react-toolbox/lib/switch";
 import { Dropdown } from "react-toolbox/lib/dropdown";
+import { FontIcon } from "react-toolbox/lib/font_icon";
+import Tooltip from "react-toolbox/lib/tooltip";
+const TooltipIcon = Tooltip(FontIcon);
 
 import { identifiers } from "../../../../identifiers";
 import { SliderExComponent } from "../../../../components/sliderEx";
@@ -75,31 +78,30 @@ class LayerParams extends React.Component<Props, {}> {
   }
 
   public render() {
-  // TODO: Embedd into list items.
-      return(
-        <List className={this.props.theme.list}>
-          <ListSubHeader caption="Layer Properties" />
-            <ListItem itemContent={<this.Visibility />}/>
-            <ListItem itemContent={<this.Opacity />}/>
-          <ListSubHeader caption="Grid Configuration" />
-            <ListItem itemContent={<this.GridPattern />}/>
-            <ListItem itemContent={<this.GridScale />}/>
-            <ListItem itemContent={<this.GridRotation />}/>
-            {this.GridSpecificParams() ?
-              (<ListItem itemContent={<this.GridSpecificParams />}/>) : null
-            }
-          <ListSubHeader caption="Dot Configuration" />
-            <ListItem itemContent={<this.DotShape />}/>
-            <ListItem itemContent={<this.DotSizeBinding />}/>
-            <ListItem itemContent={<this.DotSizeMinThreshold />}/>
-            <ListItem itemContent={<this.DotSizeMaxThreshold />}/>
-            <ListItem itemContent={<this.DotRotation />}/>
-            <ListItem itemContent={<this.DotCustomColor />}/>
-        </List>
-      );
+    return(
+      <List className={this.props.theme.list}>
+        <ListSubHeader caption="Layer Properties" />
+          <ListItem itemContent={<this.Visibility />}/>
+          <ListItem itemContent={<this.Opacity />}
+            leftIcon={<TooltipIcon value="gradient" tooltip="Opacity"/>}/>
+        <ListSubHeader caption="Grid Configuration" />
+          <ListItem itemContent={<this.GridPattern />}/>
+          <ListItem itemContent={<this.GridScale />}/>
+          <ListItem itemContent={<this.GridRotation />}/>
+          {this.GridSpecificParams() ? <this.GridSpecificParams /> : null}
+        <ListSubHeader caption="Dot Configuration" />
+          <ListItem itemContent={<this.DotShape />}/>
+          <ListItem itemContent={<this.DotSizeBinding />}/>
+          <ListItem itemContent={<this.DotSizeMinThreshold />}/>
+          <ListItem itemContent={<this.DotSizeMaxThreshold />}/>
+          <ListItem itemContent={<this.DotRotation />}/>
+          <ListItem itemContent={<this.DotCustomColor />}/>
+      </List>
+    );
   }
 
   /******************* SUB-COMPONENTS *******************/
+
 
   // LAYER PARAMS.
 
@@ -118,7 +120,6 @@ class LayerParams extends React.Component<Props, {}> {
       <SliderExComponent className={this.props.theme.listInnerItem}
         editable min={0} max={1}
         displayMin={0} displayMax={100} displayStep={1}
-        label={"Opacity"}
         value={this.props.layerParams.opacity}
         onChange={this.handleLayerChange.bind(this, "opacity")}
       />
