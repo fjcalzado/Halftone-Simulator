@@ -17,4 +17,10 @@
   // border-radius: 5px;
 }
 
+[data-react-toolbox="tabs"] [class^="tab"] {
+  // Make tab area scrollable.
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
 

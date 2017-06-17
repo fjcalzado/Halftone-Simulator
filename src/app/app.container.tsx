@@ -41,7 +41,7 @@ export class AppContainer extends React.Component<Props, State> {
       resolution: 10000,
       autoResolution: true,
       backgroundColor: "rgb(255, 255, 255)",
-      customBackgroundColor: false,
+      customBackgroundColor: true,
       presetList: PresetList,
     };
   }

@@ -6,7 +6,7 @@ export const PresetList: PresetCollection = [
     description: "Simplest pattern",
     thumbnailUrl: require("./DefaultSprite.svg"),
     layerStackJSON: require("./Default.json"),
-    customBackgroundColor: false,
+    customBackgroundColor: true,
     backgroundColor: "rgb(255, 255, 255)",
   },
   {
@@ -14,7 +14,7 @@ export const PresetList: PresetCollection = [
     description: "Simulates CMYK printing",
     thumbnailUrl: require("./CMYKPrintSprite.svg"),
     layerStackJSON: require("./CMYKPrint.json"),
-    customBackgroundColor: false,
+    customBackgroundColor: true,
     backgroundColor: "rgb(255, 255, 255)",
   },
 ];

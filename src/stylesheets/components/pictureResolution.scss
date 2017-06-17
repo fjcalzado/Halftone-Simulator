@@ -1,0 +1,19 @@
+@import "../theme/autothemer.scss";
+
+.container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+}
+
+.icon {
+  @include themify(color, $colorTextPrimary);
+
+  flex-grow: 0;
+  cursor: help;
+}
+
+.slider {
+  flex-grow: 1;
+}

@@ -2,25 +2,27 @@
 
 .container {
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: flex-end;
+  flex-direction: column;
   width: 100%;
 }
 
-.backgroundColorPicker {
-  margin: 0 1rem;
+.pictureUpload {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: center;
+  margin: 20px 0;
 }
 
-.resolutionPicker {
-  margin: 0 1rem;
+.backgroundColorPicker {
+  margin: 8px 0;
+}
+
+.pictureResolution {
+  margin: 8px 0;
 }
 
 .pictureSelector {
-  margin: 0 1rem;
 }
 
-.pictureUpload {
-  margin: 0 1rem;
-}
+

@@ -36,6 +36,7 @@ export const identifiers = {
   backgroundColorPicker: "CMPBackgroundColorPicker",
   pictureSelector: "CMPPictureSelector",
   pictureUpload: "CMPPictureUpload",
+  pictureResolution: "CMPPictureResolution",
 
   // Vendor/Third-Party Components CSS.
   // RT: React-Toolbox.

@@ -53,11 +53,7 @@ class PictureUpload extends React.Component<Props, {}> {
         onFileChange={this.handleFileChange}
         filter=".jpg,.jpeg,.png,.bmp,.gif"
         button={(
-          <Button
-            icon="file_upload"
-            label="Upload"
-            raised
-          />
+          <Button icon="file_upload" label="Upload" raised accent/>
         )}
       />
     );

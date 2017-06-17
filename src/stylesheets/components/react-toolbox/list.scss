@@ -13,17 +13,8 @@
     // FIX. Left icon not properly vertical centered.
     display: flex;
     align-items: center;
-    width: auto !important;
   }
-}
 
-
-.itemAction {
-  // FIX. Item action margin adding some inconsistent shifting.
-  margin-right: 0 !important;
-}
-
-.left {
   & :last-child {
     & > [data-react-toolbox="font-icon"] {
       &:not([class*="dragHandle"]) {
@@ -34,6 +25,12 @@
       }
     }
   }
+}
+
+
+.itemAction {
+  // FIX. Item action margin adding some inconsistent shifting.
+  // margin-right: 0 !important;
 }
 
 .itemText {

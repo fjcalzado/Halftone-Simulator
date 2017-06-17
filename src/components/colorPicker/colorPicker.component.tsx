@@ -61,16 +61,17 @@ class ColorPicker extends React.Component<Props, State> {
 
     return(
       <div className={`${this.props.className || ""} ${this.props.theme.container}`.trim()}>
-        <div className={`${this.props.theme.swatch} 
+        <div className={`${this.props.theme.swatch}
                          ${disabled ? this.props.theme.disabled : ""}
                          ${open ? this.props.theme.open : ""}`}
           onClick={this.handleClick}
           style={{background: this.props.color}} />
-        { open ? <div className={this.props.theme.popover}>
-          <div className={this.props.theme.cover} onClick={this.handleClose}/>
-          <SketchPicker color={this.props.color} onChange={this.handleChange}
-            disableAlpha={this.props.disableAlpha} />
-        </div> : null }
+        { open ?
+          <div className={this.props.theme.popover}>
+            <div className={this.props.theme.cover} onClick={this.handleClose} />
+            <SketchPicker color={this.props.color} onChange={this.handleChange}
+              disableAlpha={this.props.disableAlpha} />
+          </div> : null }
       </div>
     );
   }

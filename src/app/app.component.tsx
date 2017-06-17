@@ -60,7 +60,6 @@ export class AppComponent extends React.Component<Props, {}> {
                   icon: "image",
                   content: (
                     <PictureSetupComponent className={"TODO"}
-                      imageUrl={this.props.imageUrl}
                       sampleImageList={this.props.sampleImageList}
                       resolution={this.props.resolution}
                       autoResolution={this.props.autoResolution}
