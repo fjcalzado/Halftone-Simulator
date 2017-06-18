@@ -13,9 +13,6 @@ import { PictureSetupComponent } from "../features/pictureSetup";
 import { PresetSelectorComponent } from "../features/presetSelector";
 import { SetupLayoutComponent } from "../features/setupLayout";
 
-// TODO: To be deleted **************************************
-import { IntroComponent } from "../tmp-mocks/introMock";
-
 
 /******************* INTERFACE *******************/
 

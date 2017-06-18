@@ -5,6 +5,7 @@ import { AppBar } from "react-toolbox/lib/app_bar";
 import { Navigation } from "react-toolbox/lib/navigation";
 import { Link } from "react-toolbox/lib/link";
 import { FontIcon } from "react-toolbox";
+import { Drawer } from "react-toolbox/lib/drawer";
 
 import { identifiers } from "../../identifiers";
 import { localFileReader } from "../../rest-api/localFileReader";
@@ -19,11 +20,13 @@ interface Props {
     container: string;
     bar: string;
     navigationGroup: string;
+    drawer: string;
   };
 }
 
 interface State {
   showInfo: boolean;
+  showDrawer: boolean;
 }
 
 
@@ -35,6 +38,7 @@ class NavigationBar extends React.Component<Props, State> {
 
     this.state = {
       showInfo: false,
+      showDrawer: false,
     };
   }
 
@@ -55,14 +59,20 @@ class NavigationBar extends React.Component<Props, State> {
         <AppBar className={this.props.theme.bar}
           title="Halftone Simulator"
           leftIcon="menu"
+          onLeftIconClick={this.handleGenericStateChange.bind(this, "showDrawer", true)}
           rightIcon={GithubIcon()}
           onRightIconClick={this.handleRightIconClick}
         >
-          {this.navigationLinks}
         </AppBar>
         <InfoDialogComponent show={this.state.showInfo}
           onClose={this.handleGenericStateChange.bind(this, "showInfo", false)}
         />
+        <Drawer className={this.props.theme.drawer}
+          active={this.state.showDrawer}
+          onOverlayClick={this.handleGenericStateChange.bind(this, "showDrawer", false)}
+        >
+          {this.navigationLinks}
+        </Drawer>
       </div>
     );
   }
@@ -70,7 +80,7 @@ class NavigationBar extends React.Component<Props, State> {
   // TODO. Move apart to another file.
   private navigationLinks = (
     <Navigation className={this.props.theme.navigationGroup}
-      type="horizontal"
+      type="vertical"
     >
       <Link href="#" label="Info" icon="info" onClick={this.handleGenericStateChange.bind(this, "showInfo", true)} />
       <Link href="mailto:fjcalzadosp@gmail.com?Subject=Halftone" label="Contact" icon="person" />
