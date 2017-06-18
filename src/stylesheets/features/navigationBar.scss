@@ -1,0 +1,7 @@
+@import "../theme/autothemer.scss";
+
+.bar {
+  @include themify(background color,
+  $colorBackgroundPrimary $colorTextPrimary);
+}
+

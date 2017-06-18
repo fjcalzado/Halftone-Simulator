@@ -13,6 +13,7 @@ export const identifiers = {
   app: "APPLayout",
 
   // Project Features (FT).
+  navigationBar: "FTNavigationBar",
   pictureSetup: "FTInputPictureSetup",
   halftone: "FTHalftone",
   layerSetup: "FTLayerSetup",
@@ -53,4 +54,5 @@ export const identifiers = {
   vendorProgress: "RTProgressBar",
   vendorTooltip: "RTTooltip",
   vendorAvatar: "RTAvatar",
+  vendorAppBar: "RTAppBar",
 };

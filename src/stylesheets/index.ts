@@ -8,6 +8,7 @@ export const contextStylesheets = {
   [identifiers.app]: require("./app/app.scss"),
 
   // Project Features CSS.
+  [identifiers.navigationBar]: require("./features/navigationBar.scss"),
   [identifiers.pictureSetup]: require("./features/pictureSetup.scss"),
   [identifiers.halftone]: require("./features/halftone.scss"),
   [identifiers.layerSetup]: require("./features/layerSetup.scss"),
@@ -47,6 +48,7 @@ export const contextStylesheets = {
   [identifiers.vendorProgress]: require("./vendor/react-toolbox/progress.scss"),
   [identifiers.vendorTooltip]: require("./vendor/react-toolbox/tooltip.scss"),
   [identifiers.vendorAvatar]: require("./vendor/react-toolbox/avatar.scss"),
+  [identifiers.vendorAppBar]: require("./vendor/react-toolbox/appbar.scss"),
 
   // TODO: Remove, just for testing ************************
   CMPIntroMock: require("./components/introMock.scss"),

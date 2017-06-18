@@ -6,6 +6,7 @@ import { identifiers } from "../identifiers";
 import { LayerStack } from "../models/layerModel";
 import { SampleImageItem } from "../models/sampleImageModel";
 import { Preset, PresetCollection } from "../models/presetModel";
+import { NavigationBarComponent } from "../features/navigationBar";
 import { HalftoneComponent } from "../features/halftone";
 import { LayerSetupContainer } from "../features/layerSetup";
 import { PictureSetupComponent } from "../features/pictureSetup";
@@ -41,6 +42,7 @@ interface Props {
   theme?: {
     layoutAppContainer: string;
     layoutNavigationContainer: string;
+    layoutDecorator: string;
     layoutMainContainer: string;
     panelLeft: string;
     panelMain: string;
@@ -60,8 +62,10 @@ class App extends React.Component<Props, {}> {
       <div className={this.props.theme.layoutAppContainer}>
 
         <div className={this.props.theme.layoutNavigationContainer}>
-          <IntroComponent fakeProperty={true} />
+          <NavigationBarComponent />
         </div>
+
+        <div className={this.props.theme.layoutDecorator} />
 
         <div className={this.props.theme.layoutMainContainer}>
           <div className={this.props.theme.panelLeft}>

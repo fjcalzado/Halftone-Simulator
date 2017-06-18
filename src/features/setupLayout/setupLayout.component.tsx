@@ -52,6 +52,7 @@ class SetupLayout extends React.Component<Props, State> {
         <Tabs className={this.props.theme.tabs}
           index={this.state.tabIndex}
           onChange={this.handleTabChange}
+          fixed
         >
           {tabItems}
         </Tabs>

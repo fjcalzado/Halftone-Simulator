@@ -41,8 +41,17 @@ div[id^="appContainer"] {
   flex: 0 0 auto;
 }
 
+.layoutDecorator {
+  @include themify(background, $colorGradient);
+
+  height: 16px;
+  z-index: -1;
+}
+
 .layoutMainContainer {
-  @include respond-to(small){
+  @include themify(box-shadow, $shadow4pInv);
+
+  @include respond-to(small) {
     flex-direction: column;
   }
 
@@ -53,7 +62,7 @@ div[id^="appContainer"] {
 }
 
 .panelLeft {
-  @include respond-to(small){
+  @include respond-to(small) {
     max-width: initial;
   }
 
@@ -65,7 +74,7 @@ div[id^="appContainer"] {
 }
 
 .panelMain {
-  @include respond-to(small){
+  @include respond-to(small) {
     height: 100vh;
     padding: 25px 0;
   }

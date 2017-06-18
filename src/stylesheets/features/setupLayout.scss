@@ -15,7 +15,8 @@
 
 [data-react-toolbox="tabs"] [class^="tab"] {
   // Make tab area scrollable.
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 
