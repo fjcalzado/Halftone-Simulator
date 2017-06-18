@@ -4,11 +4,17 @@
   // FIX. Blue outline when focus.
   outline: none;
   // FIX. Occupy whole space.
-  flex-grow: 1;
+  flex: 0 1 100%;
+}
+
+.navigationContainer {
+  // FIX. Shrink navigation area on small devices.
+  flex: 0 0 auto;
 }
 
 .navigation {
   // FIX. Avoid showing scroll bars.
+  flex: 0 0 auto;
   overflow: hidden;
   height: 100%;
 }

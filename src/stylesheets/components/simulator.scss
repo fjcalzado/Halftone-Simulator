@@ -2,9 +2,19 @@
 
 .simulatorView {
   display: flex;
+  flex: 1 1 auto;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  // FIX. MS Edge not calculating properly height/width in percentage units
+  // of SVG elements.
+  position: relative;
+}
+
+// FIX. MS Edge not calculating properly height/width in percentage units
+// of SVG elements.
+svg {
+  position: absolute;
   width: 100%;
   height: 100%;
 }

@@ -347,7 +347,7 @@ class LayerParams extends React.Component<Props, {}> {
   private DotCustomColor = () => {
     return (
       <ColorPickerToggleableComponent className={this.props.theme.listInnerItem}
-        label="Customize Color"
+        label="Custom Color"
         color={this.props.layerParams.dotParams.color}
         toggled={this.props.layerParams.dotParams.colorCustom}
         disableAlpha={true}

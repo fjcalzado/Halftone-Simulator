@@ -23,7 +23,7 @@ let widthRel = "100%";
 let heightRel = "100%";
 
 // Input image.
- let srcImage: any[][] = null;
+let srcImage: any[][] = null;
 
 /**
  * Initialization public API. Provide a source image, a container or
@@ -32,7 +32,6 @@ let heightRel = "100%";
  * @public
  * @function initialize
  * @param  {any} parentNode: string {Parent node to append SVG element to.}
- * @param  {string} width: string {Width of the SVG element in relative units.}
  * @param  {string} height: string {Height of the SVG element in relative units.}
  * @return {void}
  */
@@ -80,9 +79,9 @@ export function setImage(sourceImage: any[][]): void {
   const srcImgWidth = srcImage[0].length;
   const srcImgHeight = srcImage.length;
 
-  // Configure SVG Viewport adn SVG Background based on
+  // Configure SVG Viewport and SVG Background based on
   // new image dimensions.
-  svg.attr("viewBox", `-1 -1 ${srcImgWidth + 2} ${srcImgHeight + 2}`);
+  svg.attr("viewBox", `0 0 ${srcImgWidth} ${srcImgHeight}`);
   svgBackground.attr("width", srcImgWidth).attr("height", srcImgHeight);
 }
 

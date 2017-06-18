@@ -35,7 +35,7 @@ class BackgroundColorPicker extends React.Component<Props, {}> {
     return(
       <ColorPickerToggleableComponent className={`${this.props.className || ""}
                                                   ${this.props.theme.container || ""}`.trim()}
-        label={"Background Color"}
+        label={"Background"}
         color={this.props.color}
         toggled={this.props.customColor}
         disableAlpha={true}

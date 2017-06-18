@@ -50,9 +50,13 @@ export class AppComponent extends React.Component<Props, {}> {
   public render() {
     return(
       <ThemeProvider theme={contextStylesheets}>
-        <div className={styles.layoutContainerColumn}>
-          <IntroComponent fakeProperty={true} />
-          <div className={styles.layoutContainerRow}>
+        <div className={styles.layoutAppContainer}>
+
+          <div className={styles.layoutNavigationContainer}>
+            <IntroComponent fakeProperty={true} />
+          </div>
+
+          <div className={styles.layoutMainContainer}>
             <div className={styles.panelLeft}>
               <SetupLayoutComponent tabsContent={[
                 {

@@ -17,8 +17,6 @@ body {
   @include themify(font-family font-weight background-color color,
   $fontPrimary $fontWeightThin $colorBackgroundAccent $colorTextPrimary,
   true);
-
-  height: 100%;
 }
 
 // Use selector 'starts with' to avoid 
@@ -27,32 +25,38 @@ div[id^="appContainer"] {
   @include expandHeight;
 }
 
-.layoutContainerColumn {
+// This is the first flex container, so no more explicit 'height: 100%'
+// since this point on.
+.layoutAppContainer {
   display: flex;
   flex-direction: column;
   height: 100%;
 }
 
-.layoutContainerRow {
+.layoutNavigationContainer {
+  flex: 0 0 auto;
+}
+
+.layoutMainContainer {
   display: flex;
+  flex: 1 1 100%;
   flex-direction: row;
-  flex-grow: 1;
   align-items: stretch;
-  height: 100%;
 }
 
 .panelLeft {
   display: flex;
-  flex-basis: 25%;
+  flex: 0 0 25%;
   max-width: 450px;
-  padding: 0;
-  flex-grow: 0;
-  height: 100%;
+  padding: 25px;
+  box-sizing: border-box;
 }
 
 .panelMain {
-  flex-grow: 1;
-  height: 100%;
+  display: flex;
+  flex: 1 1 auto;
+  padding: 25px 25px 25px 0;
+  box-sizing: border-box;
 }
 
 
