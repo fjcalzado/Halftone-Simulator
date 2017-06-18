@@ -11,7 +11,6 @@ interface FileReaderEvent extends Event {
 // ***************************************************
 
 
-
 /**
  * LocalFileReader Interface export.
  */
@@ -31,7 +30,7 @@ function CreateLocalFileReader() {
   const getLocalFile = (file: File, readCallback: (reader: FileReader) => void): Promise<string> => {
     return new Promise<string>((resolve, reject) => {
       try {
-        const reader = new FileReader();          
+        const reader = new FileReader();
         reader.onload = (event: FileReaderEvent) => resolve(event.target.result);
         readCallback(reader);
       } catch (error) {
@@ -41,7 +40,7 @@ function CreateLocalFileReader() {
   };
 
   return {
-    
+
     getLocalFileAsURL: (file: File): Promise<string> => {
       return getLocalFile(file, (reader) => reader.readAsDataURL(file));
     },
@@ -52,7 +51,7 @@ function CreateLocalFileReader() {
       return getLocalFile(file, (reader) => reader.readAsBinaryString(file));
     },
   };
-};
+}
 
 /**
  * Export LocalFileReader Singleton object.

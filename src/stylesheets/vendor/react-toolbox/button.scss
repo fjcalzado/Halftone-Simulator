@@ -1,6 +1,6 @@
 @import "../../theme/autothemer.scss";
 
-.primary:not([disabled]) {
+button.primary:not([disabled]) {
   &.raised,
   &.floating {
     @include themify(background color, $colorPrimary $colorTextSecondary);
@@ -20,7 +20,7 @@
   }
 }
 
-.accent:not([disabled]) {
+button.accent:not([disabled]) {
   &.raised,
   &.floating {
     @include themify(background color, $colorAccent $colorTextSecondary);
@@ -40,7 +40,7 @@
   }
 }
 
-.neutral:not([disabled]) {
+button.neutral:not([disabled]) {
   &.raised,
   &.floating {
     @include themify(background color, $colorBackgroundPrimary $colorTextPrimary);

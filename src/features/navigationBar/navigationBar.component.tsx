@@ -4,10 +4,11 @@ import { themr } from "react-css-themr";
 import { AppBar } from "react-toolbox/lib/app_bar";
 import { Navigation } from "react-toolbox/lib/navigation";
 import { Link } from "react-toolbox/lib/link";
+import { FontIcon } from "react-toolbox";
 
 import { identifiers } from "../../identifiers";
-const githubIcon = require("./GitHub_Icon.svg");
-
+import { localFileReader } from "../../rest-api/localFileReader";
+import { GithubIcon } from "./github.icon";
 
 /******************* INTERFACE *******************/
 
@@ -29,11 +30,11 @@ class NavigationBar extends React.Component<Props, {}> {
   public render() {
     return(
       <AppBar className={this.props.theme.bar}
-        title="Halftone Simulator" leftIcon="menu" rightIcon={<img src={githubIcon} />}>
-        <Navigation type="horizontal">
+        title="Halftone Simulator" leftIcon="menu" rightIcon={GithubIcon()}>
+        {/*<Navigation type="horizontal">
           <Link href="http://" label="Inbox" icon="inbox" />
           <Link href="http://" active label="Profile" icon="person" />
-        </Navigation>
+        </Navigation>*/}
       </AppBar>
     );
   }

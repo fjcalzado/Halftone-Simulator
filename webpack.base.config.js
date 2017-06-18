@@ -39,6 +39,17 @@ module.exports = {
         }
       }]
     },
+    // *** Vector ***
+    {
+      test: /\.svg$/,
+      exclude: [/node_modules/],
+      use: [{
+        loader: "file-loader",
+        options: {
+          name: "public/vector/[name].[ext]"
+        }
+      }]
+    },
     // *** Fonts ***
     {
       test: /\.woff$/,

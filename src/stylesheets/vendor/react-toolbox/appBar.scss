@@ -1,13 +1,16 @@
 @import "../../theme/autothemer.scss";
 
 header.appBar {
-  height: auto;
+  height: 48px;
 }
 
 .title {
-  @include themify(background-image, $colorGradient);
+  //@include themify(color, $colorGradient);
 
-  color: transparent;
-  background-clip: text;
-  -webkit-background-clip: text;
+  // Gradient Title.
+  // @include themify(background-image, $colorGradient);
+
+  // color: transparent;
+  // background-clip: text;
+  // -webkit-background-clip: text;
 }

@@ -44,6 +44,7 @@ div[id^="appContainer"] {
 .layoutDecorator {
   @include themify(background, $colorGradient);
 
+  flex: 0 1 auto;
   height: 16px;
   z-index: -1;
 }
