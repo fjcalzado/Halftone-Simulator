@@ -6,7 +6,6 @@
   margin: 0;
   padding: 0;
   height: 100%;
-  max-height: 100vh;
 }
 
 html {
@@ -29,6 +28,10 @@ div[id^="appContainer"] {
 // This is the first flex container, so no more explicit 'height: 100%'
 // since this point on.
 .layoutAppContainer {
+  @include respond-to(small){
+    height: auto;
+  }
+
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -39,6 +42,10 @@ div[id^="appContainer"] {
 }
 
 .layoutMainContainer {
+  @include respond-to(small){
+    flex-direction: column;
+  }
+
   display: flex;
   flex: 1 1 auto;
   flex-direction: row;
@@ -46,6 +53,10 @@ div[id^="appContainer"] {
 }
 
 .panelLeft {
+  @include respond-to(small){
+    max-width: initial;
+  }
+
   display: flex;
   flex: 0 0 25%;
   max-width: 450px;
@@ -54,6 +65,11 @@ div[id^="appContainer"] {
 }
 
 .panelMain {
+  @include respond-to(small){
+    height: 100vh;
+    padding: 25px 0;
+  }
+
   display: flex;
   flex: 1 1 auto;
   padding: 25px 25px 25px 0;
