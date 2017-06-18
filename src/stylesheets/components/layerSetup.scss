@@ -3,13 +3,13 @@
 .container {
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
+  flex: 1 1 auto;
 }
 
 .scrollable {
   overflow-x: hidden;
   overflow-y: auto;
-  flex-grow: 1;
+  flex: 1 1 auto;
 
   .importExport {
     display: flex;
@@ -27,7 +27,7 @@
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  flex-grow: 0;
+  flex: 0 0 auto;
   padding-top: 15px;
   border-top-style: solid;
   border-top-width: 1px;

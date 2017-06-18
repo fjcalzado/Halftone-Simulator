@@ -4,7 +4,7 @@
   // FIX. Blue outline when focus.
   outline: none;
   // FIX. Occupy whole space.
-  flex: 0 1 100%;
+  flex: 1 1 100%;
 }
 
 .navigationContainer {
@@ -16,7 +16,7 @@
   // FIX. Avoid showing scroll bars.
   flex: 0 0 auto;
   overflow: hidden;
-  height: 100%;
+  //height: 100%;
 }
 
 .label {

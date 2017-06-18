@@ -3,11 +3,12 @@
 .container {
   display: flex;
   flex-direction: column;
-  width: 100%;
+  flex: 1 1 auto;
 }
 
 .pictureUpload {
   display: flex;
+  flex: 0 0 auto;
   align-items: center;
   flex-direction: row;
   justify-content: center;
@@ -16,13 +17,16 @@
 
 .backgroundColorPicker {
   margin: 8px 0;
+  flex: 0 0 auto;
 }
 
 .pictureResolution {
   margin: 8px 0;
+  flex: 0 0 auto;
 }
 
 .pictureSelector {
+  flex: 0 0 auto;
 }
 
 

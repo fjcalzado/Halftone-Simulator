@@ -1,6 +1,9 @@
 //@import "../theme/autothemer.scss";
 
 .container {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
 }
 
 .list {

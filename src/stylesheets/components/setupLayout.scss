@@ -4,7 +4,6 @@
   display: flex;
   flex: 1 1 auto;
   box-sizing: border-box;
-  height: 100%;
 }
 
 .tabs {
@@ -12,8 +11,6 @@
   $colorTextPrimary $colorBackgroundPrimary $shadow6p);
 
   flex: 1 1 auto;
-  height: 100%;
-  // border-radius: 5px;
 }
 
 [data-react-toolbox="tabs"] [class^="tab"] {

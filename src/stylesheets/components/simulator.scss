@@ -9,6 +9,8 @@
   // FIX. MS Edge not calculating properly height/width in percentage units
   // of SVG elements.
   position: relative;
+  height: 100%;
+  width: 100%;
 }
 
 // FIX. MS Edge not calculating properly height/width in percentage units

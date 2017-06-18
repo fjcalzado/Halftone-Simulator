@@ -4,18 +4,16 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  flex-grow: 0;
-  flex-shrink: 0;
-  width: 100%;
+  flex: 0 0 auto;
 }
 
 .icon {
   @include themify(color, $colorTextPrimary);
 
-  flex-grow: 0;
+  flex: 0 0 auto;
   cursor: help;
 }
 
 .slider {
-  flex-grow: 1;
+  flex: 1 1 auto;
 }
