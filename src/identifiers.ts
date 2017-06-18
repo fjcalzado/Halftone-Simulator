@@ -10,6 +10,7 @@ export const identifiers = {
 
 
   // *** REACT ***
+  app: "APPLayout",
 
   // Project Features (FT).
   pictureSetup: "FTInputPictureSetup",

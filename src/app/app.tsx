@@ -1,6 +1,8 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import { ThemeProvider } from "react-css-themr";
 
+import { contextStylesheets } from "../stylesheets";
 import { AppContainer } from "./app.container";
 
 // TODO: Set theme class name to body in order for auto themer to
@@ -10,5 +12,7 @@ document.body.setAttribute("class", /*TODO*/"theme-light");
 
 // Main render entry point.
 ReactDOM.render(
-  <AppContainer />
+  <ThemeProvider theme={contextStylesheets}>
+    <AppContainer />
+  </ThemeProvider>
   , document.getElementById("appContainer"));

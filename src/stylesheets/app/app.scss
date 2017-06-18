@@ -6,6 +6,7 @@
   margin: 0;
   padding: 0;
   height: 100%;
+  max-height: 100vh;
 }
 
 html {
@@ -39,7 +40,7 @@ div[id^="appContainer"] {
 
 .layoutMainContainer {
   display: flex;
-  flex: 1 1 100%;
+  flex: 1 1 auto;
   flex-direction: row;
   align-items: stretch;
 }

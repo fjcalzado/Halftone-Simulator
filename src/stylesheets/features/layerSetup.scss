@@ -7,8 +7,7 @@
 }
 
 .scrollable {
-  overflow-x: hidden;
-  overflow-y: auto;
+  overflow: auto;
   flex: 1 1 auto;
 
   .importExport {
@@ -16,7 +15,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-around;
-    padding-top: 25px;
+    padding: 25px 0;
   }
 }
 

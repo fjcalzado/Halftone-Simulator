@@ -5,12 +5,14 @@ import { identifiers } from "../identifiers";
  * @public
  */
 export const contextStylesheets = {
+  [identifiers.app]: require("./app/app.scss"),
+
   // Project Features CSS.
-  [identifiers.pictureSetup]: require("./components/pictureSetup.scss"),
-  [identifiers.halftone]: require("./components/halftone.scss"),
-  [identifiers.layerSetup]: require("./components/layerSetup.scss"),
-  [identifiers.presetSelector]: require("./components/presetSelector.scss"),
-  [identifiers.setupLayout]: require("./components/setupLayout.scss"),
+  [identifiers.pictureSetup]: require("./features/pictureSetup.scss"),
+  [identifiers.halftone]: require("./features/halftone.scss"),
+  [identifiers.layerSetup]: require("./features/layerSetup.scss"),
+  [identifiers.presetSelector]: require("./features/presetSelector.scss"),
+  [identifiers.setupLayout]: require("./features/setupLayout.scss"),
 
   // Project Components CSS.
   [identifiers.simulator]: require("./components/simulator.scss"),
@@ -32,19 +34,19 @@ export const contextStylesheets = {
   [identifiers.pictureUpload]: require("./components/pictureUpload.scss"),
   [identifiers.pictureResolution]: require("./components/pictureResolution.scss"),
 
-  // Vendor/Third-Party Components CSS.
-  [identifiers.vendorButton]: require("./components/react-toolbox/button.scss"),
-  [identifiers.vendorDialog]: require("./components/react-toolbox/dialog.scss"),
-  [identifiers.vendorInput]: require("./components/react-toolbox/input.scss"),
-  [identifiers.vendorList]: require("./components/react-toolbox/list.scss"),
-  [identifiers.vendorMenu]: require("./components/react-toolbox/menu.scss"),
-  [identifiers.vendorSwitch]: require("./components/react-toolbox/switch.scss"),
-  [identifiers.vendorSlider]: require("./components/react-toolbox/slider.scss"),
-  [identifiers.vendorDropdown]: require("./components/react-toolbox/dropdown.scss"),
-  [identifiers.vendorTabs]: require("./components/react-toolbox/tabs.scss"),
-  [identifiers.vendorProgress]: require("./components/react-toolbox/progress.scss"),
-  [identifiers.vendorTooltip]: require("./components/react-toolbox/tooltip.scss"),
-  [identifiers.vendorAvatar]: require("./components/react-toolbox/avatar.scss"),
+  // Vendor/Third-Party components CSS.
+  [identifiers.vendorButton]: require("./vendor/react-toolbox/button.scss"),
+  [identifiers.vendorDialog]: require("./vendor/react-toolbox/dialog.scss"),
+  [identifiers.vendorInput]: require("./vendor/react-toolbox/input.scss"),
+  [identifiers.vendorList]: require("./vendor/react-toolbox/list.scss"),
+  [identifiers.vendorMenu]: require("./vendor/react-toolbox/menu.scss"),
+  [identifiers.vendorSwitch]: require("./vendor/react-toolbox/switch.scss"),
+  [identifiers.vendorSlider]: require("./vendor/react-toolbox/slider.scss"),
+  [identifiers.vendorDropdown]: require("./vendor/react-toolbox/dropdown.scss"),
+  [identifiers.vendorTabs]: require("./vendor/react-toolbox/tabs.scss"),
+  [identifiers.vendorProgress]: require("./vendor/react-toolbox/progress.scss"),
+  [identifiers.vendorTooltip]: require("./vendor/react-toolbox/tooltip.scss"),
+  [identifiers.vendorAvatar]: require("./vendor/react-toolbox/avatar.scss"),
 
   // TODO: Remove, just for testing ************************
   CMPIntroMock: require("./components/introMock.scss"),
