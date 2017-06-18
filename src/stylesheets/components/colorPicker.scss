@@ -32,5 +32,10 @@
 
 div.dialog {
   width: auto;
+
+  [class="chrome-picker"] {
+    // FIX. Remove vendor picker shadow.
+    box-shadow: none !important;
+  }
 }
 

@@ -34,6 +34,7 @@ export const contextStylesheets = {
   [identifiers.pictureSelector]: require("./components/pictureSelector.scss"),
   [identifiers.pictureUpload]: require("./components/pictureUpload.scss"),
   [identifiers.pictureResolution]: require("./components/pictureResolution.scss"),
+  [identifiers.infoDialog]: require("./components/infoDialog.scss"),
 
   // Vendor/Third-Party components CSS.
   [identifiers.vendorButton]: require("./vendor/react-toolbox/button.scss"),
@@ -49,6 +50,7 @@ export const contextStylesheets = {
   [identifiers.vendorTooltip]: require("./vendor/react-toolbox/tooltip.scss"),
   [identifiers.vendorAvatar]: require("./vendor/react-toolbox/avatar.scss"),
   [identifiers.vendorAppBar]: require("./vendor/react-toolbox/appbar.scss"),
+  [identifiers.vendorLink]: require("./vendor/react-toolbox/link.scss"),
 
   // TODO: Remove, just for testing ************************
   CMPIntroMock: require("./components/introMock.scss"),

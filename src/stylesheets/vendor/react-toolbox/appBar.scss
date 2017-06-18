@@ -2,6 +2,13 @@
 
 header.appBar {
   height: 48px;
+
+  .rightIcon {
+    svg {
+      // FIX. Make the right icon SVG bigger.
+      width: 30px;
+    }
+  }
 }
 
 .title {

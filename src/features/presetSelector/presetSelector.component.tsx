@@ -42,8 +42,7 @@ class PresetSelector extends React.Component<Props, {}> {
         onClick={(event) => this.handleClick(item)}
       />
     ));
-// TODO. Delete trace.
-console.log(this.props.presetList[0].thumbnailUrl);
+
     return(
       <div className={this.props.theme.container}>
         <List className={this.props.theme.list} selectable ripple>

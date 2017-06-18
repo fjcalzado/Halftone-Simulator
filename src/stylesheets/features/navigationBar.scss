@@ -1,7 +1,18 @@
 @import "../theme/autothemer.scss";
 
+.container {
+  
+}
+
 .bar {
   @include themify(background color,
   $colorBackgroundPrimary $colorTextPrimary);
 }
 
+.navigationGroup {
+  @include themify(color, $colorTextPrimary);
+
+  a[data-react-toolbox="link"] {
+    @include themify(color, $colorTextPrimary);
+  }
+}
