@@ -30,7 +30,7 @@ module.exports = {
     },
     // *** Images ***
     {
-      test: /\.(png|svg|jpg|gif|bmp)$/,
+      test: /\.(png|jpg|gif|bmp)$/,
       exclude: [/node_modules/],
       use: [{
         loader: "file-loader",
