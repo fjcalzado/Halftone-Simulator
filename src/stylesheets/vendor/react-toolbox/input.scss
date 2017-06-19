@@ -9,7 +9,8 @@
 }
 
 .inputElement {
-  @include themify(color, $colorTextPrimary);
+  @include themify(color border-bottom-color,
+  $colorTextPrimary $colorBackgroundAccent);
 
   &:focus:not([disabled]):not([readonly]) {
     & ~ .label:not(.fixed) {

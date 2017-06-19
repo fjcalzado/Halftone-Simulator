@@ -1,18 +1,25 @@
 @import "../../theme/autothemer.scss";
 
-ul.values {
-  // FIX for slider knob on top of dropdown.
-  z-index: 300;
-}
-
 .dropdown {
+  @include themify(color background-color,
+  $colorTextPrimary $colorBackgroundPrimary);
+
   .values {
+    @include themify(background-color, $colorBackgroundPrimary);
+
     & > * {
       &.selected {
         @include themify(color font-weight, $colorTextPrimary $fontWeightNormal);
       }
+
+      &:hover:not(.disabled) {
+        @include themify(background-color, $colorBackgroundAccent);
+      }
     }
 
+    // FIX for slider knob on top of dropdown.
+    z-index: 300;
+    // FIX too wide when constrained inside a list.
     width: 95%;
   }
 }

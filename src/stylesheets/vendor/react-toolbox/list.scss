@@ -1,5 +1,18 @@
 @import "../../theme/autothemer.scss";
 
+.item {
+  @include themify(color, $colorTextPrimary);
+
+  &.selectable:not(.disabled):hover {
+    @include themify(background-color, $colorBackgroundAccent);
+  }
+
+  .itemAction > [data-react-toolbox="font-icon"] {
+    @include themify(color, $colorTextPrimary);
+  }
+}
+
+
 .listItem {
   & [class^="dropdown"] {
     // FIX. Give some padding to a dropdown inside a list item
@@ -36,6 +49,14 @@
 .itemText {
   &.primary {
     @include themify(color, $colorTextPrimary);
+
+    opacity: 1;
+  }
+
+  &:not(.primary) {
+    @include themify(color, $colorTextPrimary);
+
+    opacity: 0.8;
   }
 }
 

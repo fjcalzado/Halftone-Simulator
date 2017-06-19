@@ -63,6 +63,10 @@ div[id^="appContainer"] {
 
   &.reverseFlexDirection {
     flex-direction: row-reverse;
+
+    [class^="panelMain"] {
+      padding: 25px 0 25px 25px;
+    }
   }
 }
 

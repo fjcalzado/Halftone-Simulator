@@ -1,5 +1,14 @@
-// @import "../../theme/autothemer.scss";
+@import "../../theme/autothemer.scss";
 
 .dialog {
-}
+  @include themify(color background-color,
+  $colorTextPrimary $colorBackgroundPrimary);
 
+  .title {
+    @include themify(color, $colorTextPrimary);
+  }
+
+  .body {
+    @include themify(color, $colorTextPrimary);
+  }
+}

@@ -1,26 +1,23 @@
 @import "../../theme/autothemer.scss";
 
-header.appBar {
-  height: 48px;
+header {
+    &.appBar {
+    height: 48px;
 
-  .rightIcon {
-    svg {
-      // FIX. Make the right icon SVG bigger.
-      width: 30px;
+    .rightIcon {
+      svg {
+        // FIX. Make the right icon SVG bigger.
+        width: 30px;
+      }
+    }
+
+    .leftIcon {
     }
   }
 
-  .leftIcon {
+  .title {
+    font-weight: 500;
+    font-size: 20px;
   }
 }
 
-.title {
-  //@include themify(color, $colorGradient);
-
-  // Gradient Title.
-  // @include themify(background-image, $colorGradient);
-
-  // color: transparent;
-  // background-clip: text;
-  // -webkit-background-clip: text;
-}

@@ -1,1 +1,13 @@
-// @import "../../theme/autothemer.scss";
+@import "../../theme/autothemer.scss";
+
+.outline {
+  @include themify(background-color, $colorBackgroundPrimary);
+}
+
+.menuItem {
+  @include themify(color, $colorTextPrimary);
+
+  &:not(.disabled):hover {
+    @include themify(background-color, $colorBackgroundAccent);
+  }
+}

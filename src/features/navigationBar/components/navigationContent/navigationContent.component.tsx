@@ -22,7 +22,7 @@ interface Props {
     container: string;
     navigationContent: string;
     navigationSettings: string;
-    toolPanelSettings: string;
+    hideOnMobile: string;
   };
 }
 
@@ -39,16 +39,16 @@ class NavigationContent extends React.Component<Props, {}> {
       <Navigation className={this.props.theme.navigationContent}
         type="vertical"
       >
-        <div className={this.props.theme.toolPanelSettings}>
-          <Link active href="#" label="Tool Panel Position" icon="view_array" />
-          <RadioGroup className={this.props.theme.navigationSettings}
-            name="toolPanelPosition" value={this.props.toolPanelPosition}
-            onChange={this.props.onToolPanelPositionChange}
-          >
-            <RadioButton label="Left" value="left"/>
-            <RadioButton label="Right" value="right" />
-          </RadioGroup>
-        </div>
+        <Link className={this.props.theme.hideOnMobile}
+          active href="#" label="Tool Panel Position" icon="view_array" />
+        <RadioGroup className={`${this.props.theme.navigationSettings}
+          ${this.props.theme.hideOnMobile}`}
+          name="toolPanelPosition" value={this.props.toolPanelPosition}
+          onChange={this.props.onToolPanelPositionChange}
+        >
+          <RadioButton label="Left" value="left"/>
+          <RadioButton label="Right" value="right" />
+        </RadioGroup>
 
         <Link active href="#" label="Theme" icon="palette" />
         <RadioGroup className={this.props.theme.navigationSettings}
