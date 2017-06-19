@@ -1,7 +1,11 @@
 @import "../../theme/autothemer.scss";
 
-div.avatar > img {
-  // FIX Oval avatars when picture is not perfectly square.
-  height: 100%;
-  object-fit: cover;
+div.avatar {
+  @include themify(background-color, $colorBackgroundAccent);
+
+  & > img {
+    // FIX Oval avatars when picture is not perfectly square.
+    height: 100%;
+    object-fit: cover;
+  }
 }

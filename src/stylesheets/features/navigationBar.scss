@@ -4,11 +4,11 @@
 }
 
 .bar {
-  @include themify(background color,
+  @include themify(background-color color,
   $colorBackgroundPrimary $colorTextPrimary);
 }
 
 .drawer {
-  @include themify(background,
+  @include themify(background-color,
   $colorBackgroundPrimary);
 }

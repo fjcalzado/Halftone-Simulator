@@ -17,4 +17,12 @@ export const PresetList: PresetCollection = [
     customBackgroundColor: true,
     backgroundColor: "rgb(255, 255, 255)",
   },
+  {
+    name: "",
+    description: "... More presets to come ...",
+    thumbnailUrl: "",
+    layerStackJSON: require("./Default.json"),
+    customBackgroundColor: true,
+    backgroundColor: "rgb(255, 255, 255)",
+  },
 ];
