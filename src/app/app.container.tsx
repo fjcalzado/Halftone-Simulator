@@ -12,6 +12,7 @@ import { AppComponent } from "./app.component";
 /******************* INTERFACE *******************/
 
 interface State {
+  // Simulator state.
   layerStack: LayerStack;
   maxNumLayers: number;
   sampleImageList: SampleImageItem[];
@@ -21,6 +22,10 @@ interface State {
   backgroundColor: any;
   customBackgroundColor: boolean;
   presetList: PresetCollection;
+
+  // Web config state.
+  toolPanelPosition: string;
+  userTheme: string;
 }
 
 interface Props {
@@ -43,7 +48,13 @@ export class AppContainer extends React.Component<Props, State> {
       backgroundColor: "rgb(255, 255, 255)",
       customBackgroundColor: true,
       presetList: PresetList,
+      toolPanelPosition: "left",
+      userTheme: "light",
     };
+  }
+
+  private setUserTheme(userTheme: string) {
+    document.body.setAttribute("class", `theme-${userTheme}`);
   }
 
   private handleGenericStateChange = (field, value): void => {
@@ -60,6 +71,16 @@ export class AppContainer extends React.Component<Props, State> {
       backgroundColor: preset.backgroundColor,
       customBackgroundColor: preset.customBackgroundColor,
     });
+  }
+
+  private handleUserThemeChange = (userTheme: string) => {
+    this.handleGenericStateChange("userTheme", userTheme);
+    this.setUserTheme(userTheme);
+  }
+
+  public componentWillMount() {
+    // Set default theme for the first time.
+    this.setUserTheme(this.state.userTheme);
   }
 
   public render() {
@@ -81,6 +102,10 @@ export class AppContainer extends React.Component<Props, State> {
         onBackgroundToggleChange={this.handleGenericStateChange.bind(this, "customBackgroundColor")}
         onLayersChange={this.handleGenericStateChange.bind(this, "layerStack")}
         onPresetChange={this.handlePresetChange}
+        toolPanelPosition={this.state.toolPanelPosition}
+        onToolPanelPositionChange={this.handleGenericStateChange.bind(this, "toolPanelPosition")}
+        userTheme={this.state.userTheme}
+        onUserThemeChange={this.handleUserThemeChange}
       />
     );
   }

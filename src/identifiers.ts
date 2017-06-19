@@ -40,6 +40,7 @@ export const identifiers = {
   pictureUpload: "CMPPictureUpload",
   pictureResolution: "CMPPictureResolution",
   infoDialog: "CMPInfoDialog",
+  navigationContent: "CMPNavigationContent",
 
   // Vendor/Third-Party Components CSS.
   // RT: React-Toolbox.
@@ -57,4 +58,5 @@ export const identifiers = {
   vendorAvatar: "RTAvatar",
   vendorAppBar: "RTAppBar",
   vendorLink: "RTLink",
+  vendorRadio: "RTRadio",
 };

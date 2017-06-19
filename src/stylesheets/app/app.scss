@@ -60,6 +60,10 @@ div[id^="appContainer"] {
   flex: 1 1 auto;
   flex-direction: row;
   align-items: stretch;
+
+  &.reverseFlexDirection {
+    flex-direction: row-reverse;
+  }
 }
 
 .panelLeft {

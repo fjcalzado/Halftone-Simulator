@@ -1,0 +1,29 @@
+@import "../../theme/autothemer.scss";
+
+.text {
+  @include themify(color, $colorTextPrimary);
+}
+
+.radio {
+  @include themify(border-color, $colorTextPrimary);
+
+  &::before {
+    @include themify(background-color, $colorPrimary);
+  }
+
+  & .ripple {
+    @include themify(background-color, $colorPrimary);
+  }
+}
+
+.radioChecked {
+  @include themify(border-color, $colorPrimary);
+
+  &::before {
+    @include themify(background-color, $colorPrimary);
+  }
+
+  & .ripple {
+    @include themify(background-color, $colorPrimary);
+  }
+}

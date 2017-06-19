@@ -17,6 +17,7 @@ import { SetupLayoutComponent } from "../features/setupLayout";
 /******************* INTERFACE *******************/
 
 interface Props {
+  // Simulator Parameters.
   layerStack: LayerStack;
   maxNumLayers: number;
   imageUrl: string;
@@ -35,12 +36,19 @@ interface Props {
   onLayersChange: (layerStack: LayerStack) => void;
   onPresetChange: (preset: Preset) => void;
 
+  // Web config parameters.
+  toolPanelPosition: string;
+  userTheme: string;
+  onToolPanelPositionChange: (value: string) => void;
+  onUserThemeChange: (userTheme: string) => void;
+
   // Context theme API.
   theme?: {
     layoutAppContainer: string;
     layoutNavigationContainer: string;
     layoutDecorator: string;
     layoutMainContainer: string;
+    reverseFlexDirection: string;
     panelLeft: string;
     panelMain: string;
   };
@@ -58,13 +66,17 @@ class App extends React.Component<Props, {}> {
     return(
       <div className={this.props.theme.layoutAppContainer}>
 
-        <div className={this.props.theme.layoutNavigationContainer}>
-          <NavigationBarComponent />
-        </div>
+        <NavigationBarComponent className={this.props.theme.layoutNavigationContainer}
+          toolPanelPosition={this.props.toolPanelPosition}
+          onToolPanelPositionChange={this.props.onToolPanelPositionChange}
+          userTheme={this.props.userTheme}
+          onUserThemeChange={this.props.onUserThemeChange}
+        />
 
         <div className={this.props.theme.layoutDecorator} />
 
-        <div className={this.props.theme.layoutMainContainer}>
+        <div className={`${this.props.theme.layoutMainContainer}
+          ${(this.props.toolPanelPosition === "right") ? this.props.theme.reverseFlexDirection : ""}` }>
           <div className={this.props.theme.panelLeft}>
             <SetupLayoutComponent tabsContent={[
               {

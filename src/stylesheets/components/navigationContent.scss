@@ -1,0 +1,19 @@
+@import "../theme/autothemer.scss";
+
+.navigationContent {
+  @include themify(color, $colorTextPrimary);
+
+  [data-react-toolbox="link"] {
+    @include themify(color, $colorTextPrimary);
+  }
+
+  .navigationSettings {
+    margin: 10px 5px 5px 20px;
+  }
+
+  .toolPanelSettings {
+    @include respond-to("small") {
+      display: none;
+    }
+  }
+}
