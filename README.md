@@ -1,7 +1,5 @@
 # Halftone Simulator
 
-## Visit live demo
-
 [Click here to go live](https://fjcalzado.github.io/Halftone-Simulator/)
 
 ## What is halftone?
